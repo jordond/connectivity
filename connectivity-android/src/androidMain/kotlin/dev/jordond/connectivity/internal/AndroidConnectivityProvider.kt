@@ -1,4 +1,4 @@
-package dev.jordond.connectivity.android.internal
+package dev.jordond.connectivity.internal
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -8,7 +8,7 @@ import android.net.NetworkCapabilities.TRANSPORT_CELLULAR
 import android.net.NetworkCapabilities.TRANSPORT_WIFI
 import android.net.NetworkRequest
 import androidx.core.content.getSystemService
-import dev.jordond.connectivity.android.Connectivity
+import dev.jordond.connectivity.Connectivity
 import dev.jordond.connectivity.ConnectivityProvider
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow

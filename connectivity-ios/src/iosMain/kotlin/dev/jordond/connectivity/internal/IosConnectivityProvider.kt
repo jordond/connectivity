@@ -1,6 +1,6 @@
-package dev.jordond.connectivity.ios.internal
+package dev.jordond.connectivity.internal
 
-import dev.jordond.connectivity.ios.Connectivity
+import dev.jordond.connectivity.Connectivity
 import dev.jordond.connectivity.ConnectivityProvider
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -18,7 +18,7 @@ import platform.NetworkExtension.NWPathStatus
 import platform.darwin.DISPATCH_QUEUE_PRIORITY_DEFAULT
 import platform.darwin.dispatch_get_global_queue
 
-internal class IosConnectivityProvider : ConnectivityProvider {
+internal object IosConnectivityProvider : ConnectivityProvider {
 
     override fun monitor(): Flow<Connectivity.Status> {
         val monitor = nw_path_monitor_create()

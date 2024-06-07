@@ -14,7 +14,7 @@ configureMultiplatform(Platform.Ios)
 kotlin {
     sourceSets {
         iosMain.dependencies {
-            api(projects.connectivityCore)
+            implementation(projects.connectivityCore)
             implementation(libs.kotlinx.coroutines.core)
         }
     }

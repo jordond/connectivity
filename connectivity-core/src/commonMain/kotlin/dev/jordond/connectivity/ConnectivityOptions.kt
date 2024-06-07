@@ -2,9 +2,19 @@ package dev.jordond.connectivity
 
 import dev.drewhamilton.poko.Poko
 
+/**
+ * Need to have:
+ *
+ * - Host
+ * - Port
+ * - Timeout
+ * - How many seconds to poll
+ * - A way to force a poll
+ */
+
 @Poko
-public class ConnectivityOptions(
-    public val autoStart: Boolean,
+public open class ConnectivityOptions(
+    public val autoStart: Boolean = DEFAULT_AUTO_START,
 ) {
 
     public class Builder internal constructor() {
@@ -24,4 +34,3 @@ public class ConnectivityOptions(
             Builder().apply(block).build()
     }
 }
-

@@ -22,8 +22,16 @@ public interface Connectivity {
 
 public fun Connectivity(
     provider: ConnectivityProvider,
+    options: ConnectivityOptions = ConnectivityOptions(),
+    scope: CoroutineScope = CoroutineScope(Dispatchers.Default),
+): Connectivity {
+    return DefaultConnectivity(scope, provider, options)
+}
+
+public fun Connectivity(
+    provider: ConnectivityProvider,
     scope: CoroutineScope = CoroutineScope(Dispatchers.Default),
     options: ConnectivityOptions.Builder.() -> Unit = {},
 ): Connectivity {
-    return DefaultConnectivity(scope, provider, ConnectivityOptions.build(options))
+    return Connectivity(provider, ConnectivityOptions.build(options), scope)
 }

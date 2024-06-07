@@ -15,7 +15,7 @@ configureMultiplatform(Platform.Android)
 kotlin {
     sourceSets {
         androidMain.dependencies {
-            api(projects.connectivityCore)
+            implementation(projects.connectivityCore)
             implementation(projects.connectivityToolsAndroid)
             implementation(libs.androidx.core)
         }
