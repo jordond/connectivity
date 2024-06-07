@@ -5,6 +5,7 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
+        maven("https://maven.pkg.jetbrains.space/kotlin/p/wasm/experimental")
     }
 
     includeBuild("buildLogic")
@@ -15,6 +16,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven("https://maven.pkg.jetbrains.space/kotlin/p/wasm/experimental")
     }
 }
 
@@ -37,6 +39,7 @@ include(
     ":connectivity-android",
     ":connectivity-ios",
     ":connectivity-mobile",
+    ":connectivity-http",
     ":connectivity-tools-android",
 )
 

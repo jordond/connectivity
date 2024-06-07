@@ -15,11 +15,11 @@ fun Project.configureMultiplatform(
     platform: Platform,
     name: String = this.name,
 ) {
-    configureMultiplatform(listOf(platform), name)
+    configureMultiplatform(setOf(platform), name)
 }
 
 fun Project.configureMultiplatform(
-    platforms: List<Platform> = Platforms.All,
+    platforms: Set<Platform> = Platforms.All,
     name: String = this.name,
 ) {
     extensions.configure<KotlinMultiplatformExtension> {
@@ -39,7 +39,7 @@ fun Project.configureMultiplatform(
 }
 
 internal fun KotlinMultiplatformExtension.configurePlatforms(
-    platforms: List<Platform> = Platforms.All,
+    platforms: Set<Platform> = Platforms.All,
     name: String,
 ) {
     applyDefaultHierarchyTemplate()
@@ -65,11 +65,22 @@ internal fun KotlinMultiplatformExtension.configurePlatforms(
         macosArm64()
     }
 
-    // TODO: Waiting on ktor to have stable wasm support
-//                if (platforms.contains(Platform.Linux)) {
-//                    linuxX64()
-//                    linuxArm64()
-//                }
+    if (platforms.contains(Platform.TvOS)) {
+        tvosX64()
+        tvosArm64()
+    }
+
+    if (platforms.contains(Platform.WatchOS)) {
+        watchosX64()
+        watchosArm32()
+        watchosArm64()
+    }
+
+    // TODO: Not currently supported by ktor-wasm02
+//    if (platforms.contains(Platform.Linux)) {
+//        linuxX64()
+//        linuxArm64()
+//    }
 
     if (platforms.contains(Platform.Js)) {
         js {

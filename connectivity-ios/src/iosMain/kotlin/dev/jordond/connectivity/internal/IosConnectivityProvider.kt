@@ -32,7 +32,7 @@ internal object IosConnectivityProvider : ConnectivityProvider {
                 val nwPath: NWPath? = path as? NWPath
                 val status: NWPathStatus? = nwPath?.status()
                 when {
-                    status != null && status.toLong() == nw_path_status_satisfied.toLong() -> {
+                    status != null && status == nw_path_status_satisfied.toLong() -> {
                         val isWifi = nw_path_uses_interface_type(path, nw_interface_type_wifi)
                         val isMetered = !isWifi && (path.isExpensive() || path.isConstrained())
 

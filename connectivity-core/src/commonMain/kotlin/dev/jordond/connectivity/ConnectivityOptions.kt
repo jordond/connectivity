@@ -30,7 +30,8 @@ public open class ConnectivityOptions(
 
         private const val DEFAULT_AUTO_START: Boolean = true
 
-        public fun build(block: Builder.() -> Unit): ConnectivityOptions =
-            Builder().apply(block).build()
+        public fun build(
+            block: Builder.() -> Unit,
+        ): ConnectivityOptions = Builder().apply(block).build()
     }
 }

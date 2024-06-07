@@ -7,12 +7,16 @@ import dev.jordond.connectivity.convention.Platform.Jvm
 import dev.jordond.connectivity.convention.Platform.Linux
 import dev.jordond.connectivity.convention.Platform.MacOS
 import dev.jordond.connectivity.convention.Platform.NodeJs
+import dev.jordond.connectivity.convention.Platform.TvOS
 import dev.jordond.connectivity.convention.Platform.Wasm
+import dev.jordond.connectivity.convention.Platform.WatchOS
 
 enum class Platform {
     Android,
     Ios,
     MacOS,
+    TvOS,
+    WatchOS,
     Linux,
     Jvm,
     Js,
@@ -22,8 +26,9 @@ enum class Platform {
 
 object Platforms {
 
-    val All: List<Platform> = listOf(Android, Ios, MacOS, Linux, Jvm, Js, Wasm, NodeJs)
-    val Mobile: List<Platform> = listOf(Android, Ios)
-    val Browser: List<Platform> = listOf(Js, Wasm)
-    val Compose: List<Platform> = listOf(Android, Ios, Jvm, Js, Wasm)
+    val All: Set<Platform> = setOf(Android, Ios, MacOS, Linux, Jvm, Js, Wasm, NodeJs)
+    val Mobile: Set<Platform> = setOf(Android, Ios)
+    val Apple: Set<Platform> = setOf(Ios, MacOS, TvOS, WatchOS)
+    val Browser: Set<Platform> = setOf(Js, Wasm)
+    val Compose: Set<Platform> = setOf(Android, Ios, Jvm, Js, Wasm)
 }
