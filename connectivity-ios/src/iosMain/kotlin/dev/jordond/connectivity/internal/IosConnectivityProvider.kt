@@ -15,14 +15,17 @@ import platform.Network.nw_path_status_satisfied
 import platform.Network.nw_path_uses_interface_type
 import platform.NetworkExtension.NWPath
 import platform.NetworkExtension.NWPathStatus
-import platform.darwin.DISPATCH_QUEUE_PRIORITY_DEFAULT
-import platform.darwin.dispatch_get_global_queue
+import platform.darwin.DISPATCH_QUEUE_SERIAL_WITH_AUTORELEASE_POOL
+import platform.darwin.dispatch_queue_create
 
 internal object IosConnectivityProvider : ConnectivityProvider {
 
     override fun monitor(): Flow<Connectivity.Status> {
         val monitor = nw_path_monitor_create()
-        val queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT.toLong(), flags = 0uL)
+        val queue = dispatch_queue_create(
+            label = "dev.jordond.connectivity.monitor",
+            attr = DISPATCH_QUEUE_SERIAL_WITH_AUTORELEASE_POOL,
+        )
 
         return callbackFlow {
             nw_path_monitor_set_update_handler(monitor) { path ->
