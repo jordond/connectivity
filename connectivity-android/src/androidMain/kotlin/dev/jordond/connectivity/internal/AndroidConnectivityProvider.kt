@@ -19,6 +19,7 @@ internal class AndroidConnectivityProvider(
     private val context: Context,
 ) : ConnectivityProvider {
 
+    // The permission is in the manifest but the IDE doesn't seem to recognize it
     @SuppressLint("MissingPermission")
     override fun monitor(): Flow<Connectivity.Status> {
         val connectivityManager = context.getSystemService<ConnectivityManager>()

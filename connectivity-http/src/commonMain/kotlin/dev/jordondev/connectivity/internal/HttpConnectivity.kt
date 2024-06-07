@@ -81,7 +81,7 @@ internal class HttpConnectivity(
                 this.port = port
                 method = httpOptions.method
                 timeout {
-                    requestTimeoutMillis = httpOptions.timeout
+                    requestTimeoutMillis = httpOptions.timeoutMs
                 }
             }
 
