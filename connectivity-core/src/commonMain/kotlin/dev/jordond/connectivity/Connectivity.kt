@@ -1,5 +1,8 @@
 package dev.jordond.connectivity
 
+import dev.drewhamilton.poko.Poko
+import dev.jordond.connectivity.Connectivity.Status.Connected
+import dev.jordond.connectivity.Connectivity.Status.Disconnected
 import dev.jordond.connectivity.internal.DefaultConnectivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -8,11 +11,11 @@ import kotlinx.coroutines.flow.StateFlow
 /**
  * The Connectivity interface provides a way to monitor the network connectivity status.
  *
- * @property status A [StateFlow] representing the current connectivity status.
+ * @property updates A [StateFlow] representing the current connectivity status.
  */
 public interface Connectivity {
 
-    public val status: StateFlow<Status>
+    public val updates: StateFlow<Update>
 
     /**
      * Starts monitoring the connectivity status.
@@ -23,6 +26,45 @@ public interface Connectivity {
      * Stops monitoring the connectivity status.
      */
     public fun stop()
+
+    /**
+     * Represents an update to the connectivity status.
+     *
+     * @property isActive A Boolean indicating whether the connectivity monitoring is active.
+     * @property status The [Status] of the connectivity.
+     * @constructor Creates an update to the connectivity status.
+     */
+    @Poko
+    public class Update(
+        public val isActive: Boolean,
+        public val status: Status,
+    ) {
+
+        /**
+         * A Boolean indicating whether the device is connected to the network.
+         */
+        public val isConnected: Boolean
+            get() = status is Connected
+
+        /**
+         * A Boolean indicating whether the device is connected to a metered network.
+         */
+        public val isMetered: Boolean
+            get() = status is Connected && status.metered
+
+        /**
+         * A Boolean indicating whether the device is disconnected from the network.
+         */
+        public val isDisconnected: Boolean
+            get() = status is Disconnected
+
+        @InternalConnectivityApi
+        public companion object {
+
+            @InternalConnectivityApi
+            public val default: Update = Update(isActive = false, Status.Disconnected)
+        }
+    }
 
     /**
      * Represents the connectivity status.

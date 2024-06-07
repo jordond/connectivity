@@ -25,10 +25,10 @@ internal class HttpConnectivity(
     private val httpClient: HttpClient,
 ) : Connectivity, CoroutineScope by scope {
 
-    private val _status = MutableStateFlow<Connectivity.Status>(Connectivity.Status.Disconnected)
-    override val status: StateFlow<Connectivity.Status> = _status.asStateFlow()
-
     private var job: Job? = null
+
+    private val _updates = MutableStateFlow(Connectivity.Update.default)
+    override val updates: StateFlow<Connectivity.Update> = _updates.asStateFlow()
 
     init {
         if (httpOptions.options.autoStart) {
@@ -47,19 +47,22 @@ internal class HttpConnectivity(
     }
 
     internal fun forcePoll() {
-        stop()
-        start()
+        launch { check() }
     }
 
     internal suspend fun check(): Connectivity.Status {
-        return checkConnection().also { _status.update { it } }
+        return checkConnection().also { status ->
+            _updates.update { Connectivity.Update(it.isActive, status) }
+        }
     }
 
     private fun poll() {
         job = launch {
+            _updates.update { Connectivity.Update(isActive = true, it.status) }
+
             while (isActive) {
                 val status = checkConnection()
-                _status.update { status }
+                _updates.update { Connectivity.Update(it.isActive, status = status) }
                 delay(httpOptions.pollingIntervalMs)
             }
         }
@@ -103,16 +106,16 @@ internal class HttpConnectivity(
             return false
         }
     }
+}
 
-    fun getProtocolAndHost(url: String, port: Int): Pair<URLProtocol, String> {
-        val protocol = when {
-            url.startsWith("http://") -> URLProtocol.HTTP
-            url.startsWith("https://") -> URLProtocol.HTTPS
-            port == 443 -> URLProtocol.HTTPS
-            else -> URLProtocol.HTTP
-        }
-
-        val host = url.removePrefix("http://").removePrefix("https://")
-        return protocol to host
+internal fun getProtocolAndHost(url: String, port: Int): Pair<URLProtocol, String> {
+    val protocol = when {
+        url.startsWith("http://") -> URLProtocol.HTTP
+        url.startsWith("https://") -> URLProtocol.HTTPS
+        port == 443 -> URLProtocol.HTTPS
+        else -> URLProtocol.HTTP
     }
+
+    val host = url.removePrefix("http://").removePrefix("https://")
+    return protocol to host
 }

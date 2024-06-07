@@ -57,5 +57,5 @@ public fun Connectivity.force() {
  * @return The current [Connectivity.Status].
  */
 public suspend fun Connectivity.check(): Connectivity.Status {
-    return (this as? HttpConnectivity)?.check() ?: status.value
+    return (this as? HttpConnectivity)?.check() ?: updates.value.status
 }

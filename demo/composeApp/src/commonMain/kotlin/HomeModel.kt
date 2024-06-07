@@ -11,11 +11,9 @@ class HomeModel : StateScreenModel<HomeModel.State>(State()) {
 
     init {
         screenModelScope.launch(Dispatchers.Default) {
-            connectivity.status.collect { status ->
-                if (state.value.active) {
-                    Logger.i { "Connectivity status: $status" }
-                    updateState { it.copy(status = status) }
-                }
+            connectivity.updates.collect { update ->
+                Logger.i { "Connectivity update: $update" }
+                updateState { it.copy(status = update.status, active = update.isActive) }
             }
         }
     }

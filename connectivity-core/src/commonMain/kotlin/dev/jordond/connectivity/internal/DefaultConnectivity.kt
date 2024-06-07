@@ -17,10 +17,10 @@ internal class DefaultConnectivity(
     options: ConnectivityOptions,
 ) : Connectivity, CoroutineScope by scope {
 
-    private val _status = MutableStateFlow<Connectivity.Status>(Connectivity.Status.Disconnected)
-    override val status: StateFlow<Connectivity.Status> = _status.asStateFlow()
-
     private var job: Job? = null
+
+    private val _updates = MutableStateFlow(Connectivity.Update.default)
+    override val updates: StateFlow<Connectivity.Update> = _updates.asStateFlow()
 
     init {
         if (options.autoStart) {
@@ -31,8 +31,12 @@ internal class DefaultConnectivity(
     override fun start() {
         job?.cancel()
         job = launch {
+            _updates.update { update ->
+                Connectivity.Update(isActive = true, status = update.status)
+            }
+
             provider.monitor().collect { status ->
-                _status.update { status }
+                _updates.update { Connectivity.Update(isActive = true, status) }
             }
         }
     }
@@ -40,5 +44,8 @@ internal class DefaultConnectivity(
     override fun stop() {
         job?.cancel()
         job = null
+        _updates.update { update ->
+            Connectivity.Update(isActive = false, status = update.status)
+        }
     }
 }
