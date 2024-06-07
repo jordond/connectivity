@@ -37,7 +37,7 @@ rootProject.name = "connectivity"
 include(
     ":connectivity-core",
     ":connectivity-android",
-    ":connectivity-ios",
+    ":connectivity-apple",
     ":connectivity-mobile",
     ":connectivity-http",
     ":connectivity-tools-android",

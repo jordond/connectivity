@@ -23,7 +23,7 @@ kotlin {
         }
 
         iosMain.dependencies {
-            api(projects.connectivityIos)
+            api(projects.connectivityApple)
         }
     }
 }

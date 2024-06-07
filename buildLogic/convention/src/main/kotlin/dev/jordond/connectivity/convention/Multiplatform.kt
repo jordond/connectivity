@@ -70,12 +70,6 @@ internal fun KotlinMultiplatformExtension.configurePlatforms(
         tvosArm64()
     }
 
-    if (platforms.contains(Platform.WatchOS)) {
-        watchosX64()
-        watchosArm32()
-        watchosArm64()
-    }
-
     // TODO: Not currently supported by ktor-wasm02
 //    if (platforms.contains(Platform.Linux)) {
 //        linuxX64()

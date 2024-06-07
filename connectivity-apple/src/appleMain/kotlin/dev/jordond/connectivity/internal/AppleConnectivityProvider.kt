@@ -18,7 +18,7 @@ import platform.NetworkExtension.NWPathStatus
 import platform.darwin.DISPATCH_QUEUE_SERIAL_WITH_AUTORELEASE_POOL
 import platform.darwin.dispatch_queue_create
 
-internal object IosConnectivityProvider : ConnectivityProvider {
+internal object AppleConnectivityProvider : ConnectivityProvider {
 
     override fun monitor(): Flow<Connectivity.Status> {
         val monitor = nw_path_monitor_create()

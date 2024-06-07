@@ -1,4 +1,3 @@
-import org.jetbrains.dokka.gradle.AbstractDokkaTask
 import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
 
 plugins {
@@ -8,7 +7,6 @@ plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.kotlin.android) apply false
-    alias(libs.plugins.kotlinx.serialization) apply false
     alias(libs.plugins.poko) apply false
     alias(libs.plugins.publish) apply false
     alias(libs.plugins.dokka)

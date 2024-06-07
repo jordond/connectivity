@@ -1,4 +1,4 @@
-import dev.jordond.connectivity.convention.Platform
+import dev.jordond.connectivity.convention.Platforms
 import dev.jordond.connectivity.convention.configureMultiplatform
 
 plugins {
@@ -9,11 +9,11 @@ plugins {
     alias(libs.plugins.convention.multiplatform)
 }
 
-configureMultiplatform(Platform.Ios)
+configureMultiplatform(Platforms.Apple)
 
 kotlin {
     sourceSets {
-        iosMain.dependencies {
+        appleMain.dependencies {
             implementation(projects.connectivityCore)
             implementation(libs.kotlinx.coroutines.core)
         }
