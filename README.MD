@@ -1,4 +1,4 @@
-<img width="500px" src="art/logo-full.png" alt="logo"/>
+<img width="500px" src="art/logo.png" alt="logo"/>
 <br />
 
 [![Maven Central Version](https://img.shields.io/maven-central/v/dev.jordond.connectivity/core)](https://central.sonatype.com/namespace/dev.jordond.connectivity)
