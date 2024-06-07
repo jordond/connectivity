@@ -9,7 +9,7 @@ import io.ktor.http.HttpMethod
  * @property options The [ConnectivityOptions] used to configure the connectivity monitoring.
  * Defaults to a new [ConnectivityOptions] instance.
  * @property urls The list of urls to use when checking for connection.
- * @property port The port to use for the HTTP requests..
+ * @property port The port to use for the HTTP requests.
  * @property method The [HttpMethod] to use for the HTTP requests.
  * @property timeoutMs The timeout for the HTTP requests in milliseconds.
  * @property pollingIntervalMs The interval between each poll in milliseconds.
