@@ -33,7 +33,10 @@ develocity {
 rootProject.name = "connectivity"
 
 include(
-    ":connectivity",
+    ":connectivity-core",
+    ":connectivity-android",
+    ":connectivity-ios",
+    ":connectivity-mobile",
     ":connectivity-tools-android",
 )
 

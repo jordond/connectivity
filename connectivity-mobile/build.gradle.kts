@@ -1,22 +1,29 @@
-import dev.jordond.connectivity.convention.Platform
+import dev.jordond.connectivity.convention.Platforms
 import dev.jordond.connectivity.convention.configureMultiplatform
 
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.multiplatform)
+    alias(libs.plugins.poko)
     alias(libs.plugins.dokka)
     alias(libs.plugins.publish)
     alias(libs.plugins.convention.multiplatform)
 }
 
-configureMultiplatform(Platform.Android)
+configureMultiplatform(Platforms.Mobile)
 
 kotlin {
     sourceSets {
+        commonMain.dependencies {
+            api(projects.connectivityCore)
+        }
+
         androidMain.dependencies {
-            implementation(projects.connectivityCore)
-            implementation(libs.androidx.startup)
-            implementation(libs.androidx.activity)
+            api(projects.connectivityAndroid)
+        }
+
+        iosMain.dependencies {
+            api(projects.connectivityIos)
         }
     }
 }

@@ -41,7 +41,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.connectivity)
+            implementation(projects.connectivityCore)
 
             implementation(libs.kotlinx.coroutines.core)
             implementation(compose.runtime)
