@@ -15,23 +15,23 @@ kotlin {
         publishAllLibraryVariants()
     }
 
-//    @OptIn(ExperimentalWasmDsl::class)
-//    wasmJs {
-//        moduleName = "composeApp"
-//        browser {
-//            commonWebpackConfig {
-//                outputFileName = "composeApp.js"
-//            }
-//        }
-//        binaries.executable()
-//    }
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        moduleName = "composeApp"
+        browser {
+            commonWebpackConfig {
+                outputFileName = "composeApp.js"
+            }
+        }
+        binaries.executable()
+    }
 
-//    jvm("desktop")
+    jvm("desktop")
 
     listOf(
         iosX64(),
         iosArm64(),
-        iosSimulatorArm64()
+        iosSimulatorArm64(),
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
@@ -57,6 +57,33 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.androidx.lifecycle)
+        }
+
+        val deviceMain by creating {
+            dependsOn(commonMain.get())
+            androidMain.get().dependsOn(this)
+            appleMain.get().dependsOn(this)
+            dependencies {
+                implementation(projects.connectivityDevice)
+            }
+        }
+
+        val desktopMain by getting {
+            dependencies {
+                implementation(compose.desktop.currentOs)
+                implementation(libs.kotlinx.coroutines.core.jvm)
+            }
+        }
+
+        val httpMain by creating {
+            dependsOn(commonMain.get())
+            desktopMain.dependsOn(this)
+            jsMain.get().dependsOn(this)
+            wasmJsMain.get().dependsOn(this)
+            dependencies {
+                implementation(projects.connectivityHttp)
+            }
         }
     }
 

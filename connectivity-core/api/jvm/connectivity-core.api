@@ -1,0 +1,99 @@
+public abstract interface class dev/jordond/connectivity/Connectivity {
+	public abstract fun getActiveUpdates ()Lkotlinx/coroutines/flow/Flow;
+	public abstract fun getUpdates ()Lkotlinx/coroutines/flow/StateFlow;
+	public abstract fun start ()V
+	public abstract fun status (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun stop ()V
+}
+
+public final class dev/jordond/connectivity/Connectivity$DefaultImpls {
+	public static fun getActiveUpdates (Ldev/jordond/connectivity/Connectivity;)Lkotlinx/coroutines/flow/Flow;
+}
+
+public abstract interface class dev/jordond/connectivity/Connectivity$Status {
+	public abstract fun isConnected ()Z
+	public abstract fun isDisconnected ()Z
+	public abstract fun isMetered ()Z
+}
+
+public final class dev/jordond/connectivity/Connectivity$Status$Connected : dev/jordond/connectivity/Connectivity$Status {
+	public fun <init> (Z)V
+	public final fun component1 ()Z
+	public final fun copy (Z)Ldev/jordond/connectivity/Connectivity$Status$Connected;
+	public static synthetic fun copy$default (Ldev/jordond/connectivity/Connectivity$Status$Connected;ZILjava/lang/Object;)Ldev/jordond/connectivity/Connectivity$Status$Connected;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMetered ()Z
+	public fun hashCode ()I
+	public fun isConnected ()Z
+	public fun isDisconnected ()Z
+	public fun isMetered ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/jordond/connectivity/Connectivity$Status$DefaultImpls {
+	public static fun isConnected (Ldev/jordond/connectivity/Connectivity$Status;)Z
+	public static fun isDisconnected (Ldev/jordond/connectivity/Connectivity$Status;)Z
+	public static fun isMetered (Ldev/jordond/connectivity/Connectivity$Status;)Z
+}
+
+public final class dev/jordond/connectivity/Connectivity$Status$Disconnected : dev/jordond/connectivity/Connectivity$Status {
+	public static final field INSTANCE Ldev/jordond/connectivity/Connectivity$Status$Disconnected;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun isConnected ()Z
+	public fun isDisconnected ()Z
+	public fun isMetered ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/jordond/connectivity/Connectivity$Update {
+	public fun <init> (ZLdev/jordond/connectivity/Connectivity$Status;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getStatus ()Ldev/jordond/connectivity/Connectivity$Status;
+	public fun hashCode ()I
+	public final fun isActive ()Z
+	public final fun isConnected ()Z
+	public final fun isDisconnected ()Z
+	public final fun isMetered ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/jordond/connectivity/ConnectivityKt {
+	public static final fun Connectivity (Ldev/jordond/connectivity/ConnectivityProvider;Ldev/jordond/connectivity/ConnectivityOptions;Lkotlinx/coroutines/CoroutineScope;)Ldev/jordond/connectivity/Connectivity;
+	public static final fun Connectivity (Ldev/jordond/connectivity/ConnectivityProvider;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;)Ldev/jordond/connectivity/Connectivity;
+	public static synthetic fun Connectivity$default (Ldev/jordond/connectivity/ConnectivityProvider;Ldev/jordond/connectivity/ConnectivityOptions;Lkotlinx/coroutines/CoroutineScope;ILjava/lang/Object;)Ldev/jordond/connectivity/Connectivity;
+	public static synthetic fun Connectivity$default (Ldev/jordond/connectivity/ConnectivityProvider;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ldev/jordond/connectivity/Connectivity;
+}
+
+public class dev/jordond/connectivity/ConnectivityOptions {
+	public static final field Companion Ldev/jordond/connectivity/ConnectivityOptions$Companion;
+	public fun <init> ()V
+	public fun <init> (Z)V
+	public synthetic fun <init> (ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAutoStart ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/jordond/connectivity/ConnectivityOptions$Builder {
+	public final fun autoStart (Z)Ldev/jordond/connectivity/ConnectivityOptions$Builder;
+	public final fun build ()Ldev/jordond/connectivity/ConnectivityOptions;
+}
+
+public final class dev/jordond/connectivity/ConnectivityOptions$Companion {
+	public final fun build (Lkotlin/jvm/functions/Function1;)Ldev/jordond/connectivity/ConnectivityOptions;
+}
+
+public abstract interface class dev/jordond/connectivity/ConnectivityProvider {
+	public abstract fun monitor ()Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class dev/jordond/connectivity/ConnectivityProviderKt {
+	public static final fun ConnectivityProvider (Lkotlinx/coroutines/flow/Flow;)Ldev/jordond/connectivity/ConnectivityProvider;
+	public static final fun asProvider (Lkotlinx/coroutines/flow/Flow;)Ldev/jordond/connectivity/ConnectivityProvider;
+}
+
+public abstract interface annotation class dev/jordond/connectivity/InternalConnectivityApi : java/lang/annotation/Annotation {
+}
+

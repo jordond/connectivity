@@ -1,0 +1,10 @@
+public final class dev/jordond/connectivity/DeviceConnectivityKt {
+	public static final fun Connectivity (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;)Ldev/jordond/connectivity/Connectivity;
+	public static synthetic fun Connectivity$default (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ldev/jordond/connectivity/Connectivity;
+}
+
+public final class dev/jordond/connectivity/MobileConnectivity_androidKt {
+	public static final fun Connectivity (Ldev/jordond/connectivity/ConnectivityOptions;Lkotlinx/coroutines/CoroutineScope;)Ldev/jordond/connectivity/Connectivity;
+	public static synthetic fun Connectivity$default (Ldev/jordond/connectivity/ConnectivityOptions;Lkotlinx/coroutines/CoroutineScope;ILjava/lang/Object;)Ldev/jordond/connectivity/Connectivity;
+}
+

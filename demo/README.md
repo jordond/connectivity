@@ -1,6 +1,4 @@
-# Material Kolor Demo
-
-<img width="700px" src="../art/demo.png" />
+# Connectivity Demo
 
 ## Before running!
 
@@ -14,8 +12,10 @@
 Open the project in Android Studio and let it sync the project. In the configuration dropdown should
 be the following:
 
-- androidApp
-- iosApp
+- demo.android
+- demo.desktop
+- demo.ios
+- demo.browser
 
 You can select a configuration and run it, or follow the steps below.
 
