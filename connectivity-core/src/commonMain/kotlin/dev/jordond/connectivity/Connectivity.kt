@@ -30,6 +30,24 @@ public interface Connectivity {
     public sealed interface Status {
 
         /**
+         * A Boolean indicating whether the device is connected to the network.
+         */
+        public val isConnected: Boolean
+            get() = this is Connected
+
+        /**
+         * A Boolean indicating whether the device is connected to a metered network.
+         */
+        public val isMetered: Boolean
+            get() = this is Connected && metered
+
+        /**
+         * A Boolean indicating whether the device is disconnected from the network.
+         */
+        public val isDisconnected: Boolean
+            get() = this is Disconnected
+
+        /**
          * Represents a connected status.
          *
          * @property metered A Boolean indicating whether the connection is metered.

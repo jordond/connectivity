@@ -188,10 +188,15 @@ You can customize the HTTP monitoring like so:
 
 ```kotlin
 val connectivity = Connectivity {
-    hosts("cloudflare.com", "my-own-domain.com")
-    port = 80
-    pollingIntervalMs = 10.minutes
-    timeoutMs = 5.seconds
+  hosts("cloudflare.com", "my-own-domain.com")
+  port = 80
+  pollingIntervalMs = 10.minutes
+  timeoutMs = 5.seconds
+
+  // Callback for when an http response is received
+  onHttpResponse { response ->
+    println("Did poll: $response.isSu")
+  }
 }
 ```
 

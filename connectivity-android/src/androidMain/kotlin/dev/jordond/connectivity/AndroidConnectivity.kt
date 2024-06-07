@@ -24,6 +24,20 @@ public fun Connectivity(
 }
 
 /**
+ * Creates a [Connectivity] instance for Android.
+ *
+ * @param options The [ConnectivityOptions] used to configure the connectivity monitoring.
+ * Defaults to a new [ConnectivityOptions] instance.
+ * @param scope The [CoroutineScope] in which the connectivity monitoring will be launched.
+ * Defaults to a new [CoroutineScope] with [Dispatchers.Default].
+ * @return A [Connectivity] instance.
+ */
+public fun AndroidConnectivity(
+    options: ConnectivityOptions = ConnectivityOptions(),
+    scope: CoroutineScope = CoroutineScope(Dispatchers.Default),
+): Connectivity = Connectivity(options, scope)
+
+/**
  * Creates a [Connectivity] instance for Android using a builder pattern for the [ConnectivityOptions].
  *
  * @param scope The [CoroutineScope] in which the connectivity monitoring will be launched.

@@ -1,6 +1,7 @@
 package dev.jordond.connectivity
 
 import dev.drewhamilton.poko.Poko
+import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpMethod
 
 /**
@@ -13,6 +14,7 @@ import io.ktor.http.HttpMethod
  * @property method The [HttpMethod] to use for the HTTP requests.
  * @property timeoutMs The timeout for the HTTP requests in milliseconds.
  * @property pollingIntervalMs The interval between each poll in milliseconds.
+ * @property onHttpResponse The lambda function to call when a poll is made.
  */
 @Poko
 public class HttpConnectivityOptions(
@@ -22,6 +24,7 @@ public class HttpConnectivityOptions(
     public val method: HttpMethod = DEFAULT_HTTP_METHOD,
     public val timeoutMs: Long = DEFAULT_TIMEOUT,
     public val pollingIntervalMs: Long = DEFAULT_POLLING_INTERVAL_MS,
+    public val onHttpResponse: ((response: HttpResponse) -> Unit)? = null
 ) {
 
     /**
@@ -51,6 +54,8 @@ public class HttpConnectivityOptions(
             }
 
         private val hosts = mutableListOf<String>()
+
+        private var onPoll: ((response: HttpResponse) -> Unit)? = null
 
         public var port: Int = DEFAULT_PORT
 
@@ -100,6 +105,16 @@ public class HttpConnectivityOptions(
         }
 
         /**
+         * Sets the callback when a poll is made.
+         *
+         * @param block The lambda function to call when a poll is made.
+         * @return The [Builder] instance.
+         */
+        public fun onHttpResponse(block: (response: HttpResponse) -> Unit): Builder = apply {
+            onPoll = block
+        }
+
+        /**
          * Builds a new [HttpConnectivityOptions] instance.
          *
          * @return The new [HttpConnectivityOptions] instance.
@@ -110,6 +125,7 @@ public class HttpConnectivityOptions(
             port = port,
             timeoutMs = timeoutMs,
             pollingIntervalMs = pollingIntervalMs,
+            onHttpResponse = onPoll,
         )
     }
 

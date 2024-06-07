@@ -85,6 +85,8 @@ internal class HttpConnectivity(
                 }
             }
 
+            httpOptions.onHttpResponse?.invoke(response)
+
             return response.status.isSuccess()
         } catch (cause: Throwable) {
             if (cause is CancellationException) throw cause

@@ -14,4 +14,4 @@ import kotlinx.coroutines.CoroutineScope
 public actual fun Connectivity(
     options: ConnectivityOptions,
     scope: CoroutineScope,
-): Connectivity = Connectivity(options, scope)
+): Connectivity = AppleConnectivity(options, scope)

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
+import android.net.NetworkCapabilities
 import android.net.NetworkCapabilities.TRANSPORT_CELLULAR
 import android.net.NetworkCapabilities.TRANSPORT_WIFI
 import android.net.NetworkRequest
@@ -22,7 +23,7 @@ internal class AndroidConnectivityProvider(
     // The permission is in the manifest but the IDE doesn't seem to recognize it
     @SuppressLint("MissingPermission")
     override fun monitor(): Flow<Connectivity.Status> {
-        val connectivityManager = context.getSystemService<ConnectivityManager>()
+        val manager = context.getSystemService<ConnectivityManager>()
             ?: return flowOf(Connectivity.Status.Disconnected)
 
         return callbackFlow {
@@ -30,13 +31,16 @@ internal class AndroidConnectivityProvider(
 
             val networkCallback = object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
-                    val capability = connectivityManager.getNetworkCapabilities(network)
-                    val isWifi = capability?.hasTransport(TRANSPORT_WIFI) ?: false
-                    val isCellular = capability?.hasTransport(TRANSPORT_CELLULAR) ?: false
-                    val isMetered =
-                        !isWifi || isCellular || connectivityManager.isActiveNetworkMetered
+                    val capabilities = manager.getNetworkCapabilities(network)
+                    val status = manager.status(capabilities)
+                    trySend(status)
+                }
 
-                    val status = Connectivity.Status.Connected(isMetered)
+                override fun onCapabilitiesChanged(
+                    network: Network,
+                    networkCapabilities: NetworkCapabilities,
+                ) {
+                    val status = manager.status(networkCapabilities)
                     trySend(status)
                 }
 
@@ -45,9 +49,19 @@ internal class AndroidConnectivityProvider(
                 }
             }
 
-            connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
+            manager.registerNetworkCallback(networkRequest, networkCallback)
 
-            awaitClose { connectivityManager.unregisterNetworkCallback(networkCallback) }
+            awaitClose { manager.unregisterNetworkCallback(networkCallback) }
         }
     }
+}
+
+@SuppressLint("MissingPermission")
+private fun ConnectivityManager.status(
+    capabilities: NetworkCapabilities?,
+): Connectivity.Status.Connected {
+    val isWifi = capabilities?.hasTransport(TRANSPORT_WIFI) ?: false
+    val isCellular = capabilities?.hasTransport(TRANSPORT_CELLULAR) ?: false
+    val isMetered = !isWifi || isCellular || isActiveNetworkMetered
+    return Connectivity.Status.Connected(isMetered)
 }

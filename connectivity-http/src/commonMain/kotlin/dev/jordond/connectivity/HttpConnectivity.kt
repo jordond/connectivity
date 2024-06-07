@@ -20,9 +20,7 @@ public fun Connectivity(
     options: HttpConnectivityOptions = HttpConnectivityOptions(),
     scope: CoroutineScope = CoroutineScope(Dispatchers.Default),
     httpClient: HttpClient = HttpClient(),
-): Connectivity {
-    return HttpConnectivity(scope, options, httpClient)
-}
+): Connectivity = HttpConnectivity(scope, options, httpClient)
 
 /**
  * Creates a [Connectivity] instance for HTTP using a builder pattern for the [HttpConnectivityOptions].
