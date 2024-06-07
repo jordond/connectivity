@@ -133,6 +133,7 @@ you can observe the network connectivity.
 
 ```kotlin
 val connectivity = Connectivity()
+connectivity.start()
 connectivity.status.collect { status ->
     when (status) {
         is NetworkStatus.Connected -> println("Connected to network")
@@ -141,22 +142,19 @@ connectivity.status.collect { status ->
 }
 ```
 
-By default when you construct a `Connectivity` object, it will automatically start monitoring
-network connectivity. You can disable this by passing in `ConnectivityOptions`():
+By default when you construct a `Connectivity` object, it will not automatically start monitoring
+network connectivity. You can enable this by passing in `ConnectivityOptions`():
 
 ```kotlin
 val connectivity = Connectivity {
-    autoStart = false
+    autoStart = true
 }
 ```
 
-Then you can start or stop monitoring network connectivity manually:
+You can start or stop monitoring network connectivity manually:
 
 ```kotlin
-val connectivity = Connectivity {
-    autoStart = false
-}
-
+val connectivity = Connectivity()
 connectivity.start()
 
 // At some later point

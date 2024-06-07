@@ -53,7 +53,7 @@ public open class ConnectivityOptions(
      */
     public companion object {
 
-        private const val DEFAULT_AUTO_START: Boolean = true
+        private const val DEFAULT_AUTO_START: Boolean = false
 
         /**
          * Builds a [ConnectivityOptions] instance using a builder pattern.
