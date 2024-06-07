@@ -9,6 +9,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,7 +23,7 @@ class HomeScreen : Screen {
     @Composable
     override fun Content() {
         val model = rememberScreenModel { HomeModel() }
-        val state by model.collectAsState()
+        val state by model.state.collectAsState()
 
         MaterialTheme {
             Column(
