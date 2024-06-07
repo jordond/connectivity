@@ -1,8 +1,13 @@
 public abstract interface class dev/jordond/connectivity/Connectivity {
+	public abstract fun getActiveUpdates ()Lkotlinx/coroutines/flow/Flow;
 	public abstract fun getUpdates ()Lkotlinx/coroutines/flow/StateFlow;
 	public abstract fun start ()V
 	public abstract fun status (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun stop ()V
+}
+
+public final class dev/jordond/connectivity/Connectivity$DefaultImpls {
+	public static fun getActiveUpdates (Ldev/jordond/connectivity/Connectivity;)Lkotlinx/coroutines/flow/Flow;
 }
 
 public abstract interface class dev/jordond/connectivity/Connectivity$Status {

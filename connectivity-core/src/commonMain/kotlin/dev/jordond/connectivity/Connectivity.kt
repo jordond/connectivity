@@ -6,7 +6,10 @@ import dev.jordond.connectivity.Connectivity.Status.Disconnected
 import dev.jordond.connectivity.internal.DefaultConnectivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 
 /**
  * The Connectivity interface provides a way to monitor the network connectivity status.
@@ -16,6 +19,16 @@ import kotlinx.coroutines.flow.StateFlow
 public interface Connectivity {
 
     public val updates: StateFlow<Update>
+
+    /**
+     * A [Flow] representing status updates when the connectivity monitoring is active.
+     *
+     * This is a convenience method for filtering the [updates] [StateFlow] for active updates. Since
+     * the default value is [Status.Disconnected], and the real value won't be available until the
+     * monitoring starts, this flow will only emit updates when the monitoring is active.
+     */
+    public val activeUpdates: Flow<Status>
+        get() = updates.filter { it.isActive }.map { it.status }
 
     /**
      * Gets the current connectivity status.

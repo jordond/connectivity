@@ -60,11 +60,9 @@ internal class HttpConnectivity(
 
     private fun poll() {
         job = launch {
-            _updates.update { Connectivity.Update(isActive = true, it.status) }
-
             while (isActive) {
                 val status = checkConnection()
-                _updates.update { Connectivity.Update(it.isActive, status = status) }
+                _updates.update { Connectivity.Update(isActive = true, status = status) }
                 delay(httpOptions.pollingIntervalMs)
             }
         }

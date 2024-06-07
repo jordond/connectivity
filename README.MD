@@ -134,10 +134,47 @@ you can observe the network connectivity.
 ```kotlin
 val connectivity = Connectivity()
 connectivity.start()
-connectivity.status.collect { status ->
+coroutineScope.launch {
+    connectivity.updates.collect { update ->
+        println("Is active: ${update.isActive}")
+
+        when (update.status) {
+            is NetworkStatus.Connected -> println("Connected to network")
+            is NetworkStatus.Disconnected -> println("Disconnected from network")
+        }
+    }
+}
+```
+
+### Observing network connectivity
+
+Because the backing field for `Connectivity.updates` is a `StateFlow`, it requires a
+initial value to be emitted. This means that the first value emitted will be the *real* current
+network status. This is why the `isMonitoring` property is available on the `Connectivity.Update`.
+
+To get around this, you can use the synchronous `status()` function to get the current network
+status:
+
+```kotlin
+val connectivity = Connectivity()
+coroutineScope.launch {
+    val status = connectivity.status()
     when (status) {
         is NetworkStatus.Connected -> println("Connected to network")
         is NetworkStatus.Disconnected -> println("Disconnected from network")
+    }
+}
+```
+
+Or you can use the `Connectivity.activeUpdates` property, which is a `Flow<Connectivity.Status` that
+only emits status updates when the monitoring is active:
+
+```kotlin
+val connectivity = Connectivity()
+connectivity.start()
+coroutineScope.launch {
+    connectivity.activeUpdates.collect { status ->
+        // Handle status
     }
 }
 ```
@@ -175,11 +212,11 @@ fun Connectivity(
 ### HTTP monitoring
 
 The `connectivity-http` module provides a way to monitor network connectivity by making HTTP
-requests to specified hosts. By default it will check connectivity
+requests to specified urls. By default it will check connectivity
 to `"google.com"`, `"github.com"`, and `"bing.com"` on port `443`. It will check for the first
 successful response, and then update the status.
 
-The network status is updated by polling the hosts at a specified interval. The default interval is
+The network status is updated by polling the urls at a specified interval. The default interval is
 5 minutes.
 
 You can customize the HTTP monitoring like so:
@@ -188,15 +225,18 @@ You can customize the HTTP monitoring like so:
 
 ```kotlin
 val connectivity = Connectivity {
-  hosts("cloudflare.com", "my-own-domain.com")
-  port = 80
-  pollingIntervalMs = 10.minutes
-  timeoutMs = 5.seconds
+    urls("cloudflare.com", "my-own-domain.com")
+    port = 80
+    pollingIntervalMs = 10.minutes
+    timeoutMs = 5.seconds
 
-  // Callback for when a poll is completed
-  onPollResult { result ->
-    println("Poll result: $result")
-  }
+    // Callback for when a poll is completed
+    onPollResult { result ->
+        when (result) {
+            is PollResult.Error -> println("Poll error: ${result.error}")
+            is PollResult.Response -> println("Poll http response: ${result.response}")
+        }
+    }
 }
 ```
 
