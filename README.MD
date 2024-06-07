@@ -193,9 +193,9 @@ val connectivity = Connectivity {
   pollingIntervalMs = 10.minutes
   timeoutMs = 5.seconds
 
-  // Callback for when an http response is received
-  onHttpResponse { response ->
-    println("Did poll: $response.isSu")
+  // Callback for when a poll is completed
+  onPollResult { result ->
+    println("Poll result: $result")
   }
 }
 ```

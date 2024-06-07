@@ -1,7 +1,6 @@
 package dev.jordond.connectivity
 
 import dev.drewhamilton.poko.Poko
-import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpMethod
 
 /**
@@ -9,22 +8,22 @@ import io.ktor.http.HttpMethod
  *
  * @property options The [ConnectivityOptions] used to configure the connectivity monitoring.
  * Defaults to a new [ConnectivityOptions] instance.
- * @property hosts The list of hosts to use when checking for connection.
+ * @property urls The list of urls to use when checking for connection.
  * @property port The port to use for the HTTP requests..
  * @property method The [HttpMethod] to use for the HTTP requests.
  * @property timeoutMs The timeout for the HTTP requests in milliseconds.
  * @property pollingIntervalMs The interval between each poll in milliseconds.
- * @property onHttpResponse The lambda function to call when a poll is made.
+ * @property onPollResult The lambda function to call when a poll is made.
  */
 @Poko
 public class HttpConnectivityOptions(
     public val options: ConnectivityOptions = ConnectivityOptions(),
-    public val hosts: List<String> = DEFAULT_HOSTS,
+    public val urls: List<String> = DEFAULT_URLS,
     public val port: Int = DEFAULT_PORT,
     public val method: HttpMethod = DEFAULT_HTTP_METHOD,
     public val timeoutMs: Long = DEFAULT_TIMEOUT,
     public val pollingIntervalMs: Long = DEFAULT_POLLING_INTERVAL_MS,
-    public val onHttpResponse: ((response: HttpResponse) -> Unit)? = null
+    public val onPollResult: ((result: PollResult) -> Unit)? = null
 ) {
 
     /**
@@ -34,7 +33,7 @@ public class HttpConnectivityOptions(
      * @property options The [ConnectivityOptions] used to configure the connectivity monitoring.
      * @property autoStart A Boolean indicating whether the [Connectivity] instance should
      * automatically start.
-     * @property hosts The list of hosts to use when checking for connection.
+     * @property urls The list of urls to use when checking for connection.
      * @property port The port to use for the HTTP requests.
      * @property method The [HttpMethod] to use for the HTTP requests.
      * @property timeoutMs The timeout for the HTTP requests in milliseconds.
@@ -53,9 +52,9 @@ public class HttpConnectivityOptions(
                 options = ConnectivityOptions(autoStart = value)
             }
 
-        private val hosts = mutableListOf<String>()
+        private val urls = DEFAULT_URLS.toMutableList()
 
-        private var onPoll: ((response: HttpResponse) -> Unit)? = null
+        private var onPoll: ((result: PollResult) -> Unit)? = null
 
         public var port: Int = DEFAULT_PORT
 
@@ -78,30 +77,30 @@ public class HttpConnectivityOptions(
             get() = this * 60.seconds
 
         /**
-         * Adds a host to the list of hosts to monitor.
+         * Adds a url to the list of urls to monitor.
          *
-         * @param host The host to add.
+         * @param url The url to add.
          * @return The [Builder] instance.
          */
-        public fun host(host: String): Builder = apply { hosts(host) }
+        public fun url(url: String): Builder = apply { urls(url) }
 
         /**
-         * Sets the list of hosts to monitor.
+         * Sets the list of urls to monitor.
          *
-         * @param hosts The hosts to set.
+         * @param urls The urls to set.
          * @return The [Builder] instance.
          */
-        public fun hosts(vararg hosts: String): Builder = apply { hosts(hosts.toList()) }
+        public fun urls(vararg urls: String): Builder = apply { urls(urls.toList()) }
 
         /**
-         * Sets the list of hosts to monitor.
+         * Sets the list of urls to monitor.
          *
-         * @param hosts The hosts to set.
+         * @param urls The urls to set.
          * @return The [Builder] instance.
          */
-        public fun hosts(hosts: List<String>): Builder = apply {
-            this.hosts.clear()
-            this.hosts.addAll(hosts)
+        public fun urls(urls: List<String>): Builder = apply {
+            this.urls.clear()
+            this.urls.addAll(urls)
         }
 
         /**
@@ -110,7 +109,7 @@ public class HttpConnectivityOptions(
          * @param block The lambda function to call when a poll is made.
          * @return The [Builder] instance.
          */
-        public fun onHttpResponse(block: (response: HttpResponse) -> Unit): Builder = apply {
+        public fun onPollResult(block: (result: PollResult) -> Unit): Builder = apply {
             onPoll = block
         }
 
@@ -121,11 +120,11 @@ public class HttpConnectivityOptions(
          */
         public fun build(): HttpConnectivityOptions = HttpConnectivityOptions(
             options = options,
-            hosts = hosts,
+            urls = urls,
             port = port,
             timeoutMs = timeoutMs,
             pollingIntervalMs = pollingIntervalMs,
-            onHttpResponse = onPoll,
+            onPollResult = onPoll,
         )
     }
 
@@ -135,11 +134,7 @@ public class HttpConnectivityOptions(
         private val DEFAULT_HTTP_METHOD = HttpMethod.Get
         private const val DEFAULT_TIMEOUT = 2000L
         private const val DEFAULT_POLLING_INTERVAL_MS = (60 * 1000L) * 5
-        private val DEFAULT_HOSTS = listOf(
-            "https://google.com",
-            "https://github.com",
-            "https://bing.com",
-        )
+        private val DEFAULT_URLS = listOf("google.com", "github.com", "bing.com")
 
         /**
          * Builds a new [HttpConnectivityOptions] instance using a builder pattern.

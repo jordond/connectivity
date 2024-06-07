@@ -69,7 +69,12 @@ kotlin {
             }
         }
 
-        val desktopMain by getting
+        val desktopMain by getting {
+            dependencies {
+                implementation(compose.desktop.currentOs)
+                implementation(libs.kotlinx.coroutines.core.jvm)
+            }
+        }
 
         val httpMain by creating {
             dependsOn(commonMain.get())

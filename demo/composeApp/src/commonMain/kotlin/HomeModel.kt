@@ -2,6 +2,7 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import co.touchlab.kermit.Logger
 import dev.jordond.connectivity.Connectivity
 import dev.stateholder.extensions.voyager.StateScreenModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class HomeModel : StateScreenModel<HomeModel.State>(State()) {
@@ -9,7 +10,7 @@ class HomeModel : StateScreenModel<HomeModel.State>(State()) {
     private val connectivity = platformConnectivity()
 
     init {
-        screenModelScope.launch {
+        screenModelScope.launch(Dispatchers.Default) {
             connectivity.status.collect { status ->
                 if (state.value.active) {
                     Logger.i { "Connectivity status: $status" }

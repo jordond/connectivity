@@ -2,11 +2,11 @@ package dev.jordond.connectivity.internal
 
 import dev.jordond.connectivity.Connectivity
 import dev.jordond.connectivity.HttpConnectivityOptions
+import dev.jordond.connectivity.PollResult
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.timeout
-import io.ktor.client.request.host
-import io.ktor.client.request.port
 import io.ktor.client.request.request
+import io.ktor.http.URLProtocol
 import io.ktor.http.isSuccess
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -66,32 +66,53 @@ internal class HttpConnectivity(
     }
 
     private suspend fun checkConnection(): Connectivity.Status {
-        val isConnected = httpOptions.hosts.any { host ->
-            makeRequest(host, httpOptions.port)
+        var isConnected = false
+        for (url in httpOptions.urls) {
+            isConnected = makeRequest(url, httpOptions.port)
+            if (isConnected) break
         }
 
         return if (isConnected) Connectivity.Status.Connected(metered = false)
         else Connectivity.Status.Disconnected
     }
 
-    private suspend fun makeRequest(host: String, port: Int): Boolean {
+    private suspend fun makeRequest(url: String, port: Int): Boolean {
+        val (protocol, host) = getProtocolAndHost(url, port)
+
         try {
             val response = httpClient.request {
-                this.host = host
-                this.port = port
-                method = httpOptions.method
+                url {
+                    this.protocol = protocol
+                    this.host = host
+                    this.port = port
+                    method = httpOptions.method
+                }
+
                 timeout {
                     requestTimeoutMillis = httpOptions.timeoutMs
                 }
             }
 
-            httpOptions.onHttpResponse?.invoke(response)
+            httpOptions.onPollResult?.invoke(PollResult.Response(response))
 
             return response.status.isSuccess()
         } catch (cause: Throwable) {
             if (cause is CancellationException) throw cause
 
+            httpOptions.onPollResult?.invoke(PollResult.Error(cause))
             return false
         }
+    }
+
+    fun getProtocolAndHost(url: String, port: Int): Pair<URLProtocol, String> {
+        val protocol = when {
+            url.startsWith("http://") -> URLProtocol.HTTP
+            url.startsWith("https://") -> URLProtocol.HTTPS
+            port == 443 -> URLProtocol.HTTPS
+            else -> URLProtocol.HTTP
+        }
+
+        val host = url.removePrefix("http://").removePrefix("https://")
+        return protocol to host
     }
 }

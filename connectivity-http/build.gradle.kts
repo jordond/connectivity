@@ -15,12 +15,12 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.connectivityCore)
-            api(libs.kotlinx.coroutines.core)
+            implementation(libs.kotlinx.coroutines.core)
             api(libs.ktor.client.core)
         }
 
         androidMain.dependencies {
-            api(libs.kotlinx.coroutines.android)
+            implementation(libs.kotlinx.coroutines.android)
             implementation(libs.ktor.client.android)
         }
 
