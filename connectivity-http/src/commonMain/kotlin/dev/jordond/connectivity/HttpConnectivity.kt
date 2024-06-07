@@ -47,15 +47,3 @@ public fun Connectivity(
 public fun Connectivity.force() {
     (this as? HttpConnectivity)?.forcePoll()
 }
-
-/**
- * Checks the connectivity status.
- *
- * **Note:** If the [Connectivity] instance is not an [HttpConnectivity], the status will be
- * returned from the [Connectivity] instance.
- *
- * @return The current [Connectivity.Status].
- */
-public suspend fun Connectivity.check(): Connectivity.Status {
-    return (this as? HttpConnectivity)?.check() ?: updates.value.status
-}

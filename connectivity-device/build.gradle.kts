@@ -16,10 +16,12 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(projects.connectivityCore)
+            implementation(libs.kotlinx.coroutines.core)
         }
 
         androidMain.dependencies {
             api(projects.connectivityAndroid)
+            implementation(libs.kotlinx.coroutines.android)
         }
 
         appleMain.dependencies {

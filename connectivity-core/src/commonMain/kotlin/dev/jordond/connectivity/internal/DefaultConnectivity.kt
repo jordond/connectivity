@@ -8,6 +8,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -26,6 +27,10 @@ internal class DefaultConnectivity(
         if (options.autoStart) {
             start()
         }
+    }
+
+    override suspend fun status(): Connectivity.Status {
+        return provider.monitor().first()
     }
 
     override fun start() {

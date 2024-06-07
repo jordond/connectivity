@@ -18,6 +18,13 @@ public interface Connectivity {
     public val updates: StateFlow<Update>
 
     /**
+     * Gets the current connectivity status.
+     *
+     * @return The current [Status] of the connectivity.
+     */
+    public suspend fun status(): Status
+
+    /**
      * Starts monitoring the connectivity status.
      */
     public fun start()

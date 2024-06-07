@@ -1,4 +1,4 @@
-public final class dev/jordond/connectivity/MobileConnectivityKt {
+public final class dev/jordond/connectivity/DeviceConnectivityKt {
 	public static final fun Connectivity (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;)Ldev/jordond/connectivity/Connectivity;
 	public static synthetic fun Connectivity$default (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ldev/jordond/connectivity/Connectivity;
 }

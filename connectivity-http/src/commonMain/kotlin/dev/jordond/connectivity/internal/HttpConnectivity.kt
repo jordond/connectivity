@@ -36,6 +36,10 @@ internal class HttpConnectivity(
         }
     }
 
+    override suspend fun status(): Connectivity.Status {
+        return checkConnection()
+    }
+
     override fun start() {
         if (job != null) return
         poll()
@@ -47,12 +51,10 @@ internal class HttpConnectivity(
     }
 
     internal fun forcePoll() {
-        launch { check() }
-    }
-
-    internal suspend fun check(): Connectivity.Status {
-        return checkConnection().also { status ->
-            _updates.update { Connectivity.Update(it.isActive, status) }
+        launch {
+            checkConnection().also { status ->
+                _updates.update { Connectivity.Update(it.isActive, status) }
+            }
         }
     }
 

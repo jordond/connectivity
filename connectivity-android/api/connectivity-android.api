@@ -1,4 +1,6 @@
 public final class dev/jordond/connectivity/AndroidConnectivityKt {
+	public static final fun AndroidConnectivity (Ldev/jordond/connectivity/ConnectivityOptions;Lkotlinx/coroutines/CoroutineScope;)Ldev/jordond/connectivity/Connectivity;
+	public static synthetic fun AndroidConnectivity$default (Ldev/jordond/connectivity/ConnectivityOptions;Lkotlinx/coroutines/CoroutineScope;ILjava/lang/Object;)Ldev/jordond/connectivity/Connectivity;
 	public static final fun Connectivity (Ldev/jordond/connectivity/ConnectivityOptions;Lkotlinx/coroutines/CoroutineScope;)Ldev/jordond/connectivity/Connectivity;
 	public static final fun Connectivity (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;)Ldev/jordond/connectivity/Connectivity;
 	public static synthetic fun Connectivity$default (Ldev/jordond/connectivity/ConnectivityOptions;Lkotlinx/coroutines/CoroutineScope;ILjava/lang/Object;)Ldev/jordond/connectivity/Connectivity;
