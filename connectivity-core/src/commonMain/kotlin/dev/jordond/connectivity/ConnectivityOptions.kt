@@ -1,6 +1,7 @@
 package dev.jordond.connectivity
 
 import dev.drewhamilton.poko.Poko
+import dev.jordond.connectivity.ConnectivityOptions.Companion.DEFAULT_AUTO_START
 
 /**
  * The [ConnectivityOptions] class provides configuration options for the [Connectivity] instance.
