@@ -10,7 +10,7 @@ plugins {
     alias(libs.plugins.convention.multiplatform)
 }
 
-configureMultiplatform(Platforms.Mobile)
+configureMultiplatform(Platforms.Mobile + Platforms.Apple)
 
 kotlin {
     sourceSets {
@@ -22,7 +22,7 @@ kotlin {
             api(projects.connectivityAndroid)
         }
 
-        iosMain.dependencies {
+        appleMain.dependencies {
             api(projects.connectivityApple)
         }
     }

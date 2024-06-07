@@ -63,6 +63,18 @@ public class HttpConnectivityOptions(
         public var pollingIntervalMs: Long = DEFAULT_POLLING_INTERVAL_MS
 
         /**
+         * Converts an [Int] to seconds.
+         */
+        public val Int.seconds: Long
+            get() = this * 1000L
+
+        /**
+         * Converts an [Int] to minutes.
+         */
+        public val Int.minutes: Long
+            get() = this * 60.seconds
+
+        /**
          * Adds a host to the list of hosts to monitor.
          *
          * @param host The host to add.
@@ -108,7 +120,7 @@ public class HttpConnectivityOptions(
         private const val DEFAULT_PORT = 443
         private val DEFAULT_HTTP_METHOD = HttpMethod.Get
         private const val DEFAULT_TIMEOUT = 5000L
-        private const val DEFAULT_POLLING_INTERVAL_MS = 5000L
+        private const val DEFAULT_POLLING_INTERVAL_MS = (60 * 1000L) * 5
         private val DEFAULT_HOSTS = listOf(
             "https://google.com",
             "https://github.com",

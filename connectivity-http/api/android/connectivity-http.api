@@ -1,0 +1,50 @@
+public final class dev/jordondev/connectivity/ConnectivityKt {
+	public static final fun Connectivity (Ldev/jordondev/connectivity/HttpConnectivityOptions;Lkotlinx/coroutines/CoroutineScope;Lio/ktor/client/HttpClient;)Ldev/jordond/connectivity/Connectivity;
+	public static final fun Connectivity (Lkotlinx/coroutines/CoroutineScope;Lio/ktor/client/HttpClient;Lkotlin/jvm/functions/Function1;)Ldev/jordond/connectivity/Connectivity;
+	public static synthetic fun Connectivity$default (Ldev/jordondev/connectivity/HttpConnectivityOptions;Lkotlinx/coroutines/CoroutineScope;Lio/ktor/client/HttpClient;ILjava/lang/Object;)Ldev/jordond/connectivity/Connectivity;
+	public static synthetic fun Connectivity$default (Lkotlinx/coroutines/CoroutineScope;Lio/ktor/client/HttpClient;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ldev/jordond/connectivity/Connectivity;
+	public static final fun check (Ldev/jordond/connectivity/Connectivity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun force (Ldev/jordond/connectivity/Connectivity;)V
+}
+
+public final class dev/jordondev/connectivity/HttpConnectivityOptions {
+	public static final field Companion Ldev/jordondev/connectivity/HttpConnectivityOptions$Companion;
+	public fun <init> ()V
+	public fun <init> (Ldev/jordond/connectivity/ConnectivityOptions;Ljava/util/List;ILio/ktor/http/HttpMethod;JJ)V
+	public synthetic fun <init> (Ldev/jordond/connectivity/ConnectivityOptions;Ljava/util/List;ILio/ktor/http/HttpMethod;JJILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getHosts ()Ljava/util/List;
+	public final fun getMethod ()Lio/ktor/http/HttpMethod;
+	public final fun getOptions ()Ldev/jordond/connectivity/ConnectivityOptions;
+	public final fun getPollingIntervalMs ()J
+	public final fun getPort ()I
+	public final fun getTimeoutMs ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/jordondev/connectivity/HttpConnectivityOptions$Builder {
+	public final fun build ()Ldev/jordondev/connectivity/HttpConnectivityOptions;
+	public final fun getAutoStart ()Z
+	public final fun getMethod ()Lio/ktor/http/HttpMethod;
+	public final fun getPollingIntervalMs ()J
+	public final fun getPort ()I
+	public final fun getTimeoutMs ()J
+	public final fun host (Ljava/lang/String;)Ldev/jordondev/connectivity/HttpConnectivityOptions$Builder;
+	public final fun hosts (Ljava/util/List;)Ldev/jordondev/connectivity/HttpConnectivityOptions$Builder;
+	public final fun hosts ([Ljava/lang/String;)Ldev/jordondev/connectivity/HttpConnectivityOptions$Builder;
+	public final fun setAutoStart (Z)V
+	public final fun setMethod (Lio/ktor/http/HttpMethod;)V
+	public final fun setPollingIntervalMs (J)V
+	public final fun setPort (I)V
+	public final fun setTimeoutMs (J)V
+}
+
+public final class dev/jordondev/connectivity/HttpConnectivityOptions$Companion {
+	public final fun build (Lkotlin/jvm/functions/Function1;)Ldev/jordondev/connectivity/HttpConnectivityOptions;
+}
+
+public final class dev/jordondev/connectivity/HttpConnectivityOptionsKt {
+	public static final fun http (Ldev/jordond/connectivity/ConnectivityOptions$Companion;Lkotlin/jvm/functions/Function1;)Ldev/jordondev/connectivity/HttpConnectivityOptions;
+}
+

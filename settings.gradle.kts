@@ -38,7 +38,7 @@ include(
     ":connectivity-core",
     ":connectivity-android",
     ":connectivity-apple",
-    ":connectivity-mobile",
+    ":connectivity-device",
     ":connectivity-http",
     ":connectivity-tools-android",
 )
