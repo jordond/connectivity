@@ -119,7 +119,7 @@ public class HttpConnectivityOptions(
 
         private const val DEFAULT_PORT = 443
         private val DEFAULT_HTTP_METHOD = HttpMethod.Get
-        private const val DEFAULT_TIMEOUT = 5000L
+        private const val DEFAULT_TIMEOUT = 2000L
         private const val DEFAULT_POLLING_INTERVAL_MS = (60 * 1000L) * 5
         private val DEFAULT_HOSTS = listOf(
             "https://google.com",
