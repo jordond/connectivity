@@ -70,7 +70,7 @@ public fun Connectivity(
 public fun Connectivity(
     provider: ConnectivityProvider,
     scope: CoroutineScope = CoroutineScope(Dispatchers.Default),
-    options: ConnectivityOptions.Builder.() -> Unit = {},
+    options: ConnectivityOptions.Builder.() -> Unit,
 ): Connectivity {
     return Connectivity(provider, ConnectivityOptions.build(options), scope)
 }

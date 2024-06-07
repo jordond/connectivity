@@ -1,7 +1,7 @@
-package dev.jordondev.connectivity.internal
+package dev.jordond.connectivity.internal
 
 import dev.jordond.connectivity.Connectivity
-import dev.jordondev.connectivity.HttpConnectivityOptions
+import dev.jordond.connectivity.HttpConnectivityOptions
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.timeout
 import io.ktor.client.request.host

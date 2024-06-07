@@ -1,8 +1,6 @@
-package dev.jordondev.connectivity
+package dev.jordond.connectivity
 
 import dev.drewhamilton.poko.Poko
-import dev.jordond.connectivity.Connectivity
-import dev.jordond.connectivity.ConnectivityOptions
 import io.ktor.http.HttpMethod
 
 /**

@@ -1,7 +1,6 @@
-package dev.jordondev.connectivity
+package dev.jordond.connectivity
 
-import dev.jordond.connectivity.Connectivity
-import dev.jordondev.connectivity.internal.HttpConnectivity
+import dev.jordond.connectivity.internal.HttpConnectivity
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -38,7 +37,7 @@ public fun Connectivity(
 public fun Connectivity(
     scope: CoroutineScope = CoroutineScope(Dispatchers.Default),
     httpClient: HttpClient = HttpClient(),
-    options: HttpConnectivityOptions.Builder.() -> Unit = {},
+    options: HttpConnectivityOptions.Builder.() -> Unit,
 ): Connectivity = Connectivity(HttpConnectivityOptions.build(options), scope, httpClient)
 
 /**

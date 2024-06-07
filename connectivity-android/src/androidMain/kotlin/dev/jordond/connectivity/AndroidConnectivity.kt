@@ -33,5 +33,5 @@ public fun Connectivity(
  */
 public fun Connectivity(
     scope: CoroutineScope = CoroutineScope(Dispatchers.Default),
-    options: ConnectivityOptions.Builder.() -> Unit = {},
+    options: ConnectivityOptions.Builder.() -> Unit,
 ): Connectivity = Connectivity(ConnectivityOptions.build(options), scope)

@@ -4,7 +4,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
 /**
- * Creates a [Connectivity] instance for mobile platforms.
+ * Creates a [Connectivity] instance for device platforms.
  *
  * @param options The [ConnectivityOptions] used to configure the connectivity monitoring.
  * Defaults to a new [ConnectivityOptions] instance.
@@ -18,7 +18,7 @@ public expect fun Connectivity(
 ): Connectivity
 
 /**
- * Creates a [Connectivity] instance for mobile platforms using a builder pattern for the [ConnectivityOptions].
+ * Creates a [Connectivity] instance for device platforms using a builder pattern for the [ConnectivityOptions].
  *
  * @param scope The [CoroutineScope] in which the connectivity monitoring will be launched. Defaults
  * to a new [CoroutineScope] with [Dispatchers.Default].
@@ -27,5 +27,5 @@ public expect fun Connectivity(
  */
 public fun Connectivity(
     scope: CoroutineScope = CoroutineScope(Dispatchers.Default),
-    options: ConnectivityOptions.Builder.() -> Unit = {},
+    options: ConnectivityOptions.Builder.() -> Unit,
 ): Connectivity = Connectivity(ConnectivityOptions.build(options), scope)
