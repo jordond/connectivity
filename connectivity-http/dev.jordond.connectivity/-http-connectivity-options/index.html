@@ -1,0 +1,243 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>HttpConnectivityOptions</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../../index.html">
+                            connectivity
+                    </a>            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector common-like" data-active="" data-filter=":connectivity-http:dokkaHtmlPartial/commonMain">common</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="connectivity-http::dev.jordond.connectivity/HttpConnectivityOptions///PointingToDeclaration//-1754425081">
+  <div class="breadcrumbs"><a href="../../index.html">connectivity-http</a><span class="delimiter">/</span><a href="../index.html">dev.jordond.connectivity</a><span class="delimiter">/</span><span class="current">HttpConnectivityOptions</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Http</span><wbr><span>Connectivity</span><wbr><span><span>Options</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":connectivity-http:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">HttpConnectivityOptions</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>options<span class="token operator">: </span><a href="../../../connectivity-core/dev.jordond.connectivity/-connectivity-options/index.html">ConnectivityOptions</a><span class="token operator"> = </span>ConnectivityOptions()<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>urls<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator"> = </span>DEFAULT_URLS<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>port<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>DEFAULT_PORT<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>method<span class="token operator">: </span><span data-unresolved-link="io.ktor.http/HttpMethod///PointingToDeclaration/">HttpMethod</span><span class="token operator"> = </span>DEFAULT_HTTP_METHOD<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>timeoutMs<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html">Long</a><span class="token operator"> = </span>DEFAULT_TIMEOUT<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>pollingIntervalMs<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html">Long</a><span class="token operator"> = </span>DEFAULT_POLLING_INTERVAL_MS<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>onPollResult<span class="token operator">: </span><span class="token punctuation">(</span>result<span class="token operator">: </span><a href="../-poll-result/index.html">PollResult</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span></div><p class="paragraph">The <a href="index.html">HttpConnectivityOptions</a> class is used to configure the HTTP connectivity monitoring.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="-658670989%2FConstructors%2F-1754425081" anchor-label="HttpConnectivityOptions" id="-658670989%2FConstructors%2F-1754425081" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":connectivity-http:dokkaHtmlPartial/commonMain" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-http-connectivity-options.html"><span>Http</span><wbr><span>Connectivity</span><wbr><span><span>Options</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-658670989%2FConstructors%2F-1754425081"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":connectivity-http:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">options<span class="token operator">: </span><a href="../../../connectivity-core/dev.jordond.connectivity/-connectivity-options/index.html">ConnectivityOptions</a><span class="token operator"> = </span>ConnectivityOptions()<span class="token punctuation">, </span></span><span class="parameter ">urls<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator"> = </span>DEFAULT_URLS<span class="token punctuation">, </span></span><span class="parameter ">port<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>DEFAULT_PORT<span class="token punctuation">, </span></span><span class="parameter ">method<span class="token operator">: </span><span data-unresolved-link="io.ktor.http/HttpMethod///PointingToDeclaration/">HttpMethod</span><span class="token operator"> = </span>DEFAULT_HTTP_METHOD<span class="token punctuation">, </span></span><span class="parameter ">timeoutMs<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html">Long</a><span class="token operator"> = </span>DEFAULT_TIMEOUT<span class="token punctuation">, </span></span><span class="parameter ">pollingIntervalMs<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html">Long</a><span class="token operator"> = </span>DEFAULT_POLLING_INTERVAL_MS<span class="token punctuation">, </span></span><span class="parameter ">onPollResult<span class="token operator">: </span><span class="token punctuation">(</span>result<span class="token operator">: </span><a href="../-poll-result/index.html">PollResult</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="-1026837980%2FClasslikes%2F-1754425081" anchor-label="Builder" id="-1026837980%2FClasslikes%2F-1754425081" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":connectivity-http:dokkaHtmlPartial/commonMain" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-builder/index.html"><span><span>Builder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1026837980%2FClasslikes%2F-1754425081"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":connectivity-http:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="-builder/index.html">Builder</a></div><div class="brief "><p class="paragraph">The <a href="-builder/index.html">Builder</a> class is used to build a new <a href="index.html">HttpConnectivityOptions</a> instance using a builder pattern.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1850850387%2FClasslikes%2F-1754425081" anchor-label="Companion" id="1850850387%2FClasslikes%2F-1754425081" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":connectivity-http:dokkaHtmlPartial/commonMain" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-companion/index.html"><span><span>Companion</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1850850387%2FClasslikes%2F-1754425081"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":connectivity-http:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-companion/index.html">Companion</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-1225034483%2FProperties%2F-1754425081" anchor-label="method" id="-1225034483%2FProperties%2F-1754425081" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":connectivity-http:dokkaHtmlPartial/commonMain" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="method.html"><span><span>method</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1225034483%2FProperties%2F-1754425081"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":connectivity-http:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="method.html">method</a><span class="token operator">: </span><span data-unresolved-link="io.ktor.http/HttpMethod///PointingToDeclaration/">HttpMethod</span></div><div class="brief "><p class="paragraph">The <span data-unresolved-link="io.ktor.http/HttpMethod///PointingToDeclaration/">HttpMethod</span> to use for the HTTP requests.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1673307763%2FProperties%2F-1754425081" anchor-label="onPollResult" id="1673307763%2FProperties%2F-1754425081" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":connectivity-http:dokkaHtmlPartial/commonMain" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-poll-result.html"><span>on</span><wbr><span>Poll</span><wbr><span><span>Result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1673307763%2FProperties%2F-1754425081"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":connectivity-http:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="on-poll-result.html">onPollResult</a><span class="token operator">: </span><span class="token punctuation">(</span>result<span class="token operator">: </span><a href="../-poll-result/index.html">PollResult</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator">?</span><span class="token operator"> = </span>null</div><div class="brief "><p class="paragraph">The lambda function to call when a poll is made.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-492176914%2FProperties%2F-1754425081" anchor-label="options" id="-492176914%2FProperties%2F-1754425081" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":connectivity-http:dokkaHtmlPartial/commonMain" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="options.html"><span><span>options</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-492176914%2FProperties%2F-1754425081"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":connectivity-http:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="options.html">options</a><span class="token operator">: </span><a href="../../../connectivity-core/dev.jordond.connectivity/-connectivity-options/index.html">ConnectivityOptions</a></div><div class="brief "><p class="paragraph">The <a href="../../../connectivity-core/dev.jordond.connectivity/-connectivity-options/index.html">ConnectivityOptions</a> used to configure the connectivity monitoring. Defaults to a new <a href="../../../connectivity-core/dev.jordond.connectivity/-connectivity-options/index.html">ConnectivityOptions</a> instance.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2098890146%2FProperties%2F-1754425081" anchor-label="pollingIntervalMs" id="-2098890146%2FProperties%2F-1754425081" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":connectivity-http:dokkaHtmlPartial/commonMain" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="polling-interval-ms.html"><span>polling</span><wbr><span>Interval</span><wbr><span><span>Ms</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2098890146%2FProperties%2F-1754425081"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":connectivity-http:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="polling-interval-ms.html">pollingIntervalMs</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html">Long</a></div><div class="brief "><p class="paragraph">The interval between each poll in milliseconds.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1064964525%2FProperties%2F-1754425081" anchor-label="port" id="1064964525%2FProperties%2F-1754425081" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":connectivity-http:dokkaHtmlPartial/commonMain" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="port.html"><span><span>port</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1064964525%2FProperties%2F-1754425081"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":connectivity-http:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="port.html">port</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></div><div class="brief "><p class="paragraph">The port to use for the HTTP requests.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-818697723%2FProperties%2F-1754425081" anchor-label="timeoutMs" id="-818697723%2FProperties%2F-1754425081" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":connectivity-http:dokkaHtmlPartial/commonMain" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="timeout-ms.html"><span>timeout</span><wbr><span><span>Ms</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-818697723%2FProperties%2F-1754425081"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":connectivity-http:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="timeout-ms.html">timeoutMs</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html">Long</a></div><div class="brief "><p class="paragraph">The timeout for the HTTP requests in milliseconds.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2034440534%2FProperties%2F-1754425081" anchor-label="urls" id="-2034440534%2FProperties%2F-1754425081" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":connectivity-http:dokkaHtmlPartial/commonMain" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="urls.html"><span><span>urls</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2034440534%2FProperties%2F-1754425081"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":connectivity-http:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="urls.html">urls</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">The list of urls to use when checking for connection.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

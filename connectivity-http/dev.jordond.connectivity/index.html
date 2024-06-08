@@ -1,0 +1,163 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>dev.jordond.connectivity</title>
+<link href="../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+<a class="library-name--link" href="../../index.html">
+                            connectivity
+                    </a>            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector common-like" data-active="" data-filter=":connectivity-http:dokkaHtmlPartial/commonMain">common</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="package" id="content" pageids="connectivity-http::dev.jordond.connectivity////PointingToDeclaration//-1754425081">
+  <div class="breadcrumbs"><a href="../index.html">connectivity-http</a><span class="delimiter">/</span><span class="current">dev.jordond.connectivity</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button><button class="section-tab" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="-1322483439%2FClasslikes%2F-1754425081" anchor-label="HttpConnectivityOptions" id="-1322483439%2FClasslikes%2F-1754425081" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":connectivity-http:dokkaHtmlPartial/commonMain" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-http-connectivity-options/index.html"><span>Http</span><wbr><span>Connectivity</span><wbr><span><span>Options</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1322483439%2FClasslikes%2F-1754425081"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":connectivity-http:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="-http-connectivity-options/index.html">HttpConnectivityOptions</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>options<span class="token operator">: </span><a href="../../connectivity-core/dev.jordond.connectivity/-connectivity-options/index.html">ConnectivityOptions</a><span class="token operator"> = </span>ConnectivityOptions()<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>urls<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator"> = </span>DEFAULT_URLS<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>port<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>DEFAULT_PORT<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>method<span class="token operator">: </span><span data-unresolved-link="io.ktor.http/HttpMethod///PointingToDeclaration/">HttpMethod</span><span class="token operator"> = </span>DEFAULT_HTTP_METHOD<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>timeoutMs<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html">Long</a><span class="token operator"> = </span>DEFAULT_TIMEOUT<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>pollingIntervalMs<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html">Long</a><span class="token operator"> = </span>DEFAULT_POLLING_INTERVAL_MS<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>onPollResult<span class="token operator">: </span><span class="token punctuation">(</span>result<span class="token operator">: </span><a href="-poll-result/index.html">PollResult</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">The <a href="-http-connectivity-options/index.html">HttpConnectivityOptions</a> class is used to configure the HTTP connectivity monitoring.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1762420054%2FClasslikes%2F-1754425081" anchor-label="PollResult" id="1762420054%2FClasslikes%2F-1754425081" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":connectivity-http:dokkaHtmlPartial/commonMain" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-poll-result/index.html"><span>Poll</span><wbr><span><span>Result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1762420054%2FClasslikes%2F-1754425081"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":connectivity-http:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-poll-result/index.html">PollResult</a></div><div class="brief "><p class="paragraph">Represents the result of a poll operation.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="1646607758%2FFunctions%2F-1754425081" anchor-label="Connectivity" id="1646607758%2FFunctions%2F-1754425081" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":connectivity-http:dokkaHtmlPartial/commonMain" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-connectivity.html"><span><span>Connectivity</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1646607758%2FFunctions%2F-1754425081"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":connectivity-http:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="-connectivity.html"><span class="token function">Connectivity</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">options<span class="token operator">: </span><a href="-http-connectivity-options/index.html">HttpConnectivityOptions</a><span class="token operator"> = </span>HttpConnectivityOptions()<span class="token punctuation">, </span></span><span class="parameter ">scope<span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines/CoroutineScope///PointingToDeclaration/">CoroutineScope</span><span class="token operator"> = </span>CoroutineScope(Dispatchers.Default)<span class="token punctuation">, </span></span><span class="parameter ">httpClient<span class="token operator">: </span><span data-unresolved-link="io.ktor.client/HttpClient///PointingToDeclaration/">HttpClient</span><span class="token operator"> = </span>HttpClient()</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../connectivity-core/dev.jordond.connectivity/-connectivity/index.html">Connectivity</a></div><div class="brief "><p class="paragraph">Creates a <a href="../../connectivity-core/dev.jordond.connectivity/-connectivity/index.html">Connectivity</a> instance for HTTP.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="-connectivity.html"><span class="token function">Connectivity</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">scope<span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines/CoroutineScope///PointingToDeclaration/">CoroutineScope</span><span class="token operator"> = </span>CoroutineScope(Dispatchers.Default)<span class="token punctuation">, </span></span><span class="parameter ">httpClient<span class="token operator">: </span><span data-unresolved-link="io.ktor.client/HttpClient///PointingToDeclaration/">HttpClient</span><span class="token operator"> = </span>HttpClient()<span class="token punctuation">, </span></span><span class="parameter ">options<span class="token operator">: </span><a href="-http-connectivity-options/-builder/index.html">HttpConnectivityOptions.Builder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../connectivity-core/dev.jordond.connectivity/-connectivity/index.html">Connectivity</a></div><div class="brief "><p class="paragraph">Creates a <a href="../../connectivity-core/dev.jordond.connectivity/-connectivity/index.html">Connectivity</a> instance for HTTP using a builder pattern for the <a href="-http-connectivity-options/index.html">HttpConnectivityOptions</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-818231697%2FFunctions%2F-1754425081" anchor-label="force" id="-818231697%2FFunctions%2F-1754425081" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":connectivity-http:dokkaHtmlPartial/commonMain" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="force.html"><span><span>force</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-818231697%2FFunctions%2F-1754425081"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":connectivity-http:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../connectivity-core/dev.jordond.connectivity/-connectivity/index.html">Connectivity</a><span class="token punctuation">.</span><a href="force.html"><span class="token function">force</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Forces a poll of the connectivity status.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-395424175%2FFunctions%2F-1754425081" anchor-label="http" id="-395424175%2FFunctions%2F-1754425081" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":connectivity-http:dokkaHtmlPartial/commonMain" data-filterable-set=":connectivity-http:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="http.html"><span><span>http</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-395424175%2FFunctions%2F-1754425081"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":connectivity-http:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../connectivity-core/dev.jordond.connectivity/-connectivity-options/-companion/index.html">ConnectivityOptions.Companion</a><span class="token punctuation">.</span><a href="http.html"><span class="token function">http</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">block<span class="token operator">: </span><a href="-http-connectivity-options/-builder/index.html">HttpConnectivityOptions.Builder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-http-connectivity-options/index.html">HttpConnectivityOptions</a></div><div class="brief "><p class="paragraph">Builds a new <a href="-http-connectivity-options/index.html">HttpConnectivityOptions</a> instance using a builder pattern.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

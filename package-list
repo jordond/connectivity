@@ -1,0 +1,15 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+
+module:connectivity-android
+dev.jordond.connectivity
+module:connectivity-apple
+dev.jordond.connectivity
+module:connectivity-core
+dev.jordond.connectivity
+module:connectivity-device
+dev.jordond.connectivity
+module:connectivity-http
+dev.jordond.connectivity
+module:connectivity-tools-android
+dev.jordond.connectivity.tools
