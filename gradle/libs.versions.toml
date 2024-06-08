@@ -24,7 +24,7 @@ versions = "0.51.0"
 kotest = "5.9.1"
 ktor = "3.0.0-wasm2"
 voyager = "1.1.0-beta02"
-stateHolder = "1.1.0"
+stateHolder = "1.2.0"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
