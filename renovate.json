@@ -10,7 +10,8 @@
     {
       "groupName": "Kotlin",
       "matchPackagePrefixes": [
-        "androidx.compose.compiler",
+        "org.jetbrains.compose",
+        "org.jetbrains.compose:compose-gradle-plugin",
         "com.google.devtools.ksp",
         "org.jetbrains.kotlin",
         "org.jetbrains.kotlinx:binary-compatibility-validator"
