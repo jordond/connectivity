@@ -11,7 +11,7 @@ network connectivity using native APIs on Android and Apple devices, or by makin
 specified hosts.
 
 You can also
-view the generated KDoc at [docs.connectivity.jordond.dev](https://docs.connectivity.jordond.dev)
+view the generated KDoc at [docs.connectivity.jordond.dev](https://connectivity.jordond.dev)
 
 ## Table of Contents
 
