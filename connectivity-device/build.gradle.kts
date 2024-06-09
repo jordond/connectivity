@@ -20,12 +20,12 @@ kotlin {
         }
 
         androidMain.dependencies {
-            api(projects.connectivityAndroid)
+            implementation(projects.connectivityAndroid)
             implementation(libs.kotlinx.coroutines.android)
         }
 
         appleMain.dependencies {
-            api(projects.connectivityApple)
+            implementation(projects.connectivityApple)
         }
     }
 }
