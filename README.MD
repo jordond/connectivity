@@ -23,8 +23,8 @@ view the generated KDoc at [connectivity.jordond.dev](https://connectivity.jordo
     - [All supported platforms](#all-supported-platforms)
 - [Usage](#usage)
   - [Options](#options)
-    - [HTTP monitoring](#http-monitoring)
-- [Compose](#compose)
+  - [HTTP monitoring](#http-monitoring)
+  - [Compose](#compose)
   - [Multiple Targets](#multiple-targets)
 - [Demo](#demo)
 - [Contributing](#contributing)
@@ -267,7 +267,7 @@ val connectivity = Connectivity {
 }
 ```
 
-## Compose
+### Compose
 
 Connectivity also provides support for Compose Multiplatform. To use it you will have to make sure
 you add the dependencies for the `connectivity-compose-x` modules.
