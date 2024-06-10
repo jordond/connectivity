@@ -59,7 +59,9 @@ internal class HttpConnectivity(
     }
 
     override suspend fun status(): Connectivity.Status {
-        return checkConnection()
+        return checkConnection().also { status ->
+            _statusUpdates.emit(status)
+        }
     }
 
     override fun start() {

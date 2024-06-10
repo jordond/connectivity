@@ -52,7 +52,9 @@ internal class DefaultConnectivity(
     }
 
     override suspend fun status(): Connectivity.Status {
-        return provider.monitor().first()
+        return provider.monitor().first().also { status ->
+            _statusUpdates.emit(status)
+        }
     }
 
     override fun start() {

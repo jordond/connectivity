@@ -97,7 +97,7 @@ public interface Connectivity {
         public companion object {
 
             @InternalConnectivityApi
-            public val default: Update = Update(isActive = false, Status.Disconnected)
+            public val default: Update = Update(isActive = false, Disconnected)
         }
     }
 
