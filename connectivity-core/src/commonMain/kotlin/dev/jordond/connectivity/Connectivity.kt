@@ -14,14 +14,15 @@ import kotlinx.coroutines.flow.StateFlow
  * The Connectivity interface provides a way to monitor the network connectivity status.
  *
  * @property statusUpdates A [SharedFlow] representing the current connectivity status.
- * @property isActive A [StateFlow] representing whether the connectivity monitoring is active.
- * @property updates A [StateFlow] representing the current connectivity status and whether the monitoring is active.
+ * @property isMonitoring A [StateFlow] representing whether the connectivity monitoring is active.
+ * @property updates A [StateFlow] representing the current connectivity status and whether
+ * the monitoring is active.
  */
 public interface Connectivity {
 
     public val statusUpdates: SharedFlow<Status>
 
-    public val isActive: StateFlow<Boolean>
+    public val isMonitoring: StateFlow<Boolean>
 
     @Deprecated(
         message = "Use statusUpdates instead. Will be removed in a future release.",
@@ -61,7 +62,7 @@ public interface Connectivity {
     /**
      * Represents an update to the connectivity status.
      *
-     * @property isActive A Boolean indicating whether the connectivity monitoring is active.
+     * @property isMonitoring A Boolean indicating whether the connectivity monitoring is active.
      * @property status The [Status] of the connectivity.
      * @constructor Creates an update to the connectivity status.
      */
@@ -71,9 +72,19 @@ public interface Connectivity {
     )
     @Poko
     public class Update(
-        public val isActive: Boolean,
+        public val isMonitoring: Boolean,
         public val status: Status,
     ) {
+
+        /**
+         * A Boolean indicating whether the connectivity monitoring is active.
+         */
+        @Deprecated(
+            message = "Use isMonitoring instead. Will be removed in a future release.",
+            replaceWith = ReplaceWith("isMonitoring"),
+            level = DeprecationLevel.WARNING,
+        )
+        public val isActive: Boolean = isMonitoring
 
         /**
          * A Boolean indicating whether the device is connected to the network.
@@ -97,7 +108,7 @@ public interface Connectivity {
         public companion object {
 
             @InternalConnectivityApi
-            public val default: Update = Update(isActive = false, Disconnected)
+            public val default: Update = Update(isMonitoring = false, Disconnected)
         }
     }
 

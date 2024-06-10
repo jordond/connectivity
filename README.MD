@@ -167,7 +167,7 @@ val connectivity = Connectivity()
 connectivity.start()
 coroutineScope.launch {
   connectivity.updates.collect { update ->
-    println("Monitoring is active: ${update.isActive}")
+    println("Monitoring is active: ${update.isMonitoring}")
 
     when (update.status) {
       is NetworkStatus.Connected -> println("Connected to network")
@@ -179,7 +179,7 @@ coroutineScope.launch {
 
 **Note:** Because the backing field for `Connectivity.updates` is a `StateFlow`, it requires a
 initial value to be emitted. This means that the first value emitted will be the *real* current
-network status. This is why the `isActive` property is available on the `Connectivity.Update`.
+network status. This is why the `isMonitoring` property is available on the `Connectivity.Update`.
 
 By default when you construct a `Connectivity` object, it will not automatically start monitoring
 network connectivity. You can enable this by passing in `ConnectivityOptions`():

@@ -34,16 +34,18 @@ internal class DefaultConnectivity(
     )
     override val statusUpdates: SharedFlow<Connectivity.Status> = _statusUpdates.asSharedFlow()
 
-    private val _isActive = MutableStateFlow(false)
-    override val isActive: StateFlow<Boolean> = _isActive.asStateFlow()
+    private val _isMonitoring = MutableStateFlow(false)
+    override val isMonitoring: StateFlow<Boolean> = _isMonitoring.asStateFlow()
 
-    override val updates: StateFlow<Update> = combine(statusUpdates, isActive) { status, isActive ->
-        Update(isActive, status)
-    }.stateIn(
-        scope = scope,
-        started = SharingStarted.WhileSubscribed(),
-        initialValue = Update(isActive = false, Connectivity.Status.Disconnected)
-    )
+    @Deprecated("Use statusUpdates instead", ReplaceWith("statusUpdates"))
+    override val updates: StateFlow<Update> =
+        combine(statusUpdates, isMonitoring) { status, isMonitoring ->
+            Update(isMonitoring, status)
+        }.stateIn(
+            scope = scope,
+            started = SharingStarted.WhileSubscribed(),
+            initialValue = Update(isMonitoring = false, Connectivity.Status.Disconnected)
+        )
 
     init {
         if (options.autoStart) {
@@ -60,7 +62,7 @@ internal class DefaultConnectivity(
     override fun start() {
         job?.cancel()
         job = launch {
-            _isActive.update { true }
+            _isMonitoring.update { true }
             provider.monitor().collect { status ->
                 _statusUpdates.emit(status)
             }
@@ -70,6 +72,6 @@ internal class DefaultConnectivity(
     override fun stop() {
         job?.cancel()
         job = null
-        _isActive.update { false }
+        _isMonitoring.update { false }
     }
 }
