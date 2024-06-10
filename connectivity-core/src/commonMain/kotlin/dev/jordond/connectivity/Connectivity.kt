@@ -23,6 +23,11 @@ public interface Connectivity {
 
     public val isActive: StateFlow<Boolean>
 
+    @Deprecated(
+        message = "Use statusUpdates instead. Will be removed in a future release.",
+        replaceWith = ReplaceWith("statusUpdates"),
+        level = DeprecationLevel.WARNING,
+    )
     public val updates: StateFlow<Update>
 
     /**
@@ -60,6 +65,10 @@ public interface Connectivity {
      * @property status The [Status] of the connectivity.
      * @constructor Creates an update to the connectivity status.
      */
+    @Deprecated(
+        message = "This current usage of this class does not provide any additional value. Will be removed in a future release.",
+        level = DeprecationLevel.WARNING,
+    )
     @Poko
     public class Update(
         public val isActive: Boolean,
