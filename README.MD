@@ -41,16 +41,16 @@ Monitor network connectivity:
 
 This library is written for Kotlin Multiplatform, and can be used on the following platforms:
 
-| Artifact | Android | iOS | macOS | tvOS | Desktop (JVM) | Browser (js/wasm) |
-|-------------------------------|:-------:|:---:|:-----:|------|::|:-----------------:|
-| `connectivity-core`           | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| `connectivity-device`         | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
-| `connectivity-android`        | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| `connectivity-apple`          | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ |
-| `connectivity-http`           | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| `connectivity-compose`        | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| `connectivity-compose-device` | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| `connectivity-compose-http`   | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
+| Artifact                      | Android | iOS | macOS | tvOS | Desktop (JVM) | Browser (js/wasm) |
+|-------------------------------|:-------:|:---:|:-----:|------|:-------------:|:-----------------:|
+| `connectivity-core`           |    ✅    |  ✅  |   ✅   | ✅    |       ✅       |         ✅         |
+| `connectivity-device`         |    ✅    |  ✅  |   ✅   | ✅    |       ❌       |         ❌         |
+| `connectivity-android`        |    ✅    |  ❌  |   ❌   | ❌    |       ❌       |         ❌         |
+| `connectivity-apple`          |    ❌    |  ✅  |   ✅   | ✅    |       ❌       |         ❌         |
+| `connectivity-http`           |    ✅    |  ✅  |   ✅   | ✅    |       ✅       |         ✅         |
+| `connectivity-compose`        |    ✅    |  ✅  |   ❌   | ❌    |       ✅       |         ✅         |
+| `connectivity-compose-device` |    ✅    |  ✅  |   ❌   | ❌    |       ✅       |         ✅         |
+| `connectivity-compose-http`   |    ✅    |  ✅  |   ❌   | ❌    |       ✅       |         ✅         |
 
 ## Setup
 
