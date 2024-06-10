@@ -82,7 +82,6 @@ dependencies {
 
   // For compose support
   implementation(libs.connectivity.compose.device)
-
 }
 ```
 
