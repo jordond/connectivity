@@ -1,6 +1,7 @@
 package dev.jordond.connectivity.internal
 
 import dev.jordond.connectivity.Connectivity
+import dev.jordond.connectivity.Connectivity.Update
 import dev.jordond.connectivity.HttpConnectivityOptions
 import dev.jordond.connectivity.PollResult
 import io.ktor.client.HttpClient
@@ -11,10 +12,17 @@ import io.ktor.http.isSuccess
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -27,8 +35,22 @@ internal class HttpConnectivity(
 
     private var job: Job? = null
 
-    private val _updates = MutableStateFlow(Connectivity.Update.default)
-    override val updates: StateFlow<Connectivity.Update> = _updates.asStateFlow()
+    private val _statusUpdates = MutableSharedFlow<Connectivity.Status>(
+        replay = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST,
+    )
+    override val statusUpdates: SharedFlow<Connectivity.Status> = _statusUpdates.asSharedFlow()
+
+    private val _isActive = MutableStateFlow(value = false)
+    override val isActive: StateFlow<Boolean> = _isActive.asStateFlow()
+
+    override val updates: StateFlow<Update> = combine(statusUpdates, isActive) { status, isActive ->
+        Update(isActive, status)
+    }.stateIn(
+        scope = scope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = Update(isActive = false, Connectivity.Status.Disconnected)
+    )
 
     init {
         if (httpOptions.options.autoStart) {
@@ -43,17 +65,19 @@ internal class HttpConnectivity(
     override fun start() {
         if (job != null) return
         poll()
+        _isActive.update { true }
     }
 
     override fun stop() {
         job?.cancel()
         job = null
+        _isActive.update { false }
     }
 
     internal fun forcePoll() {
         launch {
             checkConnection().also { status ->
-                _updates.update { Connectivity.Update(it.isActive, status) }
+                _statusUpdates.emit(status)
             }
         }
     }
@@ -62,7 +86,7 @@ internal class HttpConnectivity(
         job = launch {
             while (isActive) {
                 val status = checkConnection()
-                _updates.update { Connectivity.Update(isActive = true, status = status) }
+                _statusUpdates.emit(status)
                 delay(httpOptions.pollingIntervalMs)
             }
         }
