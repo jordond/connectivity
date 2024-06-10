@@ -15,7 +15,7 @@ class HomeModel : StateScreenModel<HomeModel.State>(State()) {
                 Logger.i { "Connectivity update: $update" }
                 updateState { state ->
                     state.copy(
-                        active = update.isActive,
+                        monitoring = update.isActive,
                         status = if (update.isActive) update.status else state.status,
                     )
                 }
@@ -24,21 +24,19 @@ class HomeModel : StateScreenModel<HomeModel.State>(State()) {
     }
 
     fun toggle() {
-        if (state.value.active) stop() else start()
+        if (state.value.monitoring) stop() else start()
     }
 
     private fun start() {
         connectivity.start()
-        updateState { it.copy(active = true) }
     }
 
     private fun stop() {
         connectivity.stop()
-        updateState { it.copy(active = false) }
     }
 
     data class State(
         val status: Connectivity.Status? = null,
-        val active: Boolean = false,
+        val monitoring: Boolean = false,
     )
 }

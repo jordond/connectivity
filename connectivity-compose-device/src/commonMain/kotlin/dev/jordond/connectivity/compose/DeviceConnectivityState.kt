@@ -19,12 +19,12 @@ public fun rememberConnectivityState(
     options: ConnectivityOptions = ConnectivityOptions(),
     scope: CoroutineScope = rememberCoroutineScope(),
 ): ConnectivityState {
-    val factory = remember(options, scope) {
-        { Connectivity(options, scope) }
+    val connectivity = remember(options, scope) {
+        Connectivity(options, scope)
     }
 
-    return remember(options, scope, factory) {
-        ConnectivityState(options, scope, factory)
+    return remember(options, scope, connectivity) {
+        ConnectivityState(connectivity, scope)
     }
 }
 
@@ -45,19 +45,4 @@ public fun rememberConnectivityState(
     }
 
     return rememberConnectivityState(options = options, scope = scope)
-}
-
-/**
- * Create and remember a [ConnectivityState] instance for Android and iOS platforms.
- *
- * @param autoStart A Boolean indicating whether to start monitoring the network status automatically.
- * @param scope The [CoroutineScope] in which to launch the network status monitoring coroutine.
- * @return A [ConnectivityState] instance.
- */
-@Composable
-public fun rememberConnectivityState(
-    autoStart: Boolean = false,
-    scope: CoroutineScope = rememberCoroutineScope(),
-): ConnectivityState {
-    return rememberConnectivityState(ConnectivityOptions(autoStart), scope)
 }

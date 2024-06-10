@@ -10,7 +10,6 @@ import androidx.compose.runtime.setValue
 import dev.jordond.connectivity.Connectivity
 import dev.jordond.connectivity.Connectivity.Status.Connected
 import dev.jordond.connectivity.Connectivity.Status.Disconnected
-import dev.jordond.connectivity.ConnectivityOptions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -18,19 +17,17 @@ import kotlinx.coroutines.launch
 /**
  * Create and remember a [ConnectivityState] instance.
  *
- * @param options The [ConnectivityOptions] to use for configuring the network status monitoring.
+ * @param connectivity The [Connectivity] instance to use for monitoring the network status.
  * @param scope The [CoroutineScope] in which to launch the network status monitoring coroutine.
- * @param factory The lambda to use for creating the [Connectivity] instance.
  * @return A [ConnectivityState] instance.
  */
 @Composable
 public fun rememberConnectivityState(
-    options: ConnectivityOptions = ConnectivityOptions(),
+    connectivity: Connectivity,
     scope: CoroutineScope = rememberCoroutineScope(),
-    factory: () -> Connectivity,
 ): ConnectivityState {
-    return remember(options, scope, factory) {
-        ConnectivityState(options, scope, factory)
+    return remember(scope, connectivity) {
+        ConnectivityState(connectivity, scope)
     }
 }
 
@@ -40,20 +37,17 @@ public fun rememberConnectivityState(
  * This class provides properties and functions for monitoring the network status and checking
  * whether the device is connected to the network or a metered network.
  *
- * @property options The [ConnectivityOptions] to use for configuring the network status monitoring.
+ * @property connectivity The [Connectivity] instance to use for monitoring the network status.
  * @property scope The [CoroutineScope] in which to launch the network status monitoring coroutine.
- * @param factory The lambda to use for creating the [Connectivity] instance.
  */
 @Stable
 public open class ConnectivityState(
-    private val options: ConnectivityOptions = ConnectivityOptions(),
+    private val connectivity: Connectivity,
     private val scope: CoroutineScope,
-    factory: () -> Connectivity,
 ) {
 
-    private val connectivity: Connectivity = factory()
-
-    private var isMonitoring: Boolean by mutableStateOf(options.autoStart)
+    public var isMonitoring: Boolean by mutableStateOf(connectivity.isActive.value)
+        private set
 
     /**
      * The current network status.

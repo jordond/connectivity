@@ -18,7 +18,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.connectivityCore)
-            implementation(projects.connectivityCompose)
+            api(projects.connectivityCompose)
             api(projects.connectivityDevice)
 
             implementation(compose.runtime)

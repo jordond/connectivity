@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
+import dev.jordond.connectivity.Connectivity
+import dev.jordond.connectivity.compose.ConnectivityState
 
 class HomeScreen : Screen {
 
@@ -30,24 +33,28 @@ class HomeScreen : Screen {
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxSize(),
             ) {
-                Crossfade(state.status) { status ->
-                    if (status == null) {
-                        Text("No status yet")
-                    } else {
-                        val text = if (!status.isConnected) "Disconnected"
-                        else "Connected${if (status.isMetered) " - Metered" else ""}"
+                ConnectivityContent(
+                    title = "Manual Connectivity",
+                    status = state.status,
+                    isMonitoring = state.monitoring,
+                    onToggle = model::toggle,
+                )
 
-                        Text("Status: $text")
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(32.dp))
-
-                Button(
-                    onClick = model::toggle,
-                    modifier = Modifier.padding(8.dp)
-                ) {
-                    Text("${if (state.active) "Stop" else "Start"} Monitoring")
+                Card {
+                    val connectivityState = createConnectivityState()
+                    ConnectivityContent(
+                        title = "Compose Connectivity",
+                        status = connectivityState.status,
+                        isMonitoring = connectivityState.isMonitoring,
+                        onToggle = {
+                            if (connectivityState.isMonitoring) {
+                                connectivityState.stopMonitoring()
+                            } else {
+                                connectivityState.startMonitoring()
+                            }
+                        },
+                        modifier = Modifier.padding(8.dp),
+                    )
                 }
             }
         }
@@ -55,14 +62,40 @@ class HomeScreen : Screen {
 }
 
 @Composable
-private fun NavButton(
-    text: String,
-    onClick: () -> Unit,
+internal expect fun createConnectivityState(): ConnectivityState
+
+@Composable
+private fun ConnectivityContent(
+    title: String,
+    status: Connectivity.Status?,
+    isMonitoring: Boolean,
+    onToggle: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Button(
-        onClick = onClick,
-        modifier = Modifier.padding(8.dp)
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = modifier,
     ) {
-        Text(text)
+        Text(title)
+        Crossfade(status) { status ->
+            if (status == null) {
+                Text("No status yet")
+            } else {
+                val text = if (!status.isConnected) "Disconnected"
+                else "Connected${if (status.isMetered) " - Metered" else ""}"
+
+                Text("Status: $text")
+            }
+        }
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Button(
+            onClick = onToggle,
+            modifier = Modifier.padding(8.dp)
+        ) {
+            Text("${if (isMonitoring) "Stop" else "Start"} Monitoring")
+        }
     }
 }
