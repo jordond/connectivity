@@ -46,6 +46,16 @@ jobs:
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
 
+      - name: Update README for ${{ env.RELEASE_VERSION }}
+        run: ./.github/version.sh "${RELEASE_VERSION}"
+
+      - name: Commit changes to README
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: "./README.md"
+          message: "Update README.md with version ${{ env.RELEASE_VERSION }}"
+          new_branch: main
+
   documentation:
     name: "Generate Documentation"
     runs-on: ubuntu-latest
