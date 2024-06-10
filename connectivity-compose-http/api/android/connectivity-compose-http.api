@@ -1,0 +1,5 @@
+public final class dev/jordond/connectivity/compose/HttpConnectivityStateKt {
+	public static final fun rememberConnectivityState (Ldev/jordond/connectivity/HttpConnectivityOptions;Lkotlinx/coroutines/CoroutineScope;Lio/ktor/client/HttpClient;Landroidx/compose/runtime/Composer;II)Ldev/jordond/connectivity/compose/ConnectivityState;
+	public static final fun rememberConnectivityState (Lkotlinx/coroutines/CoroutineScope;Lio/ktor/client/HttpClient;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Ldev/jordond/connectivity/compose/ConnectivityState;
+}
+

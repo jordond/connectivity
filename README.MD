@@ -24,6 +24,8 @@ view the generated KDoc at [connectivity.jordond.dev](https://connectivity.jordo
 - [Usage](#usage)
   - [Options](#options)
     - [HTTP monitoring](#http-monitoring)
+- [Compose](#compose)
+  - [Multiple Targets](#multiple-targets)
 - [Demo](#demo)
 - [Contributing](#contributing)
 - [License](#license)
@@ -39,13 +41,16 @@ Monitor network connectivity:
 
 This library is written for Kotlin Multiplatform, and can be used on the following platforms:
 
-| Artifact               | Android | iOS | macOS | tvOS | Desktop | Browser (js/wasm) |
-|------------------------|:-------:|:---:|:-----:|------|:-------:|:-----------------:|
-| `connectivity-core`    |    ✅    |  ✅  |   ✅   | ✅    |    ✅    |         ✅         |
-| `connectivity-device`  |    ✅    |  ✅  |   ✅   | ✅    |    ❌    |         ❌         |
-| `connectivity-android` |    ✅    |  ❌  |   ❌   | ❌    |    ❌    |         ❌         |
-| `connectivity-apple`   |    ❌    |  ✅  |   ✅   | ✅    |    ❌    |         ❌         |
-| `connectivity-http`    |    ✅    |  ✅  |   ✅   | ✅    |    ✅    |         ✅         |
+| Artifact | Android | iOS | macOS | tvOS | Desktop (JVM) | Browser (js/wasm) |
+|-------------------------------|:-------:|:---:|:-----:|------|::|:-----------------:|
+| `connectivity-core`           | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `connectivity-device`         | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
+| `connectivity-android`        | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| `connectivity-apple`          | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ |
+| `connectivity-http`           | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `connectivity-compose`        | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
+| `connectivity-compose-device` | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
+| `connectivity-compose-http`   | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
 
 ## Setup
 
@@ -61,6 +66,9 @@ connectivity-device = { module = "dev.jordond.connectivity:connectivity-device",
 connectivity-android = { module = "dev.jordond.connectivity:connectivity-android", version.ref = "connectivity" }
 connectivity-apple = { module = "dev.jordond.connectivity:connectivity-apple", version.ref = "connectivity" }
 connectivity-http = { module = "dev.jordond.connectivity:connectivity-http", version.ref = "connectivity" }
+connectivity-compose = { module = "dev.jordond.connectivity:connectivity-compose", version.ref = "connectivity" }
+connectivity-compose-device = { module = "dev.jordond.connectivity:connectivity-compose-device", version.ref = "connectivity" }
+connectivity-compose-http = { module = "dev.jordond.connectivity:connectivity-compose-http", version.ref = "connectivity" }
 ```
 
 ### Single Platform
@@ -69,8 +77,11 @@ Here is an example of how to add the dependencies to a single platform project t
 
 ```kotlin
 dependencies {
-    implementation(libs.connectivity.core)
-    implementation(libs.connectivity.android)
+  implementation(libs.connectivity.core)
+  implementation(libs.connectivity.android)
+
+  // For compose support
+  implementation(libs.connectivity.compose.device)
 }
 ```
 
@@ -83,8 +94,11 @@ Android and Apple devices:
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation(libs.connectivity.core)
-            implementation(libs.connectivity.device)
+          implementation(libs.connectivity.core)
+          implementation(libs.connectivity.device)
+
+          // For compose support
+          implementation(libs.connectivity.compose.device)
         }
     }
 }
@@ -100,7 +114,10 @@ It uses the `connectivity-device` for mobile targets, and `connectivity-http` fo
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation(libs.connectivity.core)
+          implementation(libs.connectivity.core)
+
+          // For compose support
+          implementation(libs.connectivity.compose)
         }
 
         val deviceMain by creating {
@@ -108,7 +125,10 @@ kotlin {
             androidMain.get().dependsOn(this)
             appleMain.get().dependsOn(this)
             dependencies {
-                implementation(libs.connectivity.device)
+              implementation(libs.connectivity.device)
+
+              // For compose support
+              implementation(libs.connectivity.compose.device)
             }
         }
 
@@ -118,7 +138,10 @@ kotlin {
             jsMain.get().dependsOn(this)
             wasmJsMain.get().dependsOn(this)
             dependencies {
-                implementation(libs.connectivity.http)
+              implementation(libs.connectivity.http)
+
+              // For compose support
+              implementation(libs.connectivity.compose.http)
             }
         }
     }
@@ -167,7 +190,7 @@ val connectivity = Connectivity()
 connectivity.start()
 coroutineScope.launch {
   connectivity.updates.collect { update ->
-    println("Monitoring is active: ${update.isActive}")
+    println("Monitoring is active: ${update.isMonitoring}")
 
     when (update.status) {
       is NetworkStatus.Connected -> println("Connected to network")
@@ -179,7 +202,7 @@ coroutineScope.launch {
 
 **Note:** Because the backing field for `Connectivity.updates` is a `StateFlow`, it requires a
 initial value to be emitted. This means that the first value emitted will be the *real* current
-network status. This is why the `isActive` property is available on the `Connectivity.Update`.
+network status. This is why the `isMonitoring` property is available on the `Connectivity.Update`.
 
 By default when you construct a `Connectivity` object, it will not automatically start monitoring
 network connectivity. You can enable this by passing in `ConnectivityOptions`():
@@ -240,6 +263,81 @@ val connectivity = Connectivity {
       is PollResult.Error -> println("Poll error: ${result.error}")
       is PollResult.Response -> println("Poll http response: ${result.response}")
     }
+  }
+}
+```
+
+## Compose
+
+Connectivity also provides support for Compose Multiplatform. To use it you will have to make sure
+you add the dependencies for the `connectivity-compose-x` modules.
+
+Then you can use it like so:
+
+**Note:** This composable is provided by either `connectivity-compose-device`
+or `connectivity-compose-http` artifact.
+
+```kotlin
+@Composable
+fun MyApp() {
+  val state = rememberConnectivityState {
+    // Optional configurator for ConnectivityOptions
+    autoStart = true
+  }
+
+  when (state.status) {
+    is Connectivity.Status.Connected -> Text("Connected to network")
+    is Connectivity.Status.Disconnected -> Text("Disconnected from network")
+    else -> {}
+  }
+}
+```
+
+### Multiple Targets
+
+If you need to support both Device and HTTP monitoring in the same project, you will have to do
+something similar to [this](#all-supported-platforms).
+
+Example:
+
+```kotlin
+// commonMain/Platform.kt
+expect fun createConnectivity(): Connectivity
+```
+
+Then define the `actual` functions:
+
+```kotlin
+// deviceMain/Platform.device.kt
+actual fun createConnectivityState(): Connectivity {
+  return Connectivity {
+    autoStart = true
+  }
+}
+
+// httpMain/Platform.http.kt
+actual fun createConnectivityState(): Connectivity {
+  return Connectivity {
+    autoStart = true
+    urls("cloudflare.com", "my-own-domain.com")
+    port = 80
+    pollingIntervalMs = 10.minutes
+    timeoutMs = 5.seconds
+  }
+}
+```
+
+Then it can be used like so:
+
+```kotlin
+@Composable
+fun MyApp() {
+  val state = createConnectivityState()
+
+  when (state.status) {
+    is Connectivity.Status.Connected -> Text("Connected to network")
+    is Connectivity.Status.Disconnected -> Text("Disconnected from network")
+    else -> {}
   }
 }
 ```

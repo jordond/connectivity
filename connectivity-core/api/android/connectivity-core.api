@@ -2,7 +2,7 @@ public abstract interface class dev/jordond/connectivity/Connectivity {
 	public abstract fun getActiveUpdates ()Lkotlinx/coroutines/flow/Flow;
 	public abstract fun getStatusUpdates ()Lkotlinx/coroutines/flow/SharedFlow;
 	public abstract fun getUpdates ()Lkotlinx/coroutines/flow/StateFlow;
-	public abstract fun isActive ()Lkotlinx/coroutines/flow/StateFlow;
+	public abstract fun isMonitoring ()Lkotlinx/coroutines/flow/StateFlow;
 	public abstract fun start ()V
 	public abstract fun status (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun stop ()V
@@ -57,6 +57,7 @@ public final class dev/jordond/connectivity/Connectivity$Update {
 	public final fun isConnected ()Z
 	public final fun isDisconnected ()Z
 	public final fun isMetered ()Z
+	public final fun isMonitoring ()Z
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -81,6 +82,8 @@ public class dev/jordond/connectivity/ConnectivityOptions {
 public final class dev/jordond/connectivity/ConnectivityOptions$Builder {
 	public final fun autoStart (Z)Ldev/jordond/connectivity/ConnectivityOptions$Builder;
 	public final fun build ()Ldev/jordond/connectivity/ConnectivityOptions;
+	public final fun getAutoStart ()Z
+	public final fun setAutoStart (Z)V
 }
 
 public final class dev/jordond/connectivity/ConnectivityOptions$Companion {

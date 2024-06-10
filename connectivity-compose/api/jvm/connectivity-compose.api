@@ -1,0 +1,17 @@
+public class dev/jordond/connectivity/compose/ConnectivityState {
+	public static final field $stable I
+	public fun <init> (Ldev/jordond/connectivity/Connectivity;Lkotlinx/coroutines/CoroutineScope;)V
+	public final fun forceCheck ()V
+	public final fun getStatus ()Ldev/jordond/connectivity/Connectivity$Status;
+	public final fun isConnected ()Z
+	public final fun isDisconnected ()Z
+	public final fun isMetered ()Z
+	public final fun isMonitoring ()Z
+	public final fun startMonitoring ()V
+	public final fun stopMonitoring ()V
+}
+
+public final class dev/jordond/connectivity/compose/ConnectivityStateKt {
+	public static final fun rememberConnectivityState (Ldev/jordond/connectivity/Connectivity;Lkotlinx/coroutines/CoroutineScope;Landroidx/compose/runtime/Composer;II)Ldev/jordond/connectivity/compose/ConnectivityState;
+}
+

@@ -27,7 +27,7 @@ public open class ConnectivityOptions(
      */
     public class Builder internal constructor() {
 
-        private var autoStart: Boolean = DEFAULT_AUTO_START
+        public var autoStart: Boolean = DEFAULT_AUTO_START
 
         /**
          * Sets the autoStart property of the Builder.

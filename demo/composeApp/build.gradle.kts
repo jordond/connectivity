@@ -42,6 +42,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.connectivityCore)
+            implementation(projects.connectivityCompose)
 
             implementation(libs.kotlinx.coroutines.core)
             implementation(compose.runtime)
@@ -66,6 +67,7 @@ kotlin {
             appleMain.get().dependsOn(this)
             dependencies {
                 implementation(projects.connectivityDevice)
+                implementation(projects.connectivityComposeDevice)
             }
         }
 
@@ -83,6 +85,7 @@ kotlin {
             wasmJsMain.get().dependsOn(this)
             dependencies {
                 implementation(projects.connectivityHttp)
+                implementation(projects.connectivityComposeHttp)
             }
         }
     }

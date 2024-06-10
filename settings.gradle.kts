@@ -40,6 +40,9 @@ include(
     ":connectivity-apple",
     ":connectivity-device",
     ":connectivity-http",
+    ":connectivity-compose",
+    ":connectivity-compose-device",
+    ":connectivity-compose-http",
     ":connectivity-tools-android",
 )
 
