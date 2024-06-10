@@ -30,7 +30,7 @@ if [ -z "$NEW_VERSION" ]; then
 fi
 
 # Update Kotlin badge in README.md
-LIBS_KOTLIN_VERSION=$(grep "kotlin = " "$VERSION_FILE" | cut -d= -f2 | tr -d ' "')
+LIBS_KOTLIN_VERSION=$(grep "kotlin = \"" "$VERSION_FILE" | cut -d= -f2 | tr -d ' "' | tr -d '\n')
 if [ -z "$LIBS_KOTLIN_VERSION" ]; then
   echo "Unable to find Kotlin version in '$VERSION_FILE'"
 else

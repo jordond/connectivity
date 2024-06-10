@@ -58,7 +58,7 @@ Add the following dependencies to your project, depending on the platform you ar
 
 ```toml
 [versions]
-connectivity = "1.0.0"
+connectivity = "1.1.0"
 
 [libraries]
 connectivity-core = { module = "dev.jordond.connectivity:connectivity-core", version.ref = "connectivity" }
