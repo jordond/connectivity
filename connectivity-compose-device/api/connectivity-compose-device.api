@@ -1,0 +1,5 @@
+public final class dev/jordond/connectivity/compose/DeviceConnectivityStateKt {
+	public static final fun rememberConnectivityState (Ldev/jordond/connectivity/ConnectivityOptions;Lkotlinx/coroutines/CoroutineScope;Landroidx/compose/runtime/Composer;II)Ldev/jordond/connectivity/compose/ConnectivityState;
+	public static final fun rememberConnectivityState (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Ldev/jordond/connectivity/compose/ConnectivityState;
+}
+
