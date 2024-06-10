@@ -11,7 +11,7 @@ network connectivity using native APIs on Android and Apple devices, or by makin
 specified hosts.
 
 You can also
-view the generated KDoc at [docs.connectivity.jordond.dev](https://connectivity.jordond.dev)
+view the generated KDoc at [connectivity.jordond.dev](https://connectivity.jordond.dev)
 
 ## Table of Contents
 
@@ -22,6 +22,7 @@ view the generated KDoc at [docs.connectivity.jordond.dev](https://connectivity.
     - [Multiplatform - Device](#multiplatform---device)
     - [All supported platforms](#all-supported-platforms)
 - [Usage](#usage)
+  - [Options](#options)
     - [HTTP monitoring](#http-monitoring)
 - [Demo](#demo)
 - [Contributing](#contributing)
@@ -135,25 +136,16 @@ you can observe the network connectivity.
 val connectivity = Connectivity()
 connectivity.start()
 coroutineScope.launch {
-    connectivity.updates.collect { update ->
-        println("Is active: ${update.isActive}")
-
-        when (update.status) {
-            is NetworkStatus.Connected -> println("Connected to network")
-            is NetworkStatus.Disconnected -> println("Disconnected from network")
-        }
+  connectivity.statusUpdates.collect { status ->
+    when (status) {
+      is NetworkStatus.Connected -> println("Connected to network")
+      is NetworkStatus.Disconnected -> println("Disconnected from network")
     }
+  }
 }
 ```
 
-### Observing network connectivity
-
-Because the backing field for `Connectivity.updates` is a `StateFlow`, it requires a
-initial value to be emitted. This means that the first value emitted will be the *real* current
-network status. This is why the `isMonitoring` property is available on the `Connectivity.Update`.
-
-To get around this, you can use the synchronous `status()` function to get the current network
-status:
+You can also get the current connectivity status by invoking the suspended `status()` function:
 
 ```kotlin
 val connectivity = Connectivity()
@@ -166,21 +158,33 @@ coroutineScope.launch {
 }
 ```
 
-Or you can use the `Connectivity.activeUpdates` property, which is a `Flow<Connectivity.Status` that
-only emits status updates when the monitoring is active:
+Or you can use the `Connectivity.updates` property, which is a `StateFlow<Connectivity.Update` that
+emits a `Connectivity.Update` which contains the network status as well as whether the network
+monitoring is active.
 
 ```kotlin
 val connectivity = Connectivity()
 connectivity.start()
 coroutineScope.launch {
-    connectivity.activeUpdates.collect { status ->
-        // Handle status
+  connectivity.updates.collect { update ->
+    println("Monitoring is active: ${update.isActive}")
+
+    when (update.status) {
+      is NetworkStatus.Connected -> println("Connected to network")
+      is NetworkStatus.Disconnected -> println("Disconnected from network")
     }
+  }
 }
 ```
 
+**Note:** Because the backing field for `Connectivity.updates` is a `StateFlow`, it requires a
+initial value to be emitted. This means that the first value emitted will be the *real* current
+network status. This is why the `isActive` property is available on the `Connectivity.Update`.
+
 By default when you construct a `Connectivity` object, it will not automatically start monitoring
 network connectivity. You can enable this by passing in `ConnectivityOptions`():
+
+### Options
 
 ```kotlin
 val connectivity = Connectivity {
@@ -225,18 +229,18 @@ You can customize the HTTP monitoring like so:
 
 ```kotlin
 val connectivity = Connectivity {
-    urls("cloudflare.com", "my-own-domain.com")
-    port = 80
-    pollingIntervalMs = 10.minutes
-    timeoutMs = 5.seconds
+  urls("cloudflare.com", "my-own-domain.com") // Defaults to ["google.com", "github.com", "bing.com"]
+  port = 80 // Defaults to 443
+  pollingIntervalMs = 10.minutes // Defaults to 5 minutes
+  timeoutMs = 5.seconds // Defaults to 2 seconds
 
-    // Callback for when a poll is completed
-    onPollResult { result ->
-        when (result) {
-            is PollResult.Error -> println("Poll error: ${result.error}")
-            is PollResult.Response -> println("Poll http response: ${result.response}")
-        }
+  // Callback for when a poll is completed
+  onPollResult { result ->
+    when (result) {
+      is PollResult.Error -> println("Poll error: ${result.error}")
+      is PollResult.Response -> println("Poll http response: ${result.response}")
     }
+  }
 }
 ```
 
