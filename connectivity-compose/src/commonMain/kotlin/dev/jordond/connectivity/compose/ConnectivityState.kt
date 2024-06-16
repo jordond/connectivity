@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import dev.drewhamilton.poko.Poko
 import dev.jordond.connectivity.Connectivity
 import dev.jordond.connectivity.Connectivity.Status.Connected
 import dev.jordond.connectivity.Connectivity.Status.Disconnected
@@ -40,8 +41,9 @@ public fun rememberConnectivityState(
  * @property connectivity The [Connectivity] instance to use for monitoring the network status.
  * @property scope The [CoroutineScope] in which to launch the network status monitoring coroutine.
  */
+@Poko
 @Stable
-public open class ConnectivityState(
+public class ConnectivityState(
     private val connectivity: Connectivity,
     private val scope: CoroutineScope,
 ) {

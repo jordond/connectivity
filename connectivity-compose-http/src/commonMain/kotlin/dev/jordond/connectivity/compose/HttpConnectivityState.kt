@@ -19,15 +19,15 @@ import kotlinx.coroutines.CoroutineScope
  */
 @Composable
 public fun rememberConnectivityState(
-    options: HttpConnectivityOptions = HttpConnectivityOptions(),
+    options: HttpConnectivityOptions = remember { HttpConnectivityOptions() },
     scope: CoroutineScope = rememberCoroutineScope(),
-    httpClient: HttpClient = HttpClient()
+    httpClient: HttpClient = remember { HttpClient() },
 ): ConnectivityState {
-    val connectivity = remember(options, scope, httpClient) {
+    val connectivity = remember(options, scope) {
         Connectivity(options, scope, httpClient)
     }
 
-    return remember(connectivity, scope) {
+    return remember(connectivity) {
         ConnectivityState(connectivity, scope)
     }
 }

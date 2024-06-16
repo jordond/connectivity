@@ -7,6 +7,6 @@ internal actual fun createConnectivityState(): ConnectivityState {
     return rememberConnectivityState {
         autoStart = true
         url("www.google.com")
-        pollingIntervalMs = 1.minutes
+        pollingIntervalMs = 5.seconds
     }
 }
