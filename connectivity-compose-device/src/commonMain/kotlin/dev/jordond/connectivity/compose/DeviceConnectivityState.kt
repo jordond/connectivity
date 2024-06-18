@@ -16,7 +16,7 @@ import kotlinx.coroutines.CoroutineScope
  */
 @Composable
 public fun rememberConnectivityState(
-    options: ConnectivityOptions = ConnectivityOptions(),
+    options: ConnectivityOptions = remember { ConnectivityOptions() },
     scope: CoroutineScope = rememberCoroutineScope(),
 ): ConnectivityState {
     val connectivity = remember(options, scope) {

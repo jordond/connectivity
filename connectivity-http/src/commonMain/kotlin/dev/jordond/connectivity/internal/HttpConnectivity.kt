@@ -1,5 +1,6 @@
 package dev.jordond.connectivity.internal
 
+import dev.drewhamilton.poko.Poko
 import dev.jordond.connectivity.Connectivity
 import dev.jordond.connectivity.Connectivity.Update
 import dev.jordond.connectivity.HttpConnectivityOptions
@@ -27,6 +28,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
+@Poko
 internal class HttpConnectivity(
     scope: CoroutineScope,
     private val httpOptions: HttpConnectivityOptions,
