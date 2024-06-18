@@ -8,10 +8,11 @@ import android.net.NetworkCapabilities
 import android.net.NetworkCapabilities.TRANSPORT_CELLULAR
 import android.net.NetworkCapabilities.TRANSPORT_WIFI
 import android.net.NetworkRequest
+import android.os.Build
 import androidx.core.content.getSystemService
 import dev.jordond.connectivity.Connectivity
 import dev.jordond.connectivity.ConnectivityProvider
-import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOf
@@ -49,9 +50,31 @@ internal class AndroidConnectivityProvider(
                 }
             }
 
-            manager.registerNetworkCallback(networkRequest, networkCallback)
+            try {
+                manager.registerNetworkCallback(networkRequest, networkCallback)
 
-            awaitClose { manager.unregisterNetworkCallback(networkCallback) }
+                val initialStatus = manager.initialStatus()
+                trySend(initialStatus)
+
+                awaitCancellation()
+            } finally {
+                manager.unregisterNetworkCallback(networkCallback)
+            }
+        }
+    }
+
+    private fun ConnectivityManager.initialStatus(): Connectivity.Status {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            activeNetwork?.let { network ->
+                getNetworkCapabilities(network)?.let { capabilities ->
+                    status(capabilities)
+                }
+            } ?: Connectivity.Status.Disconnected
+        } else {
+            @Suppress("DEPRECATION")
+            val isConnected = activeNetworkInfo?.isConnected == true
+            if (isConnected) Connectivity.Status.Connected(isActiveNetworkMetered)
+            else Connectivity.Status.Disconnected
         }
     }
 }

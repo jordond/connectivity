@@ -1,5 +1,6 @@
 package dev.jordond.connectivity.internal
 
+import dev.drewhamilton.poko.Poko
 import dev.jordond.connectivity.Connectivity
 import dev.jordond.connectivity.Connectivity.Update
 import dev.jordond.connectivity.ConnectivityOptions
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+@Poko
 internal class DefaultConnectivity(
     scope: CoroutineScope,
     private val provider: ConnectivityProvider,
