@@ -161,8 +161,8 @@ connectivity.start()
 coroutineScope.launch {
   connectivity.statusUpdates.collect { status ->
     when (status) {
-      is NetworkStatus.Connected -> println("Connected to network")
-      is NetworkStatus.Disconnected -> println("Disconnected from network")
+      is Connectivity.Status.Connected -> println("Connected to network")
+      is Connectivity.Status.Disconnected -> println("Disconnected from network")
     }
   }
 }
@@ -175,34 +175,11 @@ val connectivity = Connectivity()
 coroutineScope.launch {
     val status = connectivity.status()
     when (status) {
-        is NetworkStatus.Connected -> println("Connected to network")
-        is NetworkStatus.Disconnected -> println("Disconnected from network")
+        is Connectivity.Status.Connected -> println("Connected to network")
+        is Connectivity.Status.Disconnected -> println("Disconnected from network")
     }
 }
 ```
-
-Or you can use the `Connectivity.updates` property, which is a `StateFlow<Connectivity.Update` that
-emits a `Connectivity.Update` which contains the network status as well as whether the network
-monitoring is active.
-
-```kotlin
-val connectivity = Connectivity()
-connectivity.start()
-coroutineScope.launch {
-  connectivity.updates.collect { update ->
-    println("Monitoring is active: ${update.isMonitoring}")
-
-    when (update.status) {
-      is NetworkStatus.Connected -> println("Connected to network")
-      is NetworkStatus.Disconnected -> println("Disconnected from network")
-    }
-  }
-}
-```
-
-**Note:** Because the backing field for `Connectivity.updates` is a `StateFlow`, it requires a
-initial value to be emitted. This means that the first value emitted will be the *real* current
-network status. This is why the `isMonitoring` property is available on the `Connectivity.Update`.
 
 By default when you construct a `Connectivity` object, it will not automatically start monitoring
 network connectivity. You can enable this by passing in `ConnectivityOptions`():
