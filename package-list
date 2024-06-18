@@ -5,6 +5,12 @@ module:connectivity-android
 dev.jordond.connectivity
 module:connectivity-apple
 dev.jordond.connectivity
+module:connectivity-compose
+dev.jordond.connectivity.compose
+module:connectivity-compose-device
+dev.jordond.connectivity.compose
+module:connectivity-compose-http
+dev.jordond.connectivity.compose
 module:connectivity-core
 dev.jordond.connectivity
 module:connectivity-device

@@ -62,7 +62,7 @@
   <div class="breadcrumbs"><a href="../../../index.html">connectivity-core</a><span class="delimiter">/</span><a href="../../index.html">dev.jordond.connectivity</a><span class="delimiter">/</span><a href="../index.html">Connectivity</a><span class="delimiter">/</span><span class="current">Update</span></div>
   <div class="cover ">
     <h1 class="cover"><span><span>Update</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":connectivity-core:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">Update</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>isActive<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>status<span class="token operator">: </span><a href="../-status/index.html">Connectivity.Status</a></span></span><span class="token punctuation">)</span></div><p class="paragraph">Represents an update to the connectivity status.</p></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":connectivity-core:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html"><strike>Update</strike></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>isMonitoring<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>status<span class="token operator">: </span><a href="../-status/index.html">Connectivity.Status</a></span></span><span class="token punctuation">)</span></div><div class="deprecation-content"><h3 class="">Deprecated</h3><p class="paragraph">This current usage of this class does not provide any additional value. Will be removed in a future release.</p></div><p class="paragraph">Represents an update to the connectivity status.</p></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
@@ -79,7 +79,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":connectivity-core:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">isActive<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">status<span class="token operator">: </span><a href="../-status/index.html">Connectivity.Status</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Creates an update to the connectivity status.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":connectivity-core:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">isMonitoring<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">status<span class="token operator">: </span><a href="../-status/index.html">Connectivity.Status</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Creates an update to the connectivity status.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -117,7 +117,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":connectivity-core:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="is-active.html">isActive</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">A Boolean indicating whether the connectivity monitoring is active.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":connectivity-core:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="is-active.html"><strike>isActive</strike></a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">A Boolean indicating whether the connectivity monitoring is active.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -163,6 +163,21 @@
               <div>
                 <div class="title">
                   <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":connectivity-core:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="is-metered.html">isMetered</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">A Boolean indicating whether the device is connected to a metered network.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-71653699%2FProperties%2F1425889616" anchor-label="isMonitoring" id="-71653699%2FProperties%2F1425889616" data-filterable-set=":connectivity-core:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":connectivity-core:dokkaHtmlPartial/commonMain" data-filterable-set=":connectivity-core:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-monitoring.html"><span>is</span><wbr><span><span>Monitoring</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-71653699%2FProperties%2F1425889616"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":connectivity-core:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="is-monitoring.html">isMonitoring</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">A Boolean indicating whether the connectivity monitoring is active.</p></div></div></div>
                 </div>
               </div>
             </div>
