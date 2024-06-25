@@ -41,7 +41,7 @@ class HomeScreen : Screen {
                 )
 
                 Card {
-                    val connectivityState = createConnectivityState()
+                    val connectivityState = createConnectivityState(false)
                     ConnectivityContent(
                         title = "Compose Connectivity",
                         status = connectivityState.status,
@@ -62,7 +62,7 @@ class HomeScreen : Screen {
 }
 
 @Composable
-internal expect fun createConnectivityState(): ConnectivityState
+internal expect fun createConnectivityState(autoStart: Boolean = true): ConnectivityState
 
 @Composable
 private fun ConnectivityContent(

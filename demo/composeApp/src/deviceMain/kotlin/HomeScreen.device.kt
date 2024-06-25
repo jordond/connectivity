@@ -3,8 +3,8 @@ import dev.jordond.connectivity.compose.ConnectivityState
 import dev.jordond.connectivity.compose.rememberConnectivityState
 
 @Composable
-internal actual fun createConnectivityState(): ConnectivityState {
+internal actual fun createConnectivityState(autoStart: Boolean): ConnectivityState {
     return rememberConnectivityState {
-        autoStart = true
+        this.autoStart = autoStart
     }
 }

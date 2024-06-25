@@ -6,6 +6,9 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import platform.Network.nw_interface_type_wifi
+import platform.Network.nw_path_get_status
+import platform.Network.nw_path_is_constrained
+import platform.Network.nw_path_is_expensive
 import platform.Network.nw_path_monitor_cancel
 import platform.Network.nw_path_monitor_create
 import platform.Network.nw_path_monitor_set_queue
@@ -13,8 +16,6 @@ import platform.Network.nw_path_monitor_set_update_handler
 import platform.Network.nw_path_monitor_start
 import platform.Network.nw_path_status_satisfied
 import platform.Network.nw_path_uses_interface_type
-import platform.NetworkExtension.NWPath
-import platform.NetworkExtension.NWPathStatus
 import platform.darwin.DISPATCH_QUEUE_SERIAL_WITH_AUTORELEASE_POOL
 import platform.darwin.dispatch_queue_create
 
@@ -29,16 +30,17 @@ internal object AppleConnectivityProvider : ConnectivityProvider {
 
         return callbackFlow {
             nw_path_monitor_set_update_handler(monitor) { path ->
-                val nwPath: NWPath? = path as? NWPath
-                val status: NWPathStatus? = nwPath?.status()
+                val status = nw_path_get_status(path)
                 when {
-                    status != null && status == nw_path_status_satisfied.toLong() -> {
+                    status == nw_path_status_satisfied -> {
                         val isWifi = nw_path_uses_interface_type(path, nw_interface_type_wifi)
-                        val isMetered = !isWifi && (path.isExpensive() || path.isConstrained())
+                        val isExpensive = nw_path_is_expensive(path)
+                        val isConstrained = nw_path_is_constrained(path)
+                        val isMetered = !isWifi && (isExpensive || isConstrained)
 
                         trySend(Connectivity.Status.Connected(isMetered))
                     }
-                    else -> Connectivity.Status.Disconnected
+                    else -> trySend(Connectivity.Status.Disconnected)
                 }
             }
 
