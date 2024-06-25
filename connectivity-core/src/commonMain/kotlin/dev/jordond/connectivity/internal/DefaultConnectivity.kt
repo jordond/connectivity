@@ -45,7 +45,7 @@ internal class DefaultConnectivity(
             Update(isMonitoring, status)
         }.stateIn(
             scope = scope,
-            started = SharingStarted.WhileSubscribed(),
+            started = SharingStarted.WhileSubscribed(5000),
             initialValue = Update(isMonitoring = false, Connectivity.Status.Disconnected)
         )
 
