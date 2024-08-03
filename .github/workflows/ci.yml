@@ -37,10 +37,10 @@ jobs:
           distribution: adopt
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Gradle Wrapper Validation
-        uses: gradle/actions/wrapper-validation@v3
+        uses: gradle/actions/wrapper-validation@v4
 
       - name: Binary Compatibility Validation
         run: ./gradlew apiCheck --scan
@@ -81,10 +81,10 @@ jobs:
             ${{ runner.os }}-konan-
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Gradle Wrapper Validation
-        uses: gradle/actions/wrapper-validation@v3
+        uses: gradle/actions/wrapper-validation@v4
 
       - name: Run ${{ matrix.config.target }} tests
         continue-on-error: ${{ matrix.config.continueOnError }}
@@ -105,10 +105,10 @@ jobs:
           distribution: adopt
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Gradle Wrapper Validation
-        uses: gradle/actions/wrapper-validation@v3
+        uses: gradle/actions/wrapper-validation@v4
 
       - name: Setup headless Chrome
         uses: browser-actions/setup-chrome@v1
