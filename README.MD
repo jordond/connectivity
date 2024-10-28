@@ -2,7 +2,7 @@
 <br />
 
 [![Maven Central Version](https://img.shields.io/maven-central/v/dev.jordond.connectivity/connectivity-core)](https://central.sonatype.com/namespace/dev.jordond.connectivity)
-[![Kotlin](https://img.shields.io/badge/kotlin-v2.0.0-blue.svg?logo=kotlin)](http://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/kotlin-v2.0.21-blue.svg?logo=kotlin)](http://kotlinlang.org)
 [![Build](https://github.com/jordond/connectivity/actions/workflows/ci.yml/badge.svg)](https://github.com/jordond/connectivity/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/jordond/connectivity)](https://opensource.org/license/mit/)
 
@@ -58,7 +58,7 @@ Add the following dependencies to your project, depending on the platform you ar
 
 ```toml
 [versions]
-connectivity = "1.1.0"
+connectivity = "1.1.3"
 
 [libraries]
 connectivity-core = { module = "dev.jordond.connectivity:connectivity-core", version.ref = "connectivity" }
