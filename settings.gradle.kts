@@ -5,7 +5,6 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
-        maven("https://maven.pkg.jetbrains.space/kotlin/p/wasm/experimental")
     }
 
     includeBuild("buildLogic")
@@ -16,7 +15,6 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven("https://maven.pkg.jetbrains.space/kotlin/p/wasm/experimental")
     }
 }
 
@@ -26,6 +24,9 @@ plugins {
 
 develocity {
     buildScan {
+        termsOfUseUrl.set("https://gradle.com/help/legal-terms-of-use")
+        termsOfUseAgree.set("yes")
+
         publishing.onlyIf { context ->
             context.buildResult.failures.isNotEmpty() && !System.getenv("CI").isNullOrEmpty()
         }
