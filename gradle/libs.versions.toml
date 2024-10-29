@@ -22,7 +22,7 @@ publish = "0.30.0"
 poko = "0.17.2"
 versions = "0.51.0"
 kotest = "5.9.1"
-ktor = "3.0.0"
+ktor = "3.0.1"
 voyager = "1.1.0-beta03"
 stateHolder = "1.2.0"
 
