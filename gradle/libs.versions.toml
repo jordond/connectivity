@@ -1,7 +1,7 @@
 [versions]
 group = "dev.jordond"
-sdk-target = "34"
-sdk-compile = "34"
+sdk-target = "35"
+sdk-compile = "35"
 sdk-min = "21"
 jvmTarget = "17"
 agp = "8.7.2"
