@@ -28,8 +28,6 @@ internal class AndroidConnectivityProvider(
             ?: return flowOf(Connectivity.Status.Disconnected)
 
         return callbackFlow {
-            val networkRequest = NetworkRequest.Builder().build()
-
             val networkCallback = object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
                     val capabilities = manager.getNetworkCapabilities(network)
@@ -51,7 +49,12 @@ internal class AndroidConnectivityProvider(
             }
 
             try {
-                manager.registerNetworkCallback(networkRequest, networkCallback)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    manager.registerDefaultNetworkCallback(networkCallback)
+                } else {
+                    val networkRequest = NetworkRequest.Builder().build()
+                    manager.registerNetworkCallback(networkRequest, networkCallback)
+                }
 
                 val initialStatus = manager.initialStatus()
                 trySend(initialStatus)
