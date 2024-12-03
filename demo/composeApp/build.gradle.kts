@@ -15,7 +15,17 @@ kotlin {
         publishAllLibraryVariants()
     }
 
-    @OptIn(ExperimentalWasmDsl::class)
+    js {
+        moduleName = "composeApp"
+        browser {
+            commonWebpackConfig {
+                outputFileName = "composeApp.js"
+            }
+        }
+        binaries.executable()
+    }
+
+    @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
     wasmJs {
         moduleName = "composeApp"
         browser {
