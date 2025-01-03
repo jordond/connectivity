@@ -1,12 +1,8 @@
 package dev.jordond.connectivity
 
-import dev.drewhamilton.poko.Poko
-import dev.jordond.connectivity.Connectivity.Status.Connected
-import dev.jordond.connectivity.Connectivity.Status.Disconnected
 import dev.jordond.connectivity.internal.DefaultConnectivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -14,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
  * The Connectivity interface provides a way to monitor the network connectivity status.
  *
  * @property statusUpdates A [SharedFlow] representing the current connectivity status.
- * @property isMonitoring A [StateFlow] representing whether the connectivity monitoring is active.
+ * @property monitoring A [StateFlow] representing whether the connectivity monitoring is active.
  * @property updates A [StateFlow] representing the current connectivity status and whether
  * the monitoring is active.
  */
@@ -22,25 +18,10 @@ public interface Connectivity {
 
     public val statusUpdates: SharedFlow<Status>
 
-    public val isMonitoring: StateFlow<Boolean>
+    public val monitoring: StateFlow<Boolean>
 
-    @Deprecated(
-        message = "Use statusUpdates instead. Will be removed in a future release.",
-        replaceWith = ReplaceWith("statusUpdates"),
-        level = DeprecationLevel.WARNING,
-    )
-    public val updates: StateFlow<Update>
-
-    /**
-     * A [Flow] representing status updates when the connectivity monitoring is active.
-     */
-    @Deprecated(
-        message = "Use statusUpdates instead. Will be removed in a future release.",
-        replaceWith = ReplaceWith("statusUpdates"),
-        level = DeprecationLevel.WARNING,
-    )
-    public val activeUpdates: Flow<Status>
-        get() = statusUpdates
+    public val isMonitoring: Boolean
+        get() = monitoring.value
 
     /**
      * Gets the current connectivity status.
@@ -58,59 +39,6 @@ public interface Connectivity {
      * Stops monitoring the connectivity status.
      */
     public fun stop()
-
-    /**
-     * Represents an update to the connectivity status.
-     *
-     * @property isMonitoring A Boolean indicating whether the connectivity monitoring is active.
-     * @property status The [Status] of the connectivity.
-     * @constructor Creates an update to the connectivity status.
-     */
-    @Deprecated(
-        message = "This current usage of this class does not provide any additional value. Will be removed in a future release.",
-        level = DeprecationLevel.WARNING,
-    )
-    @Poko
-    public class Update(
-        public val isMonitoring: Boolean,
-        public val status: Status,
-    ) {
-
-        /**
-         * A Boolean indicating whether the connectivity monitoring is active.
-         */
-        @Deprecated(
-            message = "Use isMonitoring instead. Will be removed in a future release.",
-            replaceWith = ReplaceWith("isMonitoring"),
-            level = DeprecationLevel.WARNING,
-        )
-        public val isActive: Boolean = isMonitoring
-
-        /**
-         * A Boolean indicating whether the device is connected to the network.
-         */
-        public val isConnected: Boolean
-            get() = status is Connected
-
-        /**
-         * A Boolean indicating whether the device is connected to a metered network.
-         */
-        public val isMetered: Boolean
-            get() = status is Connected && status.metered
-
-        /**
-         * A Boolean indicating whether the device is disconnected from the network.
-         */
-        public val isDisconnected: Boolean
-            get() = status is Disconnected
-
-        @InternalConnectivityApi
-        public companion object {
-
-            @InternalConnectivityApi
-            public val default: Update = Update(isMonitoring = false, Disconnected)
-        }
-    }
 
     /**
      * Represents the connectivity status.

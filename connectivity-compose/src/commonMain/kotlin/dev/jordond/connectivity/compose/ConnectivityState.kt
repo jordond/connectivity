@@ -48,7 +48,7 @@ public class ConnectivityState(
     private val scope: CoroutineScope,
 ) {
 
-    public var isMonitoring: Boolean by mutableStateOf(connectivity.isMonitoring.value)
+    public var isMonitoring: Boolean by mutableStateOf(connectivity.monitoring.value)
         private set
 
     /**
@@ -80,7 +80,7 @@ public class ConnectivityState(
 
     init {
         scope.launch {
-            connectivity.isMonitoring.collect { isMonitoring = it }
+            connectivity.monitoring.collect { isMonitoring = it }
         }
 
         scope.launch {

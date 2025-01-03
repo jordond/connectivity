@@ -2,7 +2,6 @@ package dev.jordond.connectivity.internal
 
 import dev.drewhamilton.poko.Poko
 import dev.jordond.connectivity.Connectivity
-import dev.jordond.connectivity.Connectivity.Update
 import dev.jordond.connectivity.HttpConnectivityOptions
 import dev.jordond.connectivity.PollResult
 import io.ktor.client.HttpClient
@@ -18,12 +17,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -43,22 +39,8 @@ internal class HttpConnectivity(
     )
     override val statusUpdates: SharedFlow<Connectivity.Status> = _statusUpdates.asSharedFlow()
 
-    private val _isMonitoring = MutableStateFlow(value = false)
-    override val isMonitoring: StateFlow<Boolean> = _isMonitoring.asStateFlow()
-
-    @Deprecated(
-        message = "Use statusUpdates instead. Will be removed in a future release.",
-        replaceWith = ReplaceWith("statusUpdates"),
-        level = DeprecationLevel.WARNING,
-    )
-    override val updates: StateFlow<Update> =
-        combine(statusUpdates, isMonitoring) { status, isMonitoring ->
-            Update(isMonitoring, status)
-        }.stateIn(
-            scope = scope,
-            started = SharingStarted.WhileSubscribed(),
-            initialValue = Update(isMonitoring = false, Connectivity.Status.Disconnected)
-        )
+    private val _monitoring = MutableStateFlow(value = false)
+    override val monitoring: StateFlow<Boolean> = _monitoring.asStateFlow()
 
     init {
         if (httpOptions.options.autoStart) {
@@ -75,13 +57,13 @@ internal class HttpConnectivity(
     override fun start() {
         if (job != null) return
         poll()
-        _isMonitoring.update { true }
+        _monitoring.update { true }
     }
 
     override fun stop() {
         job?.cancel()
         job = null
-        _isMonitoring.update { false }
+        _monitoring.update { false }
     }
 
     internal fun forcePoll() {

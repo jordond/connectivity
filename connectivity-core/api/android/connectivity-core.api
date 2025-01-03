@@ -1,15 +1,14 @@
 public abstract interface class dev/jordond/connectivity/Connectivity {
-	public abstract fun getActiveUpdates ()Lkotlinx/coroutines/flow/Flow;
+	public abstract fun getMonitoring ()Lkotlinx/coroutines/flow/StateFlow;
 	public abstract fun getStatusUpdates ()Lkotlinx/coroutines/flow/SharedFlow;
-	public abstract fun getUpdates ()Lkotlinx/coroutines/flow/StateFlow;
-	public abstract fun isMonitoring ()Lkotlinx/coroutines/flow/StateFlow;
+	public abstract fun isMonitoring ()Z
 	public abstract fun start ()V
 	public abstract fun status (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun stop ()V
 }
 
 public final class dev/jordond/connectivity/Connectivity$DefaultImpls {
-	public static fun getActiveUpdates (Ldev/jordond/connectivity/Connectivity;)Lkotlinx/coroutines/flow/Flow;
+	public static fun isMonitoring (Ldev/jordond/connectivity/Connectivity;)Z
 }
 
 public abstract interface class dev/jordond/connectivity/Connectivity$Status {
@@ -45,19 +44,6 @@ public final class dev/jordond/connectivity/Connectivity$Status$Disconnected : d
 	public fun isConnected ()Z
 	public fun isDisconnected ()Z
 	public fun isMetered ()Z
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class dev/jordond/connectivity/Connectivity$Update {
-	public fun <init> (ZLdev/jordond/connectivity/Connectivity$Status;)V
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getStatus ()Ldev/jordond/connectivity/Connectivity$Status;
-	public fun hashCode ()I
-	public final fun isActive ()Z
-	public final fun isConnected ()Z
-	public final fun isDisconnected ()Z
-	public final fun isMetered ()Z
-	public final fun isMonitoring ()Z
 	public fun toString ()Ljava/lang/String;
 }
 
