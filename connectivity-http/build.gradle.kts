@@ -21,6 +21,7 @@ kotlin {
 
         commonTest.dependencies {
             implementation(libs.ktor.client.mock)
+            implementation(libs.kermit)
         }
 
         androidMain.dependencies {
