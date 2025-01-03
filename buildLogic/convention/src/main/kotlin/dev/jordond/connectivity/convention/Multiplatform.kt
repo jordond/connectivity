@@ -120,4 +120,14 @@ internal fun KotlinMultiplatformExtension.configurePlatforms(
         implementation(project.libs.findLibrary("kotlinx-coroutines-test").get())
         implementation(project.libs.findLibrary("kotest-assertions").get())
     }
+
+    sourceSets.androidUnitTest.dependencies {
+        implementation(project.libs.findLibrary("mockk-android").get())
+        implementation(project.libs.findLibrary("mockk-agent").get())
+    }
+
+    sourceSets.androidInstrumentedTest.dependencies {
+        implementation(project.libs.findLibrary("mockk-android").get())
+        implementation(project.libs.findLibrary("mockk-agent").get())
+    }
 }

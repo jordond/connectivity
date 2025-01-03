@@ -18,6 +18,7 @@ androidx-activityCompose = "1.9.3"
 kermit = "2.0.5"
 binaryCompatibility = "0.17.0"
 dokka = "2.0.0"
+mockk = "1.13.14"
 publish = "0.30.0"
 poko = "0.18.2"
 versions = "0.51.0"
@@ -47,6 +48,9 @@ compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = 
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
+mockk-agent = { module = "io.mockk:mockk-agent", version.ref = "mockk" }
 stateHolder = { module = "dev.stateholder:core", version.ref = "stateHolder" }
 stateHolder-compose = { module = "dev.stateholder:extensions-compose", version.ref = "stateHolder" }
 stateHolder-voyager = { module = "dev.stateholder:extensions-voyager", version.ref = "stateHolder" }
