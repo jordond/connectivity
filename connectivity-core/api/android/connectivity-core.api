@@ -47,19 +47,6 @@ public final class dev/jordond/connectivity/Connectivity$Status$Disconnected : d
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class dev/jordond/connectivity/Connectivity$Update {
-	public fun <init> (ZLdev/jordond/connectivity/Connectivity$Status;)V
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getStatus ()Ldev/jordond/connectivity/Connectivity$Status;
-	public fun hashCode ()I
-	public final fun isActive ()Z
-	public final fun isConnected ()Z
-	public final fun isDisconnected ()Z
-	public final fun isMetered ()Z
-	public final fun isMonitoring ()Z
-	public fun toString ()Ljava/lang/String;
-}
-
 public final class dev/jordond/connectivity/ConnectivityKt {
 	public static final fun Connectivity (Ldev/jordond/connectivity/ConnectivityProvider;Ldev/jordond/connectivity/ConnectivityOptions;Lkotlinx/coroutines/CoroutineScope;)Ldev/jordond/connectivity/Connectivity;
 	public static final fun Connectivity (Ldev/jordond/connectivity/ConnectivityProvider;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;)Ldev/jordond/connectivity/Connectivity;
