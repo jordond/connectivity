@@ -19,6 +19,10 @@ kotlin {
             api(libs.ktor.client.core)
         }
 
+        commonTest.dependencies {
+            implementation(libs.ktor.client.mock)
+        }
+
         androidMain.dependencies {
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.ktor.client.android)
