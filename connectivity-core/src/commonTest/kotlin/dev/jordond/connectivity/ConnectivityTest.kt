@@ -5,24 +5,27 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class ConnectivityTest {
 
     private lateinit var testScope: TestScope
-    private lateinit var sutScope: CoroutineScope
+    private lateinit var sutScope: TestScope
     private lateinit var provider: ConnectivityProvider
 
     @BeforeTest
     fun setup() {
         testScope = TestScope()
-        sutScope = CoroutineScope(Dispatchers.Default)
+        sutScope = TestScope()
         provider = ConnectivityProvider(flowOf(Connectivity.Status.Connected(false)))
     }
 
@@ -41,6 +44,7 @@ class ConnectivityTest {
 
         connectivity.shouldNotBeNull()
         connectivity.shouldBeInstanceOf<Connectivity>()
+        sutScope.advanceUntilIdle()
         connectivity.monitoring.value shouldBe false
     }
 
@@ -56,6 +60,7 @@ class ConnectivityTest {
 
         connectivity.shouldNotBeNull()
         connectivity.shouldBeInstanceOf<Connectivity>()
+        sutScope.advanceUntilIdle()
         connectivity.monitoring.value shouldBe true
     }
 
@@ -70,7 +75,7 @@ class ConnectivityTest {
 
         connectivity.shouldNotBeNull()
         connectivity.shouldBeInstanceOf<Connectivity>()
-        testScheduler.advanceUntilIdle()
+        sutScope.advanceUntilIdle()
         connectivity.monitoring.value shouldBe true
     }
 
