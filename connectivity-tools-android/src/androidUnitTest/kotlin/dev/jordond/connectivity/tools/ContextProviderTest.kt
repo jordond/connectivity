@@ -5,6 +5,7 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
+import io.kotest.matchers.types.shouldBeSameInstanceAs
 import io.mockk.mockk
 import kotlin.test.AfterTest
 import kotlin.test.Test
@@ -23,7 +24,7 @@ class ContextProviderTest {
 
         provider.shouldNotBeNull()
         provider.shouldBeInstanceOf<ContextProvider>()
-        provider.context shouldBe context
+        provider.context shouldBeSameInstanceAs context
     }
 
     @Test

@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package dev.jordond.connectivity.internal
 
 import android.content.Context
@@ -269,15 +271,11 @@ class AndroidConnectivityProviderTest {
         versionCodeProvider = versionCodeProvider(Build.VERSION_CODES.LOLLIPOP)
         provider = AndroidConnectivityProvider(context, versionCodeProvider)
 
-        @Suppress("DEPRECATION")
         val networkInfo = mockk<NetworkInfo> {
             every { isConnected } returns true
         }
 
-        every {
-            @Suppress("DEPRECATION")
-            connectivityManager.activeNetworkInfo
-        } returns networkInfo
+        every { connectivityManager.activeNetworkInfo } returns networkInfo
         every { connectivityManager.isActiveNetworkMetered } returns true
 
         provider.monitor().test {
@@ -294,15 +292,11 @@ class AndroidConnectivityProviderTest {
         versionCodeProvider = versionCodeProvider(Build.VERSION_CODES.LOLLIPOP)
         provider = AndroidConnectivityProvider(context, versionCodeProvider)
 
-        @Suppress("DEPRECATION")
         val networkInfo = mockk<NetworkInfo> {
             every { isConnected } returns false
         }
 
-        every {
-            @Suppress("DEPRECATION")
-            connectivityManager.activeNetworkInfo
-        } returns networkInfo
+        every { connectivityManager.activeNetworkInfo } returns networkInfo
 
         provider.monitor().test {
             triggerNetworkCallback()
@@ -316,10 +310,7 @@ class AndroidConnectivityProviderTest {
     fun shouldReturnDisconnectedStatusWhenVersionIsOlderAndNetworkInfoIsNull() = runTest {
         versionCodeProvider = versionCodeProvider(Build.VERSION_CODES.LOLLIPOP)
         provider = AndroidConnectivityProvider(context, versionCodeProvider)
-        every {
-            @Suppress("DEPRECATION")
-            connectivityManager.activeNetworkInfo
-        } returns null
+        every { connectivityManager.activeNetworkInfo } returns null
 
         provider.monitor().test {
             triggerNetworkCallback()
