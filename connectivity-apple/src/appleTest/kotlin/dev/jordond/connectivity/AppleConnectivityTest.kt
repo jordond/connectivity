@@ -1,13 +1,8 @@
 package dev.jordond.connectivity
 
-import dev.jordond.connectivity.tools.ContextProvider
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.mockkObject
-import io.mockk.unmockkObject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.test.TestScope
@@ -18,27 +13,21 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class AndroidConnectivityTest {
+class AppleConnectivityTest {
 
     private lateinit var testScope: TestScope
     private lateinit var sutScope: TestScope
-    private lateinit var contextProvider: ContextProvider
 
     @BeforeTest
     fun setup() {
         testScope = TestScope()
         sutScope = TestScope()
-        contextProvider = mockk()
-        mockkObject(ContextProvider.Companion)
-        every { ContextProvider.getInstance() } returns contextProvider
-        every { contextProvider.context } returns mockk()
     }
 
     @AfterTest
     fun cleanup() {
         testScope.cancel()
         sutScope.cancel()
-        unmockkObject(ContextProvider.Companion)
     }
 
     @Test
@@ -67,8 +56,8 @@ class AndroidConnectivityTest {
     }
 
     @Test
-    fun shouldCreateAndroidConnectivityWithDefaultOptions() = testScope.runTest {
-        val connectivity = AndroidConnectivity()
+    fun shouldCreateAppleConnectivityWithDefaultOptions() = testScope.runTest {
+        val connectivity = AppleConnectivity()
 
         connectivity.shouldNotBeNull()
         connectivity.shouldBeInstanceOf<Connectivity>()
@@ -77,10 +66,10 @@ class AndroidConnectivityTest {
     }
 
     @Test
-    fun shouldCreateAndroidConnectivityWithCustomOptions() = testScope.runTest {
+    fun shouldCreateAppleConnectivityWithCustomOptions() = testScope.runTest {
         val options = ConnectivityOptions(autoStart = true)
 
-        val connectivity = AndroidConnectivity(
+        val connectivity = AppleConnectivity(
             options = options,
             scope = sutScope,
         )
