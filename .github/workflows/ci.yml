@@ -53,7 +53,9 @@ jobs:
       matrix:
         config: [
           { target: "default", os: "ubuntu-latest", tasks: "test" },
-          { target: "osx", os: "macos-latest", tasks: "test" },
+          { target: "ios-simulator", os: "macos-latest", tasks: "iosSimulatorArm64Test" },
+          { target: "macos-arm", os: "macos-latest", tasks: "macosArm64Test" },
+          { target: "macos-x64", os: "macos-latest", tasks: "macosX64Test" },
           { target: "js-node", os: "ubuntu-latest", tasks: "jsNodeTest" },
           { target: "wasm-node", os: "ubuntu-latest", tasks: "wasmJsNodeTest" },
           { target: "package", os: "ubuntu-latest", tasks: ":demo:composeApp:packageDistributionForCurrentOS" }
