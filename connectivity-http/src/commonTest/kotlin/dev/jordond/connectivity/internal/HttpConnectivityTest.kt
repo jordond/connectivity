@@ -16,6 +16,7 @@ import io.ktor.client.engine.mock.respondOk
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.HttpStatusCode.Companion.InternalServerError
+import io.ktor.http.URLProtocol
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -25,6 +26,7 @@ import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlin.time.Duration.Companion.seconds
 
 class HttpConnectivityTest {
 
@@ -161,6 +163,31 @@ class HttpConnectivityTest {
     }
 
     @Test
+    fun shouldHandleExceptionInMakeRequest() = scope.runTest(timeout = 3.seconds) {
+        mockEngine = MockEngine {
+            throw IllegalStateException("Test exception")
+        }
+        httpClient = HttpClient(mockEngine)
+
+        var lastResult: PollResult? = null
+        testConnectivity(
+            configure = {
+                onPollResult { lastResult = it }
+            }
+        ) { connectivity ->
+            val status = connectivity.status()
+
+            status.shouldBeInstanceOf<Connectivity.Status.Disconnected>()
+            lastResult.shouldNotBeNull()
+            lastResult.shouldBeInstanceOf<PollResult.Error>()
+
+            val error = lastResult as PollResult.Error
+            error.throwable.shouldBeInstanceOf<IllegalStateException>()
+            error.throwable.message shouldBe "Test exception"
+        }
+    }
+
+    @Test
     fun shouldUseSpecifiedHttpMethod() = scope.runTest {
         var lastMethod: HttpMethod? = null
         mockEngine = MockEngine { request ->
@@ -176,12 +203,79 @@ class HttpConnectivityTest {
         }
     }
 
+    @Test
+    fun shouldParseUrlWithHttpPrefix() {
+        val (protocol, host) = getProtocolAndHost("http://example.com", 80)
+
+        protocol shouldBe URLProtocol.HTTP
+        host shouldBe "example.com"
+    }
+
+    @Test
+    fun shouldParseUrlWithHttpsPrefix() {
+        val (protocol, host) = getProtocolAndHost("https://example.com", 80)
+
+        protocol shouldBe URLProtocol.HTTPS
+        host shouldBe "example.com"
+    }
+
+    @Test
+    fun shouldDefaultToHttpsWhenPort443() {
+        val (protocol, host) = getProtocolAndHost("example.com", 443)
+
+        protocol shouldBe URLProtocol.HTTPS
+        host shouldBe "example.com"
+    }
+
+    @Test
+    fun shouldDefaultToHttpWhenNonSecurePort() {
+        val (protocol, host) = getProtocolAndHost("example.com", 8080)
+
+        protocol shouldBe URLProtocol.HTTP
+        host shouldBe "example.com"
+    }
+
+    @Test
+    fun shouldStopMonitoringWhenStopIsCalled() = scope.runTest {
+        testConnectivity { connectivity ->
+            connectivity.start()
+            connectivity.monitoring.value.shouldBeTrue()
+
+            connectivity.stop()
+            connectivity.monitoring.value.shouldBeFalse()
+        }
+    }
+
+    @Test
+    fun shouldHandleStopWhenNotMonitoring() = scope.runTest {
+        testConnectivity { connectivity ->
+            // Verify initial state
+            connectivity.monitoring.value.shouldBeFalse()
+
+            // Should not throw or change state
+            connectivity.stop()
+            connectivity.monitoring.value.shouldBeFalse()
+        }
+    }
+
+    @Test
+    fun shouldNotStartNewJobWhenAlreadyMonitoring() = scope.runTest {
+        testConnectivity { connectivity ->
+            connectivity.start()
+            connectivity.monitoring.value.shouldBeTrue()
+
+            // Should not affect monitoring state
+            connectivity.start()
+            connectivity.monitoring.value.shouldBeTrue()
+        }
+    }
+
     private suspend fun testConnectivity(
         httpClient: HttpClient = this.httpClient,
+        scope: CoroutineScope = CoroutineScope(Dispatchers.Default),
         configure: HttpConnectivityOptions.Builder.() -> Unit = {},
         test: suspend (Connectivity) -> Unit,
     ) {
-        val scope = CoroutineScope(Dispatchers.Default)
         val options = HttpConnectivityOptions.build(configure)
         val connectivity = HttpConnectivity(scope, options, httpClient)
         test(connectivity)

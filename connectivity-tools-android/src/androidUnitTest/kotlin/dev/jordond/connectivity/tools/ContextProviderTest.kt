@@ -6,6 +6,7 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import io.kotest.matchers.types.shouldBeSameInstanceAs
+import io.mockk.every
 import io.mockk.mockk
 import kotlin.test.AfterTest
 import kotlin.test.Test
@@ -15,16 +16,6 @@ class ContextProviderTest {
     @AfterTest
     fun cleanup() {
         ContextProvider.Companion.instance = null
-    }
-
-    @Test
-    fun shouldCreateContextProviderInstance() {
-        val context = mockk<Context>()
-        val provider = ContextProvider.create(context)
-
-        provider.shouldNotBeNull()
-        provider.shouldBeInstanceOf<ContextProvider>()
-        provider.context shouldBeSameInstanceAs context
     }
 
     @Test

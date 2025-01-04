@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.poko)
     alias(libs.plugins.dokka)
     alias(libs.plugins.publish)
+    alias(libs.plugins.kotlinx.kover)
     alias(libs.plugins.convention.multiplatform)
 }
 

@@ -7,6 +7,7 @@ jvmTarget = "17"
 agp = "8.7.3"
 kotlin = "2.1.0"
 kotlinx-coroutines = "1.10.1"
+kotlinx-kover = "0.9.0"
 compose = "1.7.6"
 compose-multiplatform = "1.7.3"
 androidx-activity = "1.9.3"
@@ -80,4 +81,5 @@ binaryCompatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validat
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }
 poko = { id = "dev.drewhamilton.poko", version.ref = "poko" }
+kotlinx-kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kotlinx-kover" }
 convention-multiplatform = { id = "convention.multiplatform", version = "0" }
