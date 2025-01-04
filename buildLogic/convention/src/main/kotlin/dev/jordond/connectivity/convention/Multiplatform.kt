@@ -119,6 +119,7 @@ internal fun KotlinMultiplatformExtension.configurePlatforms(
         implementation(kotlin("test"))
         implementation(project.libs.findLibrary("kotlinx-coroutines-test").get())
         implementation(project.libs.findLibrary("kotest-assertions").get())
+        implementation(project.libs.findLibrary("turbine").get())
     }
 
     sourceSets.androidUnitTest.dependencies {

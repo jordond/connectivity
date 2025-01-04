@@ -24,6 +24,7 @@ poko = "0.18.2"
 versions = "0.51.0"
 kotest = "5.9.1"
 ktor = "3.0.3"
+turbine = "1.2.0"
 voyager = "1.1.0-beta03"
 stateHolder = "1.2.0"
 
@@ -55,6 +56,7 @@ stateHolder = { module = "dev.stateholder:core", version.ref = "stateHolder" }
 stateHolder-compose = { module = "dev.stateholder:extensions-compose", version.ref = "stateHolder" }
 stateHolder-voyager = { module = "dev.stateholder:extensions-voyager", version.ref = "stateHolder" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 voyager-screenModel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyager" }
 gradlePlugin-android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 gradlePlugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
