@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.dokka)
     alias(libs.plugins.dependencies)
     alias(libs.plugins.binaryCompatibility)
+    alias(libs.plugins.kotlinx.kover)
 }
 
 apiValidation {
