@@ -23,7 +23,6 @@ kotlin {
             api(projects.connectivityDevice)
 
             implementation(compose.runtime)
-            implementation(compose.ui)
             implementation(libs.kotlinx.coroutines.core)
         }
     }
