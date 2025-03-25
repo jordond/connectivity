@@ -14,7 +14,7 @@ public class ContextProvider(public val context: Context) {
     public companion object {
 
         @SuppressLint("StaticFieldLeak")
-        private var instance: ContextProvider? = null
+        internal var instance: ContextProvider? = null
 
         /**
          * Create a new instance of [ContextProvider] with the given [context].

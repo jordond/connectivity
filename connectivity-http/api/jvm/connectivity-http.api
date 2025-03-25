@@ -67,6 +67,8 @@ public final class dev/jordond/connectivity/PollResult$Response : dev/jordond/co
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getResponse ()Lio/ktor/client/statement/HttpResponse;
 	public fun hashCode ()I
+	public final fun isFailure ()Z
+	public final fun isSuccess ()Z
 	public fun toString ()Ljava/lang/String;
 }
 

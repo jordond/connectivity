@@ -17,8 +17,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOf
 
+// This suppress is needed because we now use a wrapper for the version code see VersionCodeProvider
+@SuppressLint("NewApi")
 internal class AndroidConnectivityProvider(
     private val context: Context,
+    private val versionCodeProvider: VersionCodeProvider = VersionCodeProvider.Default,
 ) : ConnectivityProvider {
 
     // The permission is in the manifest but the IDE doesn't seem to recognize it
@@ -49,10 +52,12 @@ internal class AndroidConnectivityProvider(
             }
 
             try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                if (versionCodeProvider.code >= Build.VERSION_CODES.N) {
+                    println("Using registerDefaultNetworkCallback")
                     manager.registerDefaultNetworkCallback(networkCallback)
                 } else {
                     val networkRequest = NetworkRequest.Builder().build()
+                    println("Using registerNetworkCallback")
                     manager.registerNetworkCallback(networkRequest, networkCallback)
                 }
 
@@ -67,7 +72,7 @@ internal class AndroidConnectivityProvider(
     }
 
     private fun ConnectivityManager.initialStatus(): Connectivity.Status {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        return if (versionCodeProvider.code >= Build.VERSION_CODES.M) {
             activeNetwork?.let { network ->
                 getNetworkCapabilities(network)?.let { capabilities ->
                     status(capabilities)

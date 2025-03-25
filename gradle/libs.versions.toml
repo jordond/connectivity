@@ -7,6 +7,7 @@ jvmTarget = "17"
 agp = "8.9.1"
 kotlin = "2.1.20"
 kotlinx-coroutines = "1.10.1"
+kotlinx-kover = "0.9.0"
 compose = "1.7.8"
 compose-multiplatform = "1.7.3"
 androidx-activity = "1.10.1"
@@ -18,11 +19,13 @@ androidx-activityCompose = "1.10.1"
 kermit = "2.0.5"
 binaryCompatibility = "0.17.0"
 dokka = "2.0.0"
+mockk = "1.13.14"
 publish = "0.31.0"
 poko = "0.18.2"
 versions = "0.52.0"
 kotest = "5.9.1"
 ktor = "3.1.1"
+turbine = "1.2.0"
 voyager = "1.1.0-beta03"
 stateHolder = "1.2.0"
 
@@ -36,19 +39,25 @@ androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "and
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-core-jvm = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
+ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
+mockk-agent = { module = "io.mockk:mockk-agent", version.ref = "mockk" }
 stateHolder = { module = "dev.stateholder:core", version.ref = "stateHolder" }
 stateHolder-compose = { module = "dev.stateholder:extensions-compose", version.ref = "stateHolder" }
 stateHolder-voyager = { module = "dev.stateholder:extensions-voyager", version.ref = "stateHolder" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 voyager-screenModel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyager" }
 gradlePlugin-android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 gradlePlugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -72,4 +81,5 @@ binaryCompatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validat
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }
 poko = { id = "dev.drewhamilton.poko", version.ref = "poko" }
+kotlinx-kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kotlinx-kover" }
 convention-multiplatform = { id = "convention.multiplatform", version = "0" }

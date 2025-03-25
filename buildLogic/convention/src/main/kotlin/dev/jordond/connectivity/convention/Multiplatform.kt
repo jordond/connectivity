@@ -1,15 +1,11 @@
-@file:OptIn(ExperimentalWasmDsl::class, ExperimentalKotlinGradlePluginApi::class)
-
 package dev.jordond.connectivity.convention
 
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.get
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 
 fun Project.configureMultiplatform(
     platform: Platform,
@@ -38,13 +34,13 @@ fun Project.configureMultiplatform(
     }
 }
 
+@OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
 internal fun KotlinMultiplatformExtension.configurePlatforms(
     platforms: Set<Platform> = Platforms.All,
     name: String,
 ) {
     applyDefaultHierarchyTemplate()
 
-    @OptIn(ExperimentalKotlinGradlePluginApi::class)
     compilerOptions {
         freeCompilerArgs.add("-Xexpect-actual-classes")
         optIn.add("dev.jordond.connectivity.InternalConnectivityApi")
@@ -70,11 +66,10 @@ internal fun KotlinMultiplatformExtension.configurePlatforms(
         tvosArm64()
     }
 
-    // TODO: Not currently supported by ktor-wasm02
-//    if (platforms.contains(Platform.Linux)) {
-//        linuxX64()
-//        linuxArm64()
-//    }
+    if (platforms.contains(Platform.Linux)) {
+        linuxX64()
+        linuxArm64()
+    }
 
     if (platforms.contains(Platform.Js)) {
         js {
@@ -118,6 +113,18 @@ internal fun KotlinMultiplatformExtension.configurePlatforms(
 
     sourceSets.commonTest.dependencies {
         implementation(kotlin("test"))
+        implementation(project.libs.findLibrary("kotlinx-coroutines-test").get())
         implementation(project.libs.findLibrary("kotest-assertions").get())
+        implementation(project.libs.findLibrary("turbine").get())
+    }
+
+    sourceSets.androidUnitTest.dependencies {
+        implementation(project.libs.findLibrary("mockk-android").get())
+        implementation(project.libs.findLibrary("mockk-agent").get())
+    }
+
+    sourceSets.androidInstrumentedTest.dependencies {
+        implementation(project.libs.findLibrary("mockk-android").get())
+        implementation(project.libs.findLibrary("mockk-agent").get())
     }
 }

@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.poko)
     alias(libs.plugins.dokka)
     alias(libs.plugins.publish)
+    alias(libs.plugins.kotlinx.kover)
     alias(libs.plugins.convention.multiplatform)
 }
 
@@ -17,6 +18,11 @@ kotlin {
             implementation(projects.connectivityCore)
             implementation(libs.kotlinx.coroutines.core)
             api(libs.ktor.client.core)
+        }
+
+        commonTest.dependencies {
+            implementation(libs.ktor.client.mock)
+            implementation(libs.kermit)
         }
 
         androidMain.dependencies {

@@ -52,9 +52,13 @@ jobs:
     strategy:
       matrix:
         config: [
-          { target: "default", os: "ubuntu-latest", tasks: "test", continueOnError: false },
-          { target: "osx", os: "macos-latest", tasks: "test", continueOnError: false },
-          { target: "package", os: "ubuntu-latest", tasks: ":demo:composeApp:packageDistributionForCurrentOS", continueOnError: false }
+          { target: "default", os: "ubuntu-latest", tasks: "test" },
+          { target: "ios-simulator", os: "macos-latest", tasks: "iosSimulatorArm64Test" },
+          { target: "macos-arm", os: "macos-latest", tasks: "macosArm64Test" },
+          { target: "macos-x64", os: "macos-latest", tasks: "macosX64Test" },
+          { target: "js-node", os: "ubuntu-latest", tasks: "jsNodeTest" },
+          { target: "wasm-node", os: "ubuntu-latest", tasks: "wasmJsNodeTest" },
+          { target: "package", os: "ubuntu-latest", tasks: ":demo:composeApp:packageDistributionForCurrentOS" }
         ]
     runs-on: ${{ matrix.config.os }}
     name: Test ${{ matrix.config.target }}
@@ -87,12 +91,17 @@ jobs:
         uses: gradle/actions/wrapper-validation@v4
 
       - name: Run ${{ matrix.config.target }} tests
-        continue-on-error: ${{ matrix.config.continueOnError }}
         run: ./gradlew ${{ matrix.config.tasks }} --scan
 
   test-browser:
+    strategy:
+      matrix:
+        config: [
+          { target: "js", tasks: "jsBrowserTest" },
+          { target: "wasm", tasks: "wasmJsBrowserTest" },
+        ]
     runs-on: ubuntu-latest
-    name: Test JS in browser
+    name: Test ${{ matrix.config.target }} in browser
     needs: verify
     steps:
       - name: Checkout
@@ -114,4 +123,4 @@ jobs:
         uses: browser-actions/setup-chrome@v1
 
       - name: Run tests in browser
-        run: ./gradlew jsTest --scan
+        run: ./gradlew ${{ matrix.config.tasks }} --scan

@@ -23,7 +23,7 @@ public class HttpConnectivityOptions(
     public val method: HttpMethod = DEFAULT_HTTP_METHOD,
     public val timeoutMs: Long = DEFAULT_TIMEOUT,
     public val pollingIntervalMs: Long = DEFAULT_POLLING_INTERVAL_MS,
-    public val onPollResult: ((result: PollResult) -> Unit)? = null
+    public val onPollResult: ((result: PollResult) -> Unit)? = null,
 ) {
 
     /**
@@ -122,6 +122,7 @@ public class HttpConnectivityOptions(
             options = options,
             urls = urls,
             port = port,
+            method = method,
             timeoutMs = timeoutMs,
             pollingIntervalMs = pollingIntervalMs,
             onPollResult = onPoll,
@@ -130,11 +131,11 @@ public class HttpConnectivityOptions(
 
     public companion object {
 
-        private const val DEFAULT_PORT = 443
-        private val DEFAULT_HTTP_METHOD = HttpMethod.Get
-        private const val DEFAULT_TIMEOUT = 2000L
-        private const val DEFAULT_POLLING_INTERVAL_MS = (60 * 1000L) * 5
-        private val DEFAULT_URLS = listOf("google.com", "github.com", "bing.com")
+        internal const val DEFAULT_PORT = 443
+        internal val DEFAULT_HTTP_METHOD = HttpMethod.Get
+        internal const val DEFAULT_TIMEOUT = 2000L
+        internal const val DEFAULT_POLLING_INTERVAL_MS = (60 * 1000L) * 5
+        internal val DEFAULT_URLS = listOf("google.com", "github.com", "bing.com")
 
         /**
          * Builds a new [HttpConnectivityOptions] instance using a builder pattern.

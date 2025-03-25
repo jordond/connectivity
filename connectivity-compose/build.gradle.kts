@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.poko)
     alias(libs.plugins.dokka)
     alias(libs.plugins.publish)
+    alias(libs.plugins.kotlinx.kover)
     alias(libs.plugins.convention.multiplatform)
 }
 
@@ -19,7 +20,6 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.connectivityCore)
             implementation(compose.runtime)
-            implementation(compose.ui)
             implementation(libs.kotlinx.coroutines.core)
         }
     }
