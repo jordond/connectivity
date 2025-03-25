@@ -6,6 +6,7 @@ import dev.jordond.connectivity.ConnectivityOptions
 import dev.jordond.connectivity.ConnectivityProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -58,8 +59,13 @@ internal class DefaultConnectivity(
     }
 
     override fun stop() {
+        cancelJob()
+        _monitoring.update { false }
+    }
+
+    private fun cancelJob() {
+        cancel()
         job?.cancel()
         job = null
-        _monitoring.update { false }
     }
 }
