@@ -4,9 +4,16 @@ import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.get
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 internal fun Project.configureAndroid(name: String = this.name) {
     setNamespace(name)
@@ -40,18 +47,6 @@ internal fun Project.configureKotlinAndroid(commonExtension: CommonExtension<*, 
     }
 }
 
-fun Project.configureAndroidCompose(commonExtension: CommonExtension<*, *, *, *, *, *>) {
-    commonExtension.apply {
-        buildFeatures {
-            compose = true
-        }
-
-        composeOptions {
-            kotlinCompilerExtensionVersion = libs.findVersion("compose-compiler").get().toString()
-        }
-    }
-}
-
 internal fun Project.setNamespace(name: String) {
     extensions.configure<LibraryExtension> {
         val packageName = libs.findVersion("group").get().toString()
@@ -62,6 +57,24 @@ internal fun Project.setNamespace(name: String) {
 internal fun Project.configureKotlin() {
     extensions.configure<KotlinBaseExtension> {
         explicitApi()
-        jvmToolchain(jvmTargetVersion)
+    }
+
+    extensions.configure<JavaPluginExtension> {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(jvmTargetVersion))
+        }
+    }
+
+    tasks.withType<JavaCompile>().configureEach {
+        sourceCompatibility = "11"
+        targetCompatibility = "11"
+    }
+
+    tasks.withType<KotlinCompilationTask<*>>().configureEach {
+        compilerOptions {
+            if (this is KotlinJvmCompilerOptions) {
+                jvmTarget.set(JvmTarget.JVM_11)
+            }
+        }
     }
 }
