@@ -40,18 +40,6 @@ internal fun Project.configureKotlinAndroid(commonExtension: CommonExtension<*, 
     }
 }
 
-fun Project.configureAndroidCompose(commonExtension: CommonExtension<*, *, *, *, *, *>) {
-    commonExtension.apply {
-        buildFeatures {
-            compose = true
-        }
-
-        composeOptions {
-            kotlinCompilerExtensionVersion = libs.findVersion("compose-compiler").get().toString()
-        }
-    }
-}
-
 internal fun Project.setNamespace(name: String) {
     extensions.configure<LibraryExtension> {
         val packageName = libs.findVersion("group").get().toString()
