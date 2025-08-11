@@ -64,6 +64,7 @@ internal fun KotlinMultiplatformExtension.configurePlatforms(
     if (platforms.contains(Platform.TvOS)) {
         tvosX64()
         tvosArm64()
+        tvosSimulatorArm64()
     }
 
     if (platforms.contains(Platform.Linux)) {
