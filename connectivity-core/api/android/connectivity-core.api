@@ -1,7 +1,7 @@
 public abstract interface class dev/jordond/connectivity/Connectivity {
 	public abstract fun getMonitoring ()Lkotlinx/coroutines/flow/StateFlow;
 	public abstract fun getStatusUpdates ()Lkotlinx/coroutines/flow/SharedFlow;
-	public abstract fun isMonitoring ()Z
+	public fun isMonitoring ()Z
 	public abstract fun start ()V
 	public abstract fun status (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun stop ()V
@@ -12,9 +12,9 @@ public final class dev/jordond/connectivity/Connectivity$DefaultImpls {
 }
 
 public abstract interface class dev/jordond/connectivity/Connectivity$Status {
-	public abstract fun isConnected ()Z
-	public abstract fun isDisconnected ()Z
-	public abstract fun isMetered ()Z
+	public fun isConnected ()Z
+	public fun isDisconnected ()Z
+	public fun isMetered ()Z
 }
 
 public final class dev/jordond/connectivity/Connectivity$Status$Connected : dev/jordond/connectivity/Connectivity$Status {
