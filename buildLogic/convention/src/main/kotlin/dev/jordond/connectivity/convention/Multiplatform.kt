@@ -48,7 +48,7 @@ internal fun KotlinMultiplatformExtension.configurePlatforms(
 
     if (platforms.contains(Platform.Android)) {
         androidTarget {
-            publishAllLibraryVariants()
+            publishLibraryVariants("release", "debug")
         }
     }
 

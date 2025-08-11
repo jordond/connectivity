@@ -10,9 +10,7 @@ plugins {
 
 kotlin {
     applyDefaultHierarchyTemplate()
-    androidTarget {
-        publishAllLibraryVariants()
-    }
+    androidTarget()
 
     js {
         outputModuleName.set("composeApp")
