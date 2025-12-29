@@ -13,7 +13,7 @@ plugins {
     alias(libs.plugins.convention.multiplatform)
 }
 
-configureMultiplatform(Platforms.Compose)
+configureMultiplatform(Platforms.All)
 
 kotlin {
     sourceSets {
