@@ -2,7 +2,7 @@
 <br />
 
 [![Maven Central Version](https://img.shields.io/maven-central/v/dev.jordond.connectivity/connectivity-core)](https://central.sonatype.com/namespace/dev.jordond.connectivity)
-[![Kotlin](https://img.shields.io/badge/kotlin-v2.1.0-blue.svg?logo=kotlin)](http://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/kotlin-v2.3.0-blue.svg?logo=kotlin)](http://kotlinlang.org)
 [![Build](https://github.com/jordond/connectivity/actions/workflows/ci.yml/badge.svg)](https://github.com/jordond/connectivity/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/jordond/connectivity)](https://opensource.org/license/mit/)
 
