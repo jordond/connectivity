@@ -49,7 +49,7 @@ This library is written for Kotlin Multiplatform, and can be used on the followi
 | `connectivity-apple`          |    ❌    |  ✅  |   ✅   | ✅    |  ❌  |    ❌    |
 | `connectivity-http`           |    ✅    |  ✅  |   ✅   | ✅    |  ✅  |    ✅    |
 | `connectivity-compose`        |    ✅    |  ✅  |   ❌   | ❌    |  ✅  |    ✅    |
-| `connectivity-compose-device` |    ✅    |  ✅  |   ❌   | ❌    |  ✅  |    ✅    |
+| `connectivity-compose-device` |    ✅    |  ✅  |   ❌   | ❌    |  ❌  |    ✅    |
 | `connectivity-compose-http`   |    ✅    |  ✅  |   ❌   | ❌    |  ✅  |    ✅    |
 
 ## Setup
