@@ -27,10 +27,10 @@ jobs:
           distribution: adopt
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5
+        uses: gradle/actions/setup-gradle@v6
 
       - name: Gradle Wrapper Validation
-        uses: gradle/actions/wrapper-validation@v5
+        uses: gradle/actions/wrapper-validation@v6
 
       - name: Deploy to Sonatype
         run: |
@@ -71,10 +71,10 @@ jobs:
           distribution: adopt
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5
+        uses: gradle/actions/setup-gradle@v6
 
       - name: Gradle Wrapper Validation
-        uses: gradle/actions/wrapper-validation@v5
+        uses: gradle/actions/wrapper-validation@v6
 
       - name: Generate documentation
         run: ./gradlew dokkaHtmlMultiModule --no-configuration-cache
