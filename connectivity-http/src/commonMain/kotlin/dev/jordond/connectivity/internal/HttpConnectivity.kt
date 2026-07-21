@@ -12,6 +12,7 @@ import io.ktor.http.isSuccess
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -23,13 +24,17 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 @Poko
 internal class HttpConnectivity(
-    scope: CoroutineScope,
+    parentScope: CoroutineScope,
     private val httpOptions: HttpConnectivityOptions,
     private val httpClient: HttpClient,
-) : Connectivity, CoroutineScope by scope {
+) : Connectivity {
+    private val scope = CoroutineScope(
+        parentScope.coroutineContext + SupervisorJob(parentScope.coroutineContext[Job]),
+    )
 
     private var job: Job? = null
 
@@ -55,7 +60,7 @@ internal class HttpConnectivity(
     }
 
     override fun start() {
-        if (job != null) return
+        if (job?.isActive == true) return
         poll()
         _monitoring.update { true }
     }
@@ -67,7 +72,7 @@ internal class HttpConnectivity(
     }
 
     internal fun forcePoll() {
-        launch {
+        scope.launch {
             checkConnection().also { status ->
                 _statusUpdates.emit(status)
             }
@@ -75,11 +80,11 @@ internal class HttpConnectivity(
     }
 
     private fun poll() {
-        job = launch {
+        job = scope.launch {
             while (isActive) {
                 val status = checkConnection()
                 _statusUpdates.emit(status)
-                delay(httpOptions.pollingIntervalMs)
+                delay(httpOptions.pollingIntervalMs.milliseconds)
             }
         }
     }
@@ -112,14 +117,28 @@ internal class HttpConnectivity(
                 }
             }
 
-            httpOptions.onPollResult?.invoke(PollResult.Response(response))
+            notifyPollResult(PollResult.Response(response))
 
             return response.status.isSuccess()
         } catch (cause: Throwable) {
             if (cause is CancellationException) throw cause
 
-            httpOptions.onPollResult?.invoke(PollResult.Error(cause))
+            notifyPollResult(PollResult.Error(cause))
             return false
+        }
+    }
+
+    /**
+     * Invokes the consumer's [HttpConnectivityOptions.onPollResult] callback, a throwing callback
+     * must not stop the polling or bring down the scope it is running in.
+     */
+    private fun notifyPollResult(result: PollResult) {
+        try {
+            httpOptions.onPollResult?.invoke(result)
+        } catch (cause: CancellationException) {
+            throw cause
+        } catch (_: Throwable) {
+            // Ignored, the callback is a notification and its failures are the consumer's problem.
         }
     }
 }

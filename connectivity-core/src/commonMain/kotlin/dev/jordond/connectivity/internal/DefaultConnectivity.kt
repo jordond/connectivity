@@ -6,7 +6,7 @@ import dev.jordond.connectivity.ConnectivityOptions
 import dev.jordond.connectivity.ConnectivityProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,15 +15,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @Poko
 internal class DefaultConnectivity(
-    scope: CoroutineScope,
+    parentScope: CoroutineScope,
     private val provider: ConnectivityProvider,
     options: ConnectivityOptions,
-) : Connectivity, CoroutineScope by scope {
+) : Connectivity {
+    private val scope = CoroutineScope(
+        parentScope.coroutineContext + SupervisorJob(parentScope.coroutineContext[Job]),
+    )
 
     private var job: Job? = null
 
@@ -50,8 +52,8 @@ internal class DefaultConnectivity(
 
     override fun start() {
         job?.cancel()
-        job = launch {
-            _monitoring.update { true }
+        _monitoring.value = true
+        job = scope.launch {
             provider.monitor().collect { status ->
                 _statusUpdates.emit(status)
             }
@@ -59,13 +61,8 @@ internal class DefaultConnectivity(
     }
 
     override fun stop() {
-        cancelJob()
-        _monitoring.update { false }
-    }
-
-    private fun cancelJob() {
-        cancel()
         job?.cancel()
         job = null
+        _monitoring.value = false
     }
 }

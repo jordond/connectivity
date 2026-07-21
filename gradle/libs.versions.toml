@@ -25,7 +25,7 @@ versions = "0.54.0"
 kotest = "6.2.3"
 ktor = "3.5.1"
 turbine = "1.2.1"
-voyager = "1.1.0-beta03"
+voyager = "2.2.21-1.10.3"
 stateHolder = "1.2.0"
 
 [libraries]

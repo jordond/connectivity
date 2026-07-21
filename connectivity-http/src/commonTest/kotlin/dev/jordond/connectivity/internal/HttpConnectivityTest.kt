@@ -5,6 +5,7 @@ import dev.jordond.connectivity.HttpConnectivityOptions
 import dev.jordond.connectivity.PollResult
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
@@ -20,7 +21,9 @@ import io.ktor.http.URLProtocol
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
@@ -267,6 +270,82 @@ class HttpConnectivityTest {
             // Should not affect monitoring state
             connectivity.start()
             connectivity.monitoring.value.shouldBeTrue()
+        }
+    }
+
+    @Test
+    fun shouldNotCancelProvidedScopeWhenPollResultCallbackThrows() = scope.runTest {
+        val hostScope = CoroutineScope(Dispatchers.Default)
+        testConnectivity(
+            scope = hostScope,
+            configure = { onPollResult { error("Consumer callback blew up") } },
+        ) { connectivity ->
+            connectivity.start()
+            connectivity.statusUpdates.first()
+
+            hostScope.isActive.shouldBeTrue()
+            connectivity.monitoring.value.shouldBeTrue()
+        }
+    }
+
+    @Test
+    fun shouldKeepPollingWhenPollResultCallbackThrows() = scope.runTest {
+        val polls = Channel<Unit>(Channel.UNLIMITED)
+        testConnectivity(
+            configure = {
+                pollingIntervalMs = 1
+                onPollResult {
+                    polls.trySend(Unit)
+                    error("Consumer callback blew up")
+                }
+            },
+        ) { connectivity ->
+            connectivity.start()
+
+            // A throwing callback must not tear down the polling loop.
+            polls.receive()
+            polls.receive()
+            connectivity.monitoring.value.shouldBeTrue()
+        }
+    }
+
+    @Test
+    fun shouldResumePollingWhenStartedAfterStop() = scope.runTest {
+        val polls = Channel<Unit>(Channel.UNLIMITED)
+        testConnectivity(configure = { onPollResult { polls.trySend(Unit) } }) { connectivity ->
+            connectivity.start()
+            polls.receive()
+
+            connectivity.stop()
+            connectivity.monitoring.value.shouldBeFalse()
+
+            connectivity.start()
+            connectivity.monitoring.value.shouldBeTrue()
+            polls.receive()
+        }
+    }
+
+    @Test
+    fun shouldNotCancelProvidedScopeWhenStopIsCalled() = scope.runTest {
+        val hostScope = CoroutineScope(Dispatchers.Default)
+        testConnectivity(scope = hostScope) { connectivity ->
+            connectivity.start()
+            connectivity.statusUpdates.first()
+
+            connectivity.stop()
+            hostScope.isActive.shouldBeTrue()
+        }
+    }
+
+    @Test
+    fun shouldNotPollWhenProvidedScopeIsCancelled() = scope.runTest {
+        val hostScope = CoroutineScope(Dispatchers.Default)
+        hostScope.cancel()
+
+        testConnectivity(scope = hostScope) { connectivity ->
+            connectivity.start()
+
+            connectivity.statusUpdates.replayCache.shouldBeEmpty()
         }
     }
 
