@@ -1,5 +1,7 @@
 package dev.jordond.connectivity
 
+import android.content.Context
+import android.net.ConnectivityManager
 import dev.jordond.connectivity.tools.ContextProvider
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
@@ -31,7 +33,12 @@ class AndroidConnectivityTest {
         contextProvider = mockk()
         mockkObject(ContextProvider.Companion)
         every { ContextProvider.getInstance() } returns contextProvider
-        every { contextProvider.context } returns mockk()
+        every { contextProvider.context } returns mockk {
+            // No ConnectivityManager, so the provider emits Disconnected without touching the
+            // Android framework, which isn't available in a host test.
+            every { getSystemService(Context.CONNECTIVITY_SERVICE) } returns null
+            every { getSystemService(ConnectivityManager::class.java) } returns null
+        }
     }
 
     @AfterTest
