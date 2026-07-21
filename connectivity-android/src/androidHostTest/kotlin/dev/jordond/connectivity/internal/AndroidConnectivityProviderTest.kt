@@ -43,6 +43,7 @@ class AndroidConnectivityProviderTest {
         connectivityManager = mockk(relaxed = true)
         context = mockk {
             every { getSystemService(Context.CONNECTIVITY_SERVICE) } returns connectivityManager
+            every { getSystemService(ConnectivityManager::class.java) } returns connectivityManager
         }
         provider = AndroidConnectivityProvider(context, versionCodeProvider)
     }
@@ -51,6 +52,7 @@ class AndroidConnectivityProviderTest {
     fun shouldReturnDisconnectedWhenNoConnectivityManager() = runTest {
         val contextWithoutManager = mockk<Context> {
             every { getSystemService(Context.CONNECTIVITY_SERVICE) } returns null
+            every { getSystemService(ConnectivityManager::class.java) } returns null
         }
         val provider = AndroidConnectivityProvider(contextWithoutManager)
         val status = provider.monitor().first()
