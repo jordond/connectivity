@@ -23,11 +23,6 @@ internal class DefaultConnectivity(
     private val provider: ConnectivityProvider,
     options: ConnectivityOptions,
 ) : Connectivity {
-
-    /**
-     * A child of the provided scope, so cancelling the parent still stops monitoring, but neither
-     * [stop] nor a failure in the provider can cancel the caller's scope.
-     */
     private val scope = CoroutineScope(
         parentScope.coroutineContext + SupervisorJob(parentScope.coroutineContext[Job]),
     )

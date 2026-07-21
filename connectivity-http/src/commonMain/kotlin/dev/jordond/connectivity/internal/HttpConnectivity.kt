@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 @Poko
 internal class HttpConnectivity(
@@ -31,11 +32,6 @@ internal class HttpConnectivity(
     private val httpOptions: HttpConnectivityOptions,
     private val httpClient: HttpClient,
 ) : Connectivity {
-
-    /**
-     * A child of the provided scope, so cancelling the parent still stops polling, but neither
-     * [stop] nor a failure while polling can cancel the caller's scope.
-     */
     private val scope = CoroutineScope(
         parentScope.coroutineContext + SupervisorJob(parentScope.coroutineContext[Job]),
     )
@@ -88,7 +84,7 @@ internal class HttpConnectivity(
             while (isActive) {
                 val status = checkConnection()
                 _statusUpdates.emit(status)
-                delay(httpOptions.pollingIntervalMs)
+                delay(httpOptions.pollingIntervalMs.milliseconds)
             }
         }
     }
