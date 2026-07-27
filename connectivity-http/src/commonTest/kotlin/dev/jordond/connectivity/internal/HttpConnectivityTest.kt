@@ -22,10 +22,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -334,6 +338,24 @@ class HttpConnectivityTest {
 
             connectivity.stop()
             hostScope.isActive.shouldBeTrue()
+        }
+    }
+
+    @Test
+    fun shouldNotOutliveCallerWhenScopedToTheCallersOwnContext() = scope.runTest {
+        withContext(Dispatchers.Default.limitedParallelism(1)) {
+            withTimeout(10.seconds) {
+                coroutineScope {
+                    val callerScope = CoroutineScope(currentCoroutineContext())
+                    val connectivity = HttpConnectivity(
+                        parentScope = callerScope,
+                        httpOptions = HttpConnectivityOptions.build { autoStart = false },
+                        httpClient = httpClient,
+                    )
+
+                    connectivity.status().shouldBeInstanceOf<Connectivity.Status.Connected>()
+                }
+            }
         }
     }
 
