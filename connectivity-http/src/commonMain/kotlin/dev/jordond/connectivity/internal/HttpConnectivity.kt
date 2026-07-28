@@ -12,7 +12,6 @@ import io.ktor.http.isSuccess
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -32,9 +31,7 @@ internal class HttpConnectivity(
     private val httpOptions: HttpConnectivityOptions,
     private val httpClient: HttpClient,
 ) : Connectivity {
-    private val scope = CoroutineScope(
-        parentScope.coroutineContext + SupervisorJob(parentScope.coroutineContext[Job]),
-    )
+    private val scope = ConnectivityScope(parentScope)
 
     private var job: Job? = null
 
@@ -62,13 +59,18 @@ internal class HttpConnectivity(
     override fun start() {
         if (job?.isActive == true) return
         poll()
-        _monitoring.update { true }
+        _monitoring.value = job?.isActive == true
     }
 
     override fun stop() {
         job?.cancel()
         job = null
         _monitoring.update { false }
+    }
+
+    override fun close() {
+        stop()
+        scope.close()
     }
 
     internal fun forcePoll() {

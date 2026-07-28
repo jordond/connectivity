@@ -1,4 +1,5 @@
-public abstract interface class dev/jordond/connectivity/Connectivity {
+public abstract interface class dev/jordond/connectivity/Connectivity : java/lang/AutoCloseable {
+	public abstract fun close ()V
 	public abstract fun getMonitoring ()Lkotlinx/coroutines/flow/StateFlow;
 	public abstract fun getStatusUpdates ()Lkotlinx/coroutines/flow/SharedFlow;
 	public fun isMonitoring ()Z

@@ -6,7 +6,6 @@ import dev.jordond.connectivity.ConnectivityOptions
 import dev.jordond.connectivity.ConnectivityProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,9 +22,7 @@ internal class DefaultConnectivity(
     private val provider: ConnectivityProvider,
     options: ConnectivityOptions,
 ) : Connectivity {
-    private val scope = CoroutineScope(
-        parentScope.coroutineContext + SupervisorJob(parentScope.coroutineContext[Job]),
-    )
+    private val scope = ConnectivityScope(parentScope)
 
     private var job: Job? = null
 
@@ -52,17 +49,23 @@ internal class DefaultConnectivity(
 
     override fun start() {
         job?.cancel()
-        _monitoring.value = true
-        job = scope.launch {
+        val started = scope.launch {
             provider.monitor().collect { status ->
                 _statusUpdates.emit(status)
             }
         }
+        job = started
+        _monitoring.value = started.isActive
     }
 
     override fun stop() {
         job?.cancel()
         job = null
         _monitoring.value = false
+    }
+
+    override fun close() {
+        stop()
+        scope.close()
     }
 }

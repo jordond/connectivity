@@ -8,19 +8,28 @@ import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.types.shouldBeInstanceOf
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.withTimeout
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class DefaultConnectivityTest {
@@ -161,6 +170,69 @@ class DefaultConnectivityTest {
     }
 
     @Test
+    fun shouldNotOutliveCallerWhenScopedToTheCallersOwnContext() = testScope.runTest {
+        withTimeout(10.seconds) {
+            coroutineScope {
+                val callerScope = CoroutineScope(currentCoroutineContext())
+                val connectivity = DefaultConnectivity(
+                    parentScope = callerScope,
+                    provider = provider,
+                    options = ConnectivityOptions(autoStart = false),
+                )
+
+                connectivity.status().isConnected.shouldBeTrue()
+            }
+        }
+    }
+
+    @Test
+    fun shouldNotOutliveCallerWhenMonitoringInTheCallersOwnContext() = testScope.runTest {
+        provider = ConnectivityProvider(
+            flow {
+                emit(Connectivity.Status.Connected(metered = false))
+                awaitCancellation()
+            },
+        )
+
+        withTimeout(10.seconds) {
+            coroutineScope {
+                val callerScope = CoroutineScope(currentCoroutineContext())
+                val connectivity = DefaultConnectivity(
+                    parentScope = callerScope,
+                    provider = provider,
+                    options = ConnectivityOptions(autoStart = true),
+                )
+
+                connectivity.statusUpdates.first().isConnected.shouldBeTrue()
+            }
+        }
+    }
+
+    @Test
+    fun shouldStopMonitoringWhenProvidedScopeIsCancelled() = testScope.runTest {
+        val collecting = MutableStateFlow(false)
+        provider = ConnectivityProvider(
+            flow {
+                try {
+                    collecting.value = true
+                    emit(Connectivity.Status.Connected(metered = false))
+                    awaitCancellation()
+                } finally {
+                    collecting.value = false
+                }
+            },
+        )
+
+        val hostScope = CoroutineScope(Job() + UnconfinedTestDispatcher(testScheduler))
+        DefaultConnectivity(hostScope, provider, ConnectivityOptions(autoStart = true))
+        collecting.value.shouldBeTrue()
+
+        hostScope.cancel()
+
+        collecting.value.shouldBeFalse()
+    }
+
+    @Test
     fun shouldNotMonitorWhenProvidedScopeIsCancelled() = testScope.runTest {
         val connectivity = createConnectivity(autoStart = false)
         sutScope.cancel()
@@ -169,6 +241,66 @@ class DefaultConnectivityTest {
         sutScope.advanceUntilIdle()
 
         connectivity.statusUpdates.replayCache.shouldBeEmpty()
+    }
+
+    @Test
+    fun shouldNotReportMonitoringWhenProvidedScopeIsCancelled() = testScope.runTest {
+        val connectivity = createConnectivity(autoStart = false)
+        sutScope.cancel()
+
+        connectivity.start()
+        sutScope.advanceUntilIdle()
+
+        connectivity.monitoring.value.shouldBeFalse()
+    }
+
+    @Test
+    fun shouldStopMonitoringWhenClosed() = testScope.runTest {
+        val collecting = MutableStateFlow(false)
+        provider = ConnectivityProvider(
+            flow {
+                try {
+                    collecting.value = true
+                    emit(Connectivity.Status.Connected(metered = false))
+                    awaitCancellation()
+                } finally {
+                    collecting.value = false
+                }
+            },
+        )
+
+        val connectivity = createConnectivity(autoStart = true)
+        sutScope.advanceUntilIdle()
+        collecting.value.shouldBeTrue()
+
+        connectivity.close()
+        sutScope.advanceUntilIdle()
+
+        collecting.value.shouldBeFalse()
+        connectivity.monitoring.value.shouldBeFalse()
+    }
+
+    @Test
+    fun shouldNotCancelProvidedScopeWhenClosed() = testScope.runTest {
+        val connectivity = createConnectivity(autoStart = true)
+        sutScope.advanceUntilIdle()
+
+        connectivity.close()
+        sutScope.advanceUntilIdle()
+
+        sutScope.isActive.shouldBeTrue()
+    }
+
+    @Test
+    fun shouldNotResumeMonitoringWhenStartedAfterClose() = testScope.runTest {
+        val connectivity = createConnectivity(autoStart = true)
+        sutScope.advanceUntilIdle()
+        connectivity.close()
+
+        connectivity.start()
+        sutScope.advanceUntilIdle()
+
+        connectivity.monitoring.value.shouldBeFalse()
     }
 
     private fun createConnectivity(autoStart: Boolean = false): Connectivity {

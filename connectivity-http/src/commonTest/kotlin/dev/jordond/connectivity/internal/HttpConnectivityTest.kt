@@ -22,10 +22,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -338,6 +342,24 @@ class HttpConnectivityTest {
     }
 
     @Test
+    fun shouldNotOutliveCallerWhenScopedToTheCallersOwnContext() = scope.runTest {
+        withContext(Dispatchers.Default.limitedParallelism(1)) {
+            withTimeout(10.seconds) {
+                coroutineScope {
+                    val callerScope = CoroutineScope(currentCoroutineContext())
+                    val connectivity = HttpConnectivity(
+                        parentScope = callerScope,
+                        httpOptions = HttpConnectivityOptions.build { autoStart = false },
+                        httpClient = httpClient,
+                    )
+
+                    connectivity.status().shouldBeInstanceOf<Connectivity.Status.Connected>()
+                }
+            }
+        }
+    }
+
+    @Test
     fun shouldNotPollWhenProvidedScopeIsCancelled() = scope.runTest {
         val hostScope = CoroutineScope(Dispatchers.Default)
         hostScope.cancel()
@@ -347,6 +369,68 @@ class HttpConnectivityTest {
 
             connectivity.statusUpdates.replayCache.shouldBeEmpty()
         }
+    }
+
+    @Test
+    fun shouldNotReportMonitoringWhenProvidedScopeIsCancelled() = scope.runTest {
+        val hostScope = CoroutineScope(Dispatchers.Default)
+        hostScope.cancel()
+
+        testConnectivity(scope = hostScope) { connectivity ->
+            connectivity.start()
+
+            connectivity.monitoring.value.shouldBeFalse()
+        }
+    }
+
+    @Test
+    fun shouldStopMonitoringWhenClosed() = scope.runTest {
+        testConnectivity { connectivity ->
+            connectivity.start()
+            connectivity.statusUpdates.first()
+            connectivity.monitoring.value.shouldBeTrue()
+
+            connectivity.close()
+
+            connectivity.monitoring.value.shouldBeFalse()
+        }
+    }
+
+    @Test
+    fun shouldNotCancelProvidedScopeWhenClosed() = scope.runTest {
+        val hostScope = CoroutineScope(Dispatchers.Default)
+        testConnectivity(scope = hostScope) { connectivity ->
+            connectivity.start()
+            connectivity.statusUpdates.first()
+
+            connectivity.close()
+
+            hostScope.isActive.shouldBeTrue()
+        }
+    }
+
+    @Test
+    fun shouldNotResumePollingWhenStartedAfterClose() = scope.runTest {
+        testConnectivity { connectivity ->
+            connectivity.start()
+            connectivity.statusUpdates.first()
+            connectivity.close()
+
+            connectivity.start()
+
+            connectivity.monitoring.value.shouldBeFalse()
+        }
+    }
+
+    @Test
+    fun shouldSupportUseForAOneOffCheck() = scope.runTest {
+        val hostScope = CoroutineScope(Dispatchers.Default)
+        val options = HttpConnectivityOptions.build { autoStart = false }
+
+        val status = HttpConnectivity(hostScope, options, httpClient).use { it.status() }
+
+        status.shouldBeInstanceOf<Connectivity.Status.Connected>()
+        hostScope.isActive.shouldBeTrue()
     }
 
     private suspend fun testConnectivity(

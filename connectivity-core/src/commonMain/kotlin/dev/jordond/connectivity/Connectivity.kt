@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
  * @property updates A [StateFlow] representing the current connectivity status and whether
  * the monitoring is active.
  */
-public interface Connectivity {
+public interface Connectivity : AutoCloseable {
 
     public val statusUpdates: SharedFlow<Status>
 
@@ -39,6 +39,14 @@ public interface Connectivity {
      * Stops monitoring the connectivity status.
      */
     public fun stop()
+
+    /**
+     * Stops monitoring and releases the resources held by this instance.
+     *
+     * Unlike [stop] this is terminal, a closed instance cannot be started again. The
+     * [CoroutineScope] this instance was created with is left untouched.
+     */
+    override fun close()
 
     /**
      * Represents the connectivity status.
