@@ -6,6 +6,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -32,51 +33,39 @@ class ConnectivityFlowTest {
 
     @Test
     fun isColdAndDoesNotSubscribeUntilCollected() = runTest {
-        var subscriptions = 0
-        val provider = ConnectivityProvider(
-            flow {
-                subscriptions++
-                emit(Connectivity.Status.Connected(false))
-            },
-        )
+        val provider = CountingProvider()
 
         val flow = connectivityFlow(provider)
-        subscriptions shouldBe 0
+        provider.monitorCalls shouldBe 0
 
         flow.first()
-        subscriptions shouldBe 1
+        provider.monitorCalls shouldBe 1
     }
 
     @Test
     fun subscribesOncePerCollector() = runTest {
-        var subscriptions = 0
-        val provider = ConnectivityProvider(
-            flow {
-                subscriptions++
-                emit(Connectivity.Status.Connected(false))
-            },
-        )
+        val provider = CountingProvider()
 
         val flow = connectivityFlow(provider)
         flow.first()
         flow.first()
 
-        subscriptions shouldBe 2
+        provider.monitorCalls shouldBe 2
     }
 
     @Test
     fun unsubscribesSourceWhenCollectionCancelled() = runTest {
         var finallyRuns = 0
-        val provider = ConnectivityProvider(
-            flow {
+        val provider = object : ConnectivityProvider {
+            override fun monitor(): Flow<Connectivity.Status> = flow {
                 try {
                     emit(Connectivity.Status.Connected(false))
                     awaitCancellation()
                 } finally {
                     finallyRuns++
                 }
-            },
-        )
+            }
+        }
 
         // A bare TestScope Job does not fire invokeOnCompletion, so the collecting job needs a
         // real Job on an unconfined dispatcher for cancellation to actually propagate here.
@@ -155,5 +144,23 @@ class ConnectivityFlowTest {
             Connectivity.Status.Connected(false),
             Connectivity.Status.Connected(false),
         )
+    }
+
+    /**
+     * A provider that counts calls to [monitor] itself, not just collections of a pre-built flow.
+     *
+     * [ConnectivityProvider.monitor]'s contract is to *start* monitoring, and real implementations
+     * allocate platform resources in it — `AppleConnectivityProvider` calls `nw_path_monitor_create`
+     * before returning its `callbackFlow`. A fixture built with `ConnectivityProvider(someFlow)`
+     * cannot see when `monitor()` runs, so it cannot tell a cold factory from an eager one.
+     */
+    private class CountingProvider : ConnectivityProvider {
+        var monitorCalls = 0
+            private set
+
+        override fun monitor(): Flow<Connectivity.Status> {
+            monitorCalls++
+            return flowOf(Connectivity.Status.Connected(false))
+        }
     }
 }

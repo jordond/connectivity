@@ -18,6 +18,10 @@ import kotlin.time.Duration.Companion.milliseconds
  * **Note:** [HttpConnectivityOptions.options]' `autoStart` is ignored — collecting the flow
  * is what starts polling.
  *
+ * **Note:** the default [httpClient] is built eagerly, when this function is called rather than
+ * when the flow is collected, and is never closed — the same ownership rule the hot API uses. Pass
+ * your own [HttpClient] if you call this factory more than once.
+ *
  * @param options The [HttpConnectivityOptions] used to configure the connectivity monitoring.
  * Defaults to a new [HttpConnectivityOptions] instance.
  * @param httpClient The [HttpClient] used to make HTTP requests. Defaults to a new [HttpClient]

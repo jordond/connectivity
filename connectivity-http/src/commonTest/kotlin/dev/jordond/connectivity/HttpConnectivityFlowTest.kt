@@ -118,7 +118,9 @@ class HttpConnectivityFlowTest {
 
         httpConnectivityFlow(options, httpClient).first()
 
-        callbackCount shouldBe mockEngine.requestHistory.size
+        // Concrete counts, not counter-vs-counter — `0 shouldBe 0` would pass if the poll never ran.
+        mockEngine.requestHistory.size shouldBe 1
+        callbackCount shouldBe 1
     }
 
     @Test

@@ -323,8 +323,12 @@ fun MyApp() {
 ### Cold Flow API
 
 Alongside the `Connectivity` object above, each module also exposes a cold `Flow<Connectivity.Status>`
-factory. Collecting the flow is what starts the platform listener (or HTTP polling loop), and
-cancelling collection stops it — there is nothing to `start()`, `stop()`, or `close()`.
+factory: `deviceConnectivityFlow()` in `connectivity-device`, `httpConnectivityFlow()` in
+`connectivity-http`, `androidConnectivityFlow()` / `appleConnectivityFlow()` in the platform modules,
+and `connectivityFlow(provider)` in `connectivity-core` for a custom `ConnectivityProvider`.
+
+Collecting the flow is what starts the platform listener (or HTTP polling loop), and cancelling
+collection stops it — the flow itself has no `start()`, `stop()` or `close()` to call.
 
 ```kotlin
 deviceConnectivityFlow().collect { status ->
@@ -354,12 +358,14 @@ val status = deviceConnectivityFlow().first()
 therefore additional outbound HTTP requests at the configured interval:
 
 ```kotlin
-// Prefer this when there's more than one consumer — one polling loop, shared.
-val status = httpConnectivityFlow()
+// Build the flow once, then share it — one polling loop across every consumer.
+val connectivity = httpConnectivityFlow(httpClient = myHttpClient)
+
+val status = connectivity
     .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), initialValue = null)
 
-// Each `collect` here starts its own independent polling loop.
-httpConnectivityFlow().collect { status -> /* ... */ }
+// Collecting it directly instead starts a second, independent polling loop.
+connectivity.collect { status -> /* ... */ }
 ```
 
 Notes:
@@ -367,6 +373,9 @@ Notes:
 - The flow runs in the collector's own coroutine context — there's no implicit
   `Dispatchers.Default` the way the hot API used. Use `.flowOn()` if you need it on a specific
   dispatcher.
+- `httpConnectivityFlow()` builds its default `HttpClient` eagerly, when you call the factory, and
+  never closes it — the same ownership rule the hot API uses. Pass your own `httpClient` (and close
+  it yourself) if you call the factory more than once, or the unused clients will leak.
 - The flow does not deduplicate emissions. Use `.distinctUntilChanged()` if repeated identical
   statuses matter to you.
 - `HttpConnectivityOptions.options.autoStart` is ignored by `httpConnectivityFlow()` — collecting
