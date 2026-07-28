@@ -371,6 +371,68 @@ class HttpConnectivityTest {
         }
     }
 
+    @Test
+    fun shouldNotReportMonitoringWhenProvidedScopeIsCancelled() = scope.runTest {
+        val hostScope = CoroutineScope(Dispatchers.Default)
+        hostScope.cancel()
+
+        testConnectivity(scope = hostScope) { connectivity ->
+            connectivity.start()
+
+            connectivity.monitoring.value.shouldBeFalse()
+        }
+    }
+
+    @Test
+    fun shouldStopMonitoringWhenClosed() = scope.runTest {
+        testConnectivity { connectivity ->
+            connectivity.start()
+            connectivity.statusUpdates.first()
+            connectivity.monitoring.value.shouldBeTrue()
+
+            connectivity.close()
+
+            connectivity.monitoring.value.shouldBeFalse()
+        }
+    }
+
+    @Test
+    fun shouldNotCancelProvidedScopeWhenClosed() = scope.runTest {
+        val hostScope = CoroutineScope(Dispatchers.Default)
+        testConnectivity(scope = hostScope) { connectivity ->
+            connectivity.start()
+            connectivity.statusUpdates.first()
+
+            connectivity.close()
+
+            hostScope.isActive.shouldBeTrue()
+        }
+    }
+
+    @Test
+    fun shouldNotResumePollingWhenStartedAfterClose() = scope.runTest {
+        testConnectivity { connectivity ->
+            connectivity.start()
+            connectivity.statusUpdates.first()
+            connectivity.close()
+
+            connectivity.start()
+
+            connectivity.monitoring.value.shouldBeFalse()
+        }
+    }
+
+    @Test
+    fun shouldSupportUseForAOneOffCheck() = scope.runTest {
+        val hostScope = CoroutineScope(Dispatchers.Default)
+        val options = HttpConnectivityOptions.build { autoStart = false }
+
+        val status = HttpConnectivity(hostScope, options, httpClient).use { it.status() }
+
+        status.shouldBeInstanceOf<Connectivity.Status.Connected>()
+        hostScope.isActive.shouldBeTrue()
+    }
+
     private suspend fun testConnectivity(
         httpClient: HttpClient = this.httpClient,
         scope: CoroutineScope = CoroutineScope(Dispatchers.Default),

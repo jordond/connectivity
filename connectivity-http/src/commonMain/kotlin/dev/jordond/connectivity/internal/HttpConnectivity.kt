@@ -58,15 +58,19 @@ internal class HttpConnectivity(
 
     override fun start() {
         if (job?.isActive == true) return
-        scope.cancelIfParentIsDone()
         poll()
-        _monitoring.update { true }
+        _monitoring.value = job?.isActive == true
     }
 
     override fun stop() {
         job?.cancel()
         job = null
         _monitoring.update { false }
+    }
+
+    override fun close() {
+        stop()
+        scope.close()
     }
 
     internal fun forcePoll() {

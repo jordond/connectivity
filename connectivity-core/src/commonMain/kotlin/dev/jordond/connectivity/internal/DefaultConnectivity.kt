@@ -48,19 +48,24 @@ internal class DefaultConnectivity(
     }
 
     override fun start() {
-        scope.cancelIfParentIsDone()
         job?.cancel()
-        _monitoring.value = true
-        job = scope.launch {
+        val started = scope.launch {
             provider.monitor().collect { status ->
                 _statusUpdates.emit(status)
             }
         }
+        job = started
+        _monitoring.value = started.isActive
     }
 
     override fun stop() {
         job?.cancel()
         job = null
         _monitoring.value = false
+    }
+
+    override fun close() {
+        stop()
+        scope.close()
     }
 }
