@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.flow
  * Creates a cold [Flow] of [Connectivity.Status] for Android.
  *
  * The [android.content.Context] is resolved from [dev.jordond.connectivity.tools.ContextProvider]
- * when the flow is collected, not when it is created — constructing this flow does not require an
+ * when the flow is collected, not when it is created. Building this flow does not require an
  * initialised `ContextProvider`, only collecting it does.
  *
  * @return A cold [Flow] of [Connectivity.Status].

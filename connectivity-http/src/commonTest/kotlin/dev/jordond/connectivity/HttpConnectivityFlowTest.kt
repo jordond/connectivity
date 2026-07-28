@@ -72,13 +72,11 @@ class HttpConnectivityFlowTest {
     }
 
     /**
-     * Pins decision F (emit, then delay) — parity with the existing `HttpConnectivity.poll()`
-     * loop. An hour-long interval would make `.first()` hang if the loop delayed before its
-     * first emission.
+     * The loop emits before it delays, matching the existing `HttpConnectivity.poll()`. With an
+     * hour-long interval, `.first()` would hang if that order were reversed.
      *
-     * Runs on a real dispatcher with a real-time bound: `runTest`'s virtual clock auto-skips
-     * `delay()`, so a virtual-time version of this test cannot distinguish "emit then delay"
-     * from "delay then emit" — both return instantly regardless of ordering.
+     * This runs on a real dispatcher with a real timeout because `runTest`'s virtual clock skips
+     * `delay()`, which makes both orderings return instantly and the test useless.
      */
     @Test
     fun emitsBeforeTheFirstDelay() = runTest {
@@ -94,9 +92,9 @@ class HttpConnectivityFlowTest {
     }
 
     /**
-     * The riskiest test in the plan (§7.1) — real dispatcher + real-time bound, matching the
-     * mitigation the existing `HttpConnectivityTest` already uses for MockEngine-backed tests,
-     * since `runTest`'s virtual clock does not reliably coordinate with MockEngine's dispatch.
+     * Real dispatcher and real timeout, the same workaround `HttpConnectivityTest` already uses
+     * for its MockEngine tests, since `runTest`'s virtual clock does not coordinate with
+     * MockEngine's dispatch.
      */
     @Test
     fun pollsRepeatedlyAtTheConfiguredInterval() = runTest {
@@ -118,7 +116,7 @@ class HttpConnectivityFlowTest {
 
         httpConnectivityFlow(options, httpClient).first()
 
-        // Concrete counts, not counter-vs-counter — `0 shouldBe 0` would pass if the poll never ran.
+        // Concrete counts, not one counter against the other, which would pass at 0 == 0.
         mockEngine.requestHistory.size shouldBe 1
         callbackCount shouldBe 1
     }

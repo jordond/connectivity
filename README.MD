@@ -327,8 +327,8 @@ factory: `deviceConnectivityFlow()` in `connectivity-device`, `httpConnectivityF
 `connectivity-http`, `androidConnectivityFlow()` / `appleConnectivityFlow()` in the platform modules,
 and `connectivityFlow(provider)` in `connectivity-core` for a custom `ConnectivityProvider`.
 
-Collecting the flow is what starts the platform listener (or HTTP polling loop), and cancelling
-collection stops it — the flow itself has no `start()`, `stop()` or `close()` to call.
+Collecting the flow starts the platform listener (or HTTP polling loop), and cancelling collection
+stops it. There is no `start()`, `stop()` or `close()` on the flow itself.
 
 ```kotlin
 deviceConnectivityFlow().collect { status ->
@@ -339,8 +339,8 @@ deviceConnectivityFlow().collect { status ->
 }
 ```
 
-Each collector runs its own, independent subscription — two collectors mean two platform
-listeners. If you need a single listener shared across multiple consumers, use `stateIn`/`shareIn`:
+Every collector gets its own subscription, so two collectors mean two platform listeners. To share a
+single listener across consumers, use `stateIn`/`shareIn`:
 
 ```kotlin
 val status = deviceConnectivityFlow()
@@ -353,33 +353,31 @@ For a one-off check, use `.first()`:
 val status = deviceConnectivityFlow().first()
 ```
 
-**`connectivity-http`**: the same three forms are available via `httpConnectivityFlow()`, but here
-`stateIn`/`shareIn` matters more — each additional collector means an additional polling loop, and
-therefore additional outbound HTTP requests at the configured interval:
+**`connectivity-http`**: the same three forms work with `httpConnectivityFlow()`, but sharing
+matters more here. Each extra collector is another polling loop, and another outbound request every
+interval:
 
 ```kotlin
-// Build the flow once, then share it — one polling loop across every consumer.
+// Build the flow once and share it, so there is only one polling loop.
 val connectivity = httpConnectivityFlow(httpClient = myHttpClient)
 
 val status = connectivity
     .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), initialValue = null)
 
-// Collecting it directly instead starts a second, independent polling loop.
+// Collecting it directly starts a second polling loop.
 connectivity.collect { status -> /* ... */ }
 ```
 
 Notes:
 
-- The flow runs in the collector's own coroutine context — there's no implicit
-  `Dispatchers.Default` the way the hot API used. Use `.flowOn()` if you need it on a specific
-  dispatcher.
-- `httpConnectivityFlow()` builds its default `HttpClient` eagerly, when you call the factory, and
-  never closes it — the same ownership rule the hot API uses. Pass your own `httpClient` (and close
-  it yourself) if you call the factory more than once, or the unused clients will leak.
-- The flow does not deduplicate emissions. Use `.distinctUntilChanged()` if repeated identical
-  statuses matter to you.
-- `HttpConnectivityOptions.options.autoStart` is ignored by `httpConnectivityFlow()` — collecting
-  the flow is what starts polling.
+- The flow runs in the collector's coroutine context. Unlike the hot API there is no implicit
+  `Dispatchers.Default`, so use `.flowOn()` if you need a specific dispatcher.
+- `httpConnectivityFlow()` builds its default `HttpClient` when you call the factory, not when the
+  flow is collected, and never closes it. This matches how the hot API treats the client. Pass your
+  own `httpClient` and close it yourself if you call the factory more than once.
+- Emissions are not deduplicated. Use `.distinctUntilChanged()` if repeated identical statuses
+  matter to you.
+- `HttpConnectivityOptions.options.autoStart` is ignored. Collecting the flow starts polling.
 
 ## Demo
 

@@ -128,9 +128,9 @@ class ConnectivityFlowTest {
     }
 
     /**
-     * Pins decision E (no dedupe) so Phase 2 — which shares this flow behind `shareIn` to
-     * reimplement the hot API — cannot silently drift from today's hot behaviour, where
-     * Android's `onCapabilitiesChanged` fires repeated, non-distinct `Connected` values.
+     * The hot API does not dedupe, and Android's `onCapabilitiesChanged` does fire repeated
+     * `Connected` values. Reimplementing the hot API on top of this flow later means the two have
+     * to agree, so pin the lack of deduplication now.
      */
     @Test
     fun doesNotDeduplicateRepeatedStatuses() = runTest {
@@ -150,7 +150,7 @@ class ConnectivityFlowTest {
      * A provider that counts calls to [monitor] itself, not just collections of a pre-built flow.
      *
      * [ConnectivityProvider.monitor]'s contract is to *start* monitoring, and real implementations
-     * allocate platform resources in it — `AppleConnectivityProvider` calls `nw_path_monitor_create`
+     * allocate platform resources in it. `AppleConnectivityProvider` calls `nw_path_monitor_create`
      * before returning its `callbackFlow`. A fixture built with `ConnectivityProvider(someFlow)`
      * cannot see when `monitor()` runs, so it cannot tell a cold factory from an eager one.
      */

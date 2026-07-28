@@ -7,16 +7,14 @@ import kotlin.test.Test
 class AppleConnectivityFlowTest {
 
     /**
-     * Smoke test only — see §5.4's honesty clause. `AppleConnectivityProvider` drives a real
-     * `NWPathMonitor` with no seam to observe or fake it, matching the ceiling of the existing
-     * `AppleConnectivityTest`. There is no assertion here that can meaningfully fail against a
-     * flow-returning implementation; it exists to note the ceiling, not to pretend otherwise.
+     * Smoke test only. `AppleConnectivityProvider` drives a real `NWPathMonitor` with no seam to
+     * observe or fake it, so there is no assertion here that can fail against any implementation
+     * that returns a flow. This is the same ceiling the existing `AppleConnectivityTest` hits.
      *
-     * `startsNoMonitorUntilCollected` (5.4/2) is intentionally not written: constructing a fake
-     * `NWPathMonitor` seam is out of Phase 1 scope, and without one there is no way to observe
-     * whether the monitor started. The real coldness guarantee for this module comes from core
-     * test `ConnectivityFlowTest.isColdAndDoesNotSubscribeUntilCollected`, since
-     * `appleConnectivityFlow()` is a one-line delegation to `connectivityFlow(...)`.
+     * There is deliberately no test that the monitor stays unstarted until collection, because
+     * without a fake `NWPathMonitor` there is no way to observe it. That guarantee is covered in
+     * core by `ConnectivityFlowTest.isColdAndDoesNotSubscribeUntilCollected`, since
+     * `appleConnectivityFlow()` just delegates to `connectivityFlow(...)`.
      */
     @Test
     fun createsAFlow() {

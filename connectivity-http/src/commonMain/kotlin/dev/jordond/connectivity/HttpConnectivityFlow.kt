@@ -11,15 +11,14 @@ import kotlin.time.Duration.Companion.milliseconds
  * Creates a cold [Flow] of [Connectivity.Status] that polls HTTP endpoints for connectivity.
  *
  * The returned [Flow] is cold: no request is made until it is collected, and cancelling
- * collection stops polling. Each collector runs its own, independent polling loop — see
- * `shareIn`/`stateIn` if a single shared loop is needed across multiple collectors, since each
- * additional collector otherwise means additional outbound requests at the configured interval.
+ * collection stops polling. Every collector runs its own polling loop, so each one adds outbound
+ * requests at the configured interval. Use `shareIn`/`stateIn` to share a single loop.
  *
- * **Note:** [HttpConnectivityOptions.options]' `autoStart` is ignored — collecting the flow
- * is what starts polling.
+ * **Note:** [HttpConnectivityOptions.options]' `autoStart` is ignored. Collecting the flow starts
+ * polling.
  *
- * **Note:** the default [httpClient] is built eagerly, when this function is called rather than
- * when the flow is collected, and is never closed — the same ownership rule the hot API uses. Pass
+ * **Note:** the default [httpClient] is built when this function is called rather than when the
+ * flow is collected, and is never closed, which matches how the hot API treats the client. Pass
  * your own [HttpClient] if you call this factory more than once.
  *
  * @param options The [HttpConnectivityOptions] used to configure the connectivity monitoring.

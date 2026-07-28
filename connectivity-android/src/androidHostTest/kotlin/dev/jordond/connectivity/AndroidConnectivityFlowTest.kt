@@ -46,7 +46,7 @@ class AndroidConnectivityFlowTest {
 
     @Test
     fun doesNotResolveContextUntilCollected() = runTest {
-        // Undo the setup() mock — ContextProvider is genuinely uninitialized for this test.
+        // Undo the setup() mock so ContextProvider is genuinely uninitialized for this test.
         unmockkObject(ContextProvider.Companion)
 
         val flow = androidConnectivityFlow()
