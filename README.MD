@@ -26,6 +26,7 @@ view the generated KDoc at [connectivity.jordond.dev](https://connectivity.jordo
   - [HTTP monitoring](#http-monitoring)
   - [Compose](#compose)
   - [Multiple Targets](#multiple-targets)
+  - [Cold Flow API](#cold-flow-api)
 - [Demo](#demo)
 - [Contributing](#contributing)
 - [License](#license)
@@ -318,6 +319,58 @@ fun MyApp() {
   }
 }
 ```
+
+### Cold Flow API
+
+Alongside the `Connectivity` object above, each module also exposes a cold `Flow<Connectivity.Status>`
+factory. Collecting the flow is what starts the platform listener (or HTTP polling loop), and
+cancelling collection stops it — there is nothing to `start()`, `stop()`, or `close()`.
+
+```kotlin
+deviceConnectivityFlow().collect { status ->
+  when (status) {
+    is Connectivity.Status.Connected -> println("Connected to network")
+    is Connectivity.Status.Disconnected -> println("Disconnected from network")
+  }
+}
+```
+
+Each collector runs its own, independent subscription — two collectors mean two platform
+listeners. If you need a single listener shared across multiple consumers, use `stateIn`/`shareIn`:
+
+```kotlin
+val status = deviceConnectivityFlow()
+    .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), initialValue = null)
+```
+
+For a one-off check, use `.first()`:
+
+```kotlin
+val status = deviceConnectivityFlow().first()
+```
+
+**`connectivity-http`**: the same three forms are available via `httpConnectivityFlow()`, but here
+`stateIn`/`shareIn` matters more — each additional collector means an additional polling loop, and
+therefore additional outbound HTTP requests at the configured interval:
+
+```kotlin
+// Prefer this when there's more than one consumer — one polling loop, shared.
+val status = httpConnectivityFlow()
+    .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), initialValue = null)
+
+// Each `collect` here starts its own independent polling loop.
+httpConnectivityFlow().collect { status -> /* ... */ }
+```
+
+Notes:
+
+- The flow runs in the collector's own coroutine context — there's no implicit
+  `Dispatchers.Default` the way the hot API used. Use `.flowOn()` if you need it on a specific
+  dispatcher.
+- The flow does not deduplicate emissions. Use `.distinctUntilChanged()` if repeated identical
+  statuses matter to you.
+- `HttpConnectivityOptions.options.autoStart` is ignored by `httpConnectivityFlow()` — collecting
+  the flow is what starts polling.
 
 ## Demo
 
