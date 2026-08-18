@@ -53,11 +53,9 @@ internal class AndroidConnectivityProvider(
 
             try {
                 if (versionCodeProvider.code >= Build.VERSION_CODES.N) {
-                    println("Using registerDefaultNetworkCallback")
                     manager.registerDefaultNetworkCallback(networkCallback)
                 } else {
                     val networkRequest = NetworkRequest.Builder().build()
-                    println("Using registerNetworkCallback")
                     manager.registerNetworkCallback(networkRequest, networkCallback)
                 }
 
