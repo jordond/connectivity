@@ -3,12 +3,12 @@ package dev.jordond.connectivity.internal
 import dev.drewhamilton.poko.Poko
 import dev.jordond.connectivity.Connectivity
 import dev.jordond.connectivity.HttpConnectivityOptions
+import dev.jordond.connectivity.httpConnectivityFlow
 import io.ktor.client.HttpClient
 import io.ktor.http.URLProtocol
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -16,11 +16,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.milliseconds
 
 @Poko
+@Suppress("OVERRIDE_DEPRECATION")
 internal class HttpConnectivity(
     parentScope: CoroutineScope,
     private val httpOptions: HttpConnectivityOptions,
@@ -79,10 +78,8 @@ internal class HttpConnectivity(
 
     private fun poll() {
         job = scope.launch {
-            while (isActive) {
-                val status = statusChecker.check()
+            httpConnectivityFlow(httpOptions, httpClient).collect { status ->
                 _statusUpdates.emit(status)
-                delay(httpOptions.pollingIntervalMs.milliseconds)
             }
         }
     }

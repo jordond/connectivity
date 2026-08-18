@@ -16,6 +16,10 @@ import kotlinx.coroutines.Dispatchers
  * instance.
  * @return A [Connectivity] instance.
  */
+@Deprecated(
+    "Use httpConnectivityFlow(options, httpClient) instead. See " +
+        "https://github.com/jordond/connectivity/blob/main/MIGRATION.md",
+)
 public fun Connectivity(
     options: HttpConnectivityOptions = HttpConnectivityOptions(),
     scope: CoroutineScope = CoroutineScope(Dispatchers.Default),
@@ -32,6 +36,11 @@ public fun Connectivity(
  * @param options A lambda function that configures the [HttpConnectivityOptions.Builder].
  * @return A [Connectivity] instance.
  */
+@Suppress("DEPRECATION")
+@Deprecated(
+    "Use httpConnectivityFlow(httpClient) { ... } instead. See " +
+        "https://github.com/jordond/connectivity/blob/main/MIGRATION.md",
+)
 public fun Connectivity(
     scope: CoroutineScope = CoroutineScope(Dispatchers.Default),
     httpClient: HttpClient = HttpClient(),
@@ -44,6 +53,10 @@ public fun Connectivity(
  * **Note:** If the [Connectivity] instance is not an [HttpConnectivity], this function will
  * do nothing.
  */
+@Deprecated(
+    "Use status(), or start a new collection of httpConnectivityFlow(...). See " +
+        "https://github.com/jordond/connectivity/blob/main/MIGRATION.md",
+)
 public fun Connectivity.force() {
     (this as? HttpConnectivity)?.forcePoll()
 }

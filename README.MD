@@ -153,6 +153,12 @@ See the [demo](demo) project for a complete example.
 
 ## Usage
 
+**Deprecated:** As of 2.7.0 the `Connectivity` object below (`start()`, `stop()`, `close()`,
+`monitoring`, and the factory functions that take a `CoroutineScope`) is deprecated in favor of the
+[Cold Flow API](#cold-flow-api). It still works exactly as before, nothing changes at runtime, but
+new code should use the cold flow factories instead. See [MIGRATION.md](MIGRATION.md) for the full
+rationale and migration guide.
+
 Basic usage of Connectivity is simple, you just need an instance of the `Connectivity` object, then
 you can observe the network connectivity.
 
@@ -250,6 +256,10 @@ val connectivity = Connectivity {
 Connectivity also provides support for Compose Multiplatform. To use it you will have to make sure
 you add the dependencies for the `connectivity-compose-x` modules.
 
+**Deprecated:** `rememberConnectivityState` and its lifecycle members (`isMonitoring`,
+`forceCheck()`, `startMonitoring()`, `stopMonitoring()`) are deprecated as of 2.7.0. See
+[MIGRATION.md](MIGRATION.md) for the `collectAsStateWithLifecycle` equivalent.
+
 Then you can use it like so:
 
 **Note:** This composable is provided by either `connectivity-compose-device`
@@ -275,6 +285,10 @@ fun MyApp() {
 
 If you need to support both Device and HTTP monitoring in the same project, you will have to do
 something similar to [this](#all-supported-platforms).
+
+**Deprecated:** The pattern below builds a `Connectivity` object through the deprecated
+`CoroutineScope`-based factories. See [MIGRATION.md](MIGRATION.md) for the cold flow equivalent,
+which does the same thing with an `expect`/`actual` flow factory instead.
 
 Example:
 

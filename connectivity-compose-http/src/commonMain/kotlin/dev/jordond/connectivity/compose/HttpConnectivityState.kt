@@ -17,6 +17,11 @@ import kotlinx.coroutines.CoroutineScope
  * @param httpClient The [HttpClient] instance to use for network requests.
  * @return A [ConnectivityState] instance.
  */
+@Suppress("DEPRECATION")
+@Deprecated(
+    "Use httpConnectivityFlow(...).collectAsStateWithLifecycle(null) instead. See " +
+        "https://github.com/jordond/connectivity/blob/main/MIGRATION.md",
+)
 @Composable
 public fun rememberConnectivityState(
     options: HttpConnectivityOptions = remember { HttpConnectivityOptions() },
@@ -40,6 +45,11 @@ public fun rememberConnectivityState(
  * @param block A lambda function to configure the [HttpConnectivityOptions] instance.
  * @return A [ConnectivityState] instance.
  */
+@Suppress("DEPRECATION")
+@Deprecated(
+    "Use httpConnectivityFlow(httpClient) { ... }.collectAsStateWithLifecycle(null) instead. See " +
+        "https://github.com/jordond/connectivity/blob/main/MIGRATION.md",
+)
 @Composable
 public fun rememberConnectivityState(
     scope: CoroutineScope = rememberCoroutineScope(),

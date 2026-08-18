@@ -13,6 +13,11 @@ import kotlinx.coroutines.Dispatchers
  * Defaults to a new [CoroutineScope] with [Dispatchers.Default].
  * @return A [Connectivity] instance.
  */
+@Suppress("DEPRECATION")
+@Deprecated(
+    "Use appleConnectivityFlow() instead. See " +
+        "https://github.com/jordond/connectivity/blob/main/MIGRATION.md",
+)
 public fun Connectivity(
     options: ConnectivityOptions = ConnectivityOptions(),
     scope: CoroutineScope = CoroutineScope(Dispatchers.Default),
@@ -27,7 +32,11 @@ public fun Connectivity(
  * Defaults to a new [CoroutineScope] with [Dispatchers.Default].
  * @return A [Connectivity] instance.
  */
-@Suppress("FunctionName")
+@Suppress("FunctionName", "DEPRECATION")
+@Deprecated(
+    "Use appleConnectivityFlow() instead. See " +
+        "https://github.com/jordond/connectivity/blob/main/MIGRATION.md",
+)
 public fun AppleConnectivity(
     options: ConnectivityOptions = ConnectivityOptions(),
     scope: CoroutineScope = CoroutineScope(Dispatchers.Default),
@@ -41,6 +50,11 @@ public fun AppleConnectivity(
  * @param options A lambda function that configures the [ConnectivityOptions.Builder].
  * @return A [Connectivity] instance.
  */
+@Suppress("DEPRECATION")
+@Deprecated(
+    "Use appleConnectivityFlow() instead. See " +
+        "https://github.com/jordond/connectivity/blob/main/MIGRATION.md",
+)
 public fun Connectivity(
     scope: CoroutineScope = CoroutineScope(Dispatchers.Default),
     options: ConnectivityOptions.Builder.() -> Unit,

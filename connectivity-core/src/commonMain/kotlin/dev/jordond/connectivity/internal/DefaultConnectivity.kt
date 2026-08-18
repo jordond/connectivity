@@ -4,6 +4,7 @@ import dev.drewhamilton.poko.Poko
 import dev.jordond.connectivity.Connectivity
 import dev.jordond.connectivity.ConnectivityOptions
 import dev.jordond.connectivity.ConnectivityProvider
+import dev.jordond.connectivity.connectivityFlow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.BufferOverflow
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @Poko
+@Suppress("OVERRIDE_DEPRECATION")
 internal class DefaultConnectivity(
     parentScope: CoroutineScope,
     private val provider: ConnectivityProvider,
@@ -42,7 +44,7 @@ internal class DefaultConnectivity(
     }
 
     override suspend fun status(): Connectivity.Status {
-        return provider.monitor().first().also { status ->
+        return connectivityFlow(provider).first().also { status ->
             _statusUpdates.emit(status)
         }
     }
@@ -50,7 +52,7 @@ internal class DefaultConnectivity(
     override fun start() {
         job?.cancel()
         val started = scope.launch {
-            provider.monitor().collect { status ->
+            connectivityFlow(provider).collect { status ->
                 _statusUpdates.emit(status)
             }
         }
