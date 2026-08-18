@@ -18,8 +18,19 @@ public interface Connectivity : AutoCloseable {
 
     public val statusUpdates: SharedFlow<Status>
 
+    @Deprecated(
+        "The collector already knows whether it's collecting. Use SharingStarted.WhileSubscribed " +
+            "if you need shared \"is anyone listening\" semantics. See " +
+            "https://github.com/jordond/connectivity/blob/main/MIGRATION.md",
+    )
     public val monitoring: StateFlow<Boolean>
 
+    @Suppress("DEPRECATION")
+    @Deprecated(
+        "The collector already knows whether it's collecting. Use SharingStarted.WhileSubscribed " +
+            "if you need shared \"is anyone listening\" semantics. See " +
+            "https://github.com/jordond/connectivity/blob/main/MIGRATION.md",
+    )
     public val isMonitoring: Boolean
         get() = monitoring.value
 
@@ -33,11 +44,19 @@ public interface Connectivity : AutoCloseable {
     /**
      * Starts monitoring the connectivity status.
      */
+    @Deprecated(
+        "Collect connectivityFlow(provider) instead. See " +
+            "https://github.com/jordond/connectivity/blob/main/MIGRATION.md",
+    )
     public fun start()
 
     /**
      * Stops monitoring the connectivity status.
      */
+    @Deprecated(
+        "Cancel the coroutine collecting connectivityFlow(provider) instead. See " +
+            "https://github.com/jordond/connectivity/blob/main/MIGRATION.md",
+    )
     public fun stop()
 
     /**
@@ -46,6 +65,10 @@ public interface Connectivity : AutoCloseable {
      * Unlike [stop] this is terminal, a closed instance cannot be started again. The
      * [CoroutineScope] this instance was created with is left untouched.
      */
+    @Deprecated(
+        "There is nothing to close, remove the call. See " +
+            "https://github.com/jordond/connectivity/blob/main/MIGRATION.md",
+    )
     override fun close()
 
     /**
@@ -93,6 +116,10 @@ public interface Connectivity : AutoCloseable {
  * @param scope The [CoroutineScope] in which to launch the connectivity monitoring coroutine.
  * @return A [Connectivity] instance.
  */
+@Deprecated(
+    "Use connectivityFlow(provider) instead. See " +
+        "https://github.com/jordond/connectivity/blob/main/MIGRATION.md",
+)
 public fun Connectivity(
     provider: ConnectivityProvider,
     options: ConnectivityOptions = ConnectivityOptions(),
@@ -109,6 +136,11 @@ public fun Connectivity(
  * @param options A builder function for creating the [ConnectivityOptions].
  * @return A [Connectivity] instance.
  */
+@Suppress("DEPRECATION")
+@Deprecated(
+    "Use connectivityFlow(provider) instead. See " +
+        "https://github.com/jordond/connectivity/blob/main/MIGRATION.md",
+)
 public fun Connectivity(
     provider: ConnectivityProvider,
     scope: CoroutineScope = CoroutineScope(Dispatchers.Default),

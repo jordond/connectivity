@@ -11,6 +11,11 @@ import kotlinx.coroutines.CoroutineScope
  * @param scope The [CoroutineScope] in which the connectivity monitoring will be launched.
  * @return A [Connectivity] instance.
  */
+@Suppress("DEPRECATION")
+@Deprecated(
+    "Use deviceConnectivityFlow() instead. See " +
+        "https://github.com/jordond/connectivity/blob/main/MIGRATION.md",
+)
 public actual fun Connectivity(
     options: ConnectivityOptions,
     scope: CoroutineScope,

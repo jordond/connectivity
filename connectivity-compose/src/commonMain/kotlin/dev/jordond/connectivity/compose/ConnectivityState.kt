@@ -22,6 +22,10 @@ import kotlinx.coroutines.launch
  * @param scope The [CoroutineScope] in which to launch the network status monitoring coroutine.
  * @return A [ConnectivityState] instance.
  */
+@Deprecated(
+    "Use connectivityFlow(provider).collectAsStateWithLifecycle(null) instead. See " +
+        "https://github.com/jordond/connectivity/blob/main/MIGRATION.md",
+)
 @Composable
 public fun rememberConnectivityState(
     connectivity: Connectivity,
@@ -43,11 +47,16 @@ public fun rememberConnectivityState(
  */
 @Poko
 @Stable
+@Suppress("DEPRECATION")
 public class ConnectivityState(
     private val connectivity: Connectivity,
     private val scope: CoroutineScope,
 ) {
 
+    @Deprecated(
+        "No longer meaningful, collection state is now the caller's. See " +
+            "https://github.com/jordond/connectivity/blob/main/MIGRATION.md",
+    )
     public var isMonitoring: Boolean by mutableStateOf(connectivity.monitoring.value)
         private set
 
@@ -91,6 +100,10 @@ public class ConnectivityState(
     /**
      * Force a check of the current network status.
      */
+    @Deprecated(
+        "Call status() on your Connectivity, or start a new collection. See " +
+            "https://github.com/jordond/connectivity/blob/main/MIGRATION.md",
+    )
     public fun forceCheck() {
         scope.launch { connectivity.status() }
     }
@@ -98,6 +111,10 @@ public class ConnectivityState(
     /**
      * Start monitoring the network status.
      */
+    @Deprecated(
+        "Collection starts the listener. See " +
+            "https://github.com/jordond/connectivity/blob/main/MIGRATION.md",
+    )
     public fun startMonitoring() {
         connectivity.start()
     }
@@ -105,6 +122,10 @@ public class ConnectivityState(
     /**
      * Stop monitoring the network status.
      */
+    @Deprecated(
+        "Cancel the collection instead. See " +
+            "https://github.com/jordond/connectivity/blob/main/MIGRATION.md",
+    )
     public fun stopMonitoring() {
         connectivity.stop()
     }

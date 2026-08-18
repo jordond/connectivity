@@ -14,6 +14,11 @@ import kotlinx.coroutines.CoroutineScope
  * @param scope The [CoroutineScope] in which to launch the network status monitoring coroutine.
  * @return A [ConnectivityState] instance.
  */
+@Suppress("DEPRECATION")
+@Deprecated(
+    "Use deviceConnectivityFlow().collectAsStateWithLifecycle(null) instead. See " +
+        "https://github.com/jordond/connectivity/blob/main/MIGRATION.md",
+)
 @Composable
 public fun rememberConnectivityState(
     options: ConnectivityOptions = remember { ConnectivityOptions() },
@@ -35,6 +40,11 @@ public fun rememberConnectivityState(
  * @param block A lambda function to configure the [ConnectivityOptions] for the network status monitoring.
  * @return A [ConnectivityState] instance.
  */
+@Suppress("DEPRECATION")
+@Deprecated(
+    "Use deviceConnectivityFlow().collectAsStateWithLifecycle(null) instead. See " +
+        "https://github.com/jordond/connectivity/blob/main/MIGRATION.md",
+)
 @Composable
 public fun rememberConnectivityState(
     scope: CoroutineScope = rememberCoroutineScope(),
