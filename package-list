@@ -13,6 +13,7 @@ module:connectivity-compose-http
 dev.jordond.connectivity.compose
 module:connectivity-core
 dev.jordond.connectivity
+dev.jordond.connectivity.internal
 module:connectivity-device
 dev.jordond.connectivity
 module:connectivity-http
