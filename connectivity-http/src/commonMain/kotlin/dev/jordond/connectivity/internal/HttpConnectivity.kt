@@ -3,13 +3,8 @@ package dev.jordond.connectivity.internal
 import dev.drewhamilton.poko.Poko
 import dev.jordond.connectivity.Connectivity
 import dev.jordond.connectivity.HttpConnectivityOptions
-import dev.jordond.connectivity.PollResult
 import io.ktor.client.HttpClient
-import io.ktor.client.plugins.timeout
-import io.ktor.client.request.request
 import io.ktor.http.URLProtocol
-import io.ktor.http.isSuccess
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.BufferOverflow
@@ -32,6 +27,7 @@ internal class HttpConnectivity(
     private val httpClient: HttpClient,
 ) : Connectivity {
     private val scope = ConnectivityScope(parentScope)
+    private val statusChecker = HttpStatusChecker(httpOptions, httpClient)
 
     private var job: Job? = null
 
@@ -51,7 +47,7 @@ internal class HttpConnectivity(
     }
 
     override suspend fun status(): Connectivity.Status {
-        return checkConnection().also { status ->
+        return statusChecker.check().also { status ->
             _statusUpdates.emit(status)
         }
     }
@@ -75,7 +71,7 @@ internal class HttpConnectivity(
 
     internal fun forcePoll() {
         scope.launch {
-            checkConnection().also { status ->
+            statusChecker.check().also { status ->
                 _statusUpdates.emit(status)
             }
         }
@@ -84,63 +80,10 @@ internal class HttpConnectivity(
     private fun poll() {
         job = scope.launch {
             while (isActive) {
-                val status = checkConnection()
+                val status = statusChecker.check()
                 _statusUpdates.emit(status)
                 delay(httpOptions.pollingIntervalMs.milliseconds)
             }
-        }
-    }
-
-    private suspend fun checkConnection(): Connectivity.Status {
-        var isConnected = false
-        for (url in httpOptions.urls) {
-            isConnected = makeRequest(url, httpOptions.port)
-            if (isConnected) break
-        }
-
-        return if (isConnected) Connectivity.Status.Connected(metered = false)
-        else Connectivity.Status.Disconnected
-    }
-
-    private suspend fun makeRequest(url: String, port: Int): Boolean {
-        val (protocol, host) = getProtocolAndHost(url, port)
-
-        try {
-            val response = httpClient.request {
-                url {
-                    this.protocol = protocol
-                    this.host = host
-                    this.port = port
-                    method = httpOptions.method
-                }
-
-                timeout {
-                    requestTimeoutMillis = httpOptions.timeoutMs
-                }
-            }
-
-            notifyPollResult(PollResult.Response(response))
-
-            return response.status.isSuccess()
-        } catch (cause: Throwable) {
-            if (cause is CancellationException) throw cause
-
-            notifyPollResult(PollResult.Error(cause))
-            return false
-        }
-    }
-
-    /**
-     * Invokes the consumer's [HttpConnectivityOptions.onPollResult] callback, a throwing callback
-     * must not stop the polling or bring down the scope it is running in.
-     */
-    private fun notifyPollResult(result: PollResult) {
-        try {
-            httpOptions.onPollResult?.invoke(result)
-        } catch (cause: CancellationException) {
-            throw cause
-        } catch (_: Throwable) {
-            // Ignored, the callback is a notification and its failures are the consumer's problem.
         }
     }
 }
