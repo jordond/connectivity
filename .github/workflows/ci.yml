@@ -42,6 +42,9 @@ jobs:
       - name: Gradle Wrapper Validation
         uses: gradle/actions/wrapper-validation@v6
 
+      - name: Check the CI scripts
+        run: python3 -B -m unittest discover -s .github/tests -v
+
       - name: Binary Compatibility Validation
         run: ./gradlew apiCheck --scan
 
