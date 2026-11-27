@@ -28,5 +28,9 @@ kotlin {
         appleMain.dependencies {
             implementation(projects.connectivityApple)
         }
+
+        getByName("androidHostTest").dependencies {
+            implementation(projects.connectivityToolsAndroid)
+        }
     }
 }

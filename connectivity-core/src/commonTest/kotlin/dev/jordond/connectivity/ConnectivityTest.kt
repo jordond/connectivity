@@ -89,4 +89,57 @@ class ConnectivityTest {
         connectivity.shouldNotBeNull()
         connectivity.shouldBeInstanceOf<Connectivity>()
     }
+
+    @Test
+    fun shouldCreateConnectivityWithDefaultScope() = testScope.runTest {
+        val connectivity = Connectivity(provider = provider)
+        val fromBuilder = Connectivity(provider = provider) {
+            autoStart = false
+        }
+
+        connectivity.isMonitoring shouldBe false
+        fromBuilder.isMonitoring shouldBe false
+    }
+
+    @Test
+    fun shouldExposeMonitoringThroughIsMonitoring() = testScope.runTest {
+        val connectivity = Connectivity(
+            provider = provider,
+            scope = sutScope,
+        )
+        connectivity.isMonitoring shouldBe false
+
+        connectivity.start()
+        connectivity.isMonitoring shouldBe true
+
+        connectivity.stop()
+        connectivity.isMonitoring shouldBe false
+    }
+
+    @Test
+    fun shouldDescribeConnectedStatus() {
+        val status: Connectivity.Status = Connectivity.Status.Connected(metered = false)
+
+        status.isConnected shouldBe true
+        status.isMetered shouldBe false
+        status.isDisconnected shouldBe false
+    }
+
+    @Test
+    fun shouldDescribeMeteredStatus() {
+        val status: Connectivity.Status = Connectivity.Status.Connected(metered = true)
+
+        status.isConnected shouldBe true
+        status.isMetered shouldBe true
+        status.isDisconnected shouldBe false
+    }
+
+    @Test
+    fun shouldDescribeDisconnectedStatus() {
+        val status: Connectivity.Status = Connectivity.Status.Disconnected
+
+        status.isConnected shouldBe false
+        status.isMetered shouldBe false
+        status.isDisconnected shouldBe true
+    }
 }
