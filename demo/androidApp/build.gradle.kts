@@ -6,11 +6,15 @@ plugins {
 
 android {
     namespace = "dev.jordond.connectivity.demo.android"
-    compileSdk = libs.versions.sdk.compile.get().toInt()
+    compileSdk {
+        version = release(libs.versions.sdk.compile.get().toInt()) {
+            minorApiLevel = libs.versions.sdk.compileMinor.get().toInt()
+        }
+    }
 
     defaultConfig {
         applicationId = "dev.jordond.connectivity.demo"
-        minSdk = libs.versions.sdk.min.get().toInt()
+        minSdk = libs.versions.sdk.demoMin.get().toInt()
         targetSdk = libs.versions.sdk.target.get().toInt()
         versionCode = 1
         versionName = "1.0"
