@@ -1,3 +1,10 @@
+public final class dev/jordond/connectivity/HttpConnectivityFlowKt {
+	public static final fun httpConnectivityFlow (Ldev/jordond/connectivity/HttpConnectivityOptions;Lio/ktor/client/HttpClient;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun httpConnectivityFlow (Lio/ktor/client/HttpClient;Lkotlin/jvm/functions/Function1;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun httpConnectivityFlow$default (Ldev/jordond/connectivity/HttpConnectivityOptions;Lio/ktor/client/HttpClient;ILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun httpConnectivityFlow$default (Lio/ktor/client/HttpClient;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+}
+
 public final class dev/jordond/connectivity/HttpConnectivityKt {
 	public static final fun Connectivity (Ldev/jordond/connectivity/HttpConnectivityOptions;Lkotlinx/coroutines/CoroutineScope;Lio/ktor/client/HttpClient;)Ldev/jordond/connectivity/Connectivity;
 	public static final fun Connectivity (Lkotlinx/coroutines/CoroutineScope;Lio/ktor/client/HttpClient;Lkotlin/jvm/functions/Function1;)Ldev/jordond/connectivity/Connectivity;
