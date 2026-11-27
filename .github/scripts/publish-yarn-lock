@@ -1,0 +1,73 @@
+#!/bin/bash
+set -euo pipefail
+
+# Commits regenerated yarn locks to a dependency update branch. It holds the write token, so it only
+# copies the two lock files and never runs the build.
+
+CWD="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+ROOT="$(cd "$CWD"/../.. >/dev/null 2>&1 && pwd)"
+LOCKS=(kotlin-js-store/yarn.lock kotlin-js-store/wasm/yarn.lock)
+
+usage() {
+    echo "Usage: $0 --locks <dir>"
+    echo "  Reads BRANCH, EXPECTED_SHA, BOT_NAME, BOT_EMAIL and TITLE"
+}
+
+locks=""
+while [[ $# -gt 0 ]]; do
+    case $1 in
+    --locks)
+        if [[ $# -lt 2 || -z "$2" ]]; then
+            usage >&2
+            exit 1
+        fi
+        locks="$2"
+        shift 2
+        ;;
+    *)
+        echo "Unknown option: $1" >&2
+        usage >&2
+        exit 1
+        ;;
+    esac
+done
+for name in BRANCH EXPECTED_SHA BOT_NAME BOT_EMAIL TITLE; do
+    if [[ -z "${!name:-}" ]]; then
+        echo "Missing $name" >&2
+        usage >&2
+        exit 1
+    fi
+done
+if [[ -z "$locks" ]]; then
+    usage >&2
+    exit 1
+fi
+
+cd "$ROOT"
+
+# The locks were generated for one commit. If the branch moved since, the next run handles it.
+if [[ "$(git rev-parse HEAD)" != "$EXPECTED_SHA" ]]; then
+    echo "$BRANCH moved past $EXPECTED_SHA, leaving it for the next run"
+    exit 0
+fi
+
+for lock in "${LOCKS[@]}"; do
+    if [[ -f "$locks/$lock" ]]; then
+        mkdir -p "$(dirname "$lock")"
+        cp "$locks/$lock" "$lock"
+    fi
+done
+git add -- "${LOCKS[@]}"
+if git diff --cached --quiet; then
+    echo "The yarn locks are already up to date on $BRANCH"
+    exit 0
+fi
+
+git config user.name "$BOT_NAME"
+git config user.email "$BOT_EMAIL"
+git commit --quiet -m "$TITLE"
+if ! git push --quiet origin "HEAD:refs/heads/$BRANCH"; then
+    echo "$BRANCH moved while the locks were being published, leaving it for the next run"
+    exit 0
+fi
+echo "Pushed the regenerated yarn locks to $BRANCH"

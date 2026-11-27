@@ -1,0 +1,60 @@
+#!/bin/bash
+set -euo pipefail
+
+# Regenerates the JS and wasm yarn locks and reports whether they changed. It runs the build of a
+# dependency update through Gradle, so it must never see a write token.
+
+CWD="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+ROOT="$(cd "$CWD"/../.. >/dev/null 2>&1 && pwd)"
+LOCKS=(kotlin-js-store/yarn.lock kotlin-js-store/wasm/yarn.lock)
+
+usage() {
+    echo "Usage: $0 --github-output <file> --out <dir>"
+    echo "  Appends changed (true or false) and copies the regenerated locks into <dir> when true"
+}
+
+github_output=""
+out=""
+while [[ $# -gt 0 ]]; do
+    case $1 in
+    --github-output | --out)
+        if [[ $# -lt 2 || -z "$2" ]]; then
+            usage >&2
+            exit 1
+        fi
+        if [[ "$1" == "--github-output" ]]; then
+            github_output="$2"
+        else
+            out="$2"
+        fi
+        shift 2
+        ;;
+    *)
+        echo "Unknown option: $1" >&2
+        usage >&2
+        exit 1
+        ;;
+    esac
+done
+if [[ -z "$github_output" || -z "$out" ]]; then
+    usage >&2
+    exit 1
+fi
+
+cd "$ROOT"
+./gradlew kotlinUpgradeYarnLock kotlinWasmUpgradeYarnLock
+
+if [[ -z "$(git status --porcelain -- "${LOCKS[@]}")" ]]; then
+    echo "The yarn locks are up to date"
+    echo "changed=false" >>"$github_output"
+    exit 0
+fi
+
+for lock in "${LOCKS[@]}"; do
+    if [[ -f "$lock" ]]; then
+        mkdir -p "$out/$(dirname "$lock")"
+        cp "$lock" "$out/$lock"
+    fi
+done
+echo "The yarn locks changed"
+echo "changed=true" >>"$github_output"
