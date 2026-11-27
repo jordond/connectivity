@@ -69,14 +69,14 @@ jobs:
     steps:
       - name: Require the bot token
         env:
-          GH_TOKEN: ${{ secrets.UPSTREAM_BOT_TOKEN }}
-        run: '[ -n "$GH_TOKEN" ] || { echo "::error::Add an UPSTREAM_BOT_TOKEN repository secret with contents write access."; exit 1; }'
+          GH_TOKEN: ${{ secrets.YARN_LOCK_TOKEN }}
+        run: '[ -n "$GH_TOKEN" ] || { echo "::error::Add a YARN_LOCK_TOKEN repository secret with contents write access."; exit 1; }'
 
       - name: Checkout
         uses: actions/checkout@v7
         with:
           ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.UPSTREAM_BOT_TOKEN }}
+          token: ${{ secrets.YARN_LOCK_TOKEN }}
 
       - name: Download the yarn locks
         uses: actions/download-artifact@v8
