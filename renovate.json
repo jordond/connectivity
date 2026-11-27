@@ -1,21 +1,33 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+    "config:recommended"
   ],
   "labels": [
     "dependencies"
   ],
+  "platformAutomerge": false,
+  "automergeStrategy": "squash",
   "packageRules": [
     {
       "groupName": "Kotlin",
-      "matchPackagePrefixes": [
-        "org.jetbrains.compose",
-        "org.jetbrains.compose:compose-gradle-plugin",
-        "com.google.devtools.ksp",
-        "org.jetbrains.kotlin",
-        "org.jetbrains.kotlinx:binary-compatibility-validator"
+      "matchPackageNames": [
+        "org.jetbrains.compose{/,}**",
+        "com.google.devtools.ksp{/,}**",
+        "org.jetbrains.kotlin{/,}**",
+        "org.jetbrains.kotlinx:binary-compatibility-validator{/,}**"
       ]
+    },
+    {
+      "description": "Minor and patch updates merge once CI passes. Majors need a review.",
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "digest",
+        "pin",
+        "pinDigest"
+      ],
+      "automerge": true
     }
   ]
 }
