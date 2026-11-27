@@ -12,7 +12,6 @@ local.properties
 xcuserdata/
 Pods/
 *.jks
-*yarn.lock
 demo/iosApp/Podfile.lock
 demo/iosApp/Pods/*
 demo/iosApp/iosApp.xcworkspace/*
