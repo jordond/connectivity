@@ -303,6 +303,20 @@ class DefaultConnectivityTest {
         connectivity.monitoring.value.shouldBeFalse()
     }
 
+    @Test
+    fun shouldMonitorWhenProvidedScopeHasNoJob() = testScope.runTest {
+        val jobless = object : CoroutineScope {
+            override val coroutineContext = UnconfinedTestDispatcher(testScheduler)
+        }
+        val connectivity = DefaultConnectivity(jobless, provider, ConnectivityOptions())
+
+        connectivity.start()
+        connectivity.statusUpdates.first().shouldBeInstanceOf<Connectivity.Status.Connected>()
+
+        connectivity.close()
+        connectivity.monitoring.value.shouldBeFalse()
+    }
+
     private fun createConnectivity(autoStart: Boolean = false): Connectivity {
         val options = ConnectivityOptions(autoStart = autoStart)
         return DefaultConnectivity(sutScope, provider, options)
